@@ -42,6 +42,13 @@ services → id, providerId, name, duration, price.
 availability → id, providerId, dayOfWeek, startTime, endTime.
 appointments → id, clientId, providerId, serviceId, startTime, endTime, status (pending | confirmed | cancelled | completed).
 
+
+## 4. Database schema points :
+- user creates an account with email , password , plan
+- user have many services 
+- many services belongs to same user
+- Each service has appointments limit 
+
 ## **Notes :**
 - Create a landing page 
 - Create a signup page for providers

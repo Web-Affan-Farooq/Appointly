@@ -1,0 +1,1 @@
+export type PricingPlan = "PREMIUM" | "PRIMARY" | "FREE"
