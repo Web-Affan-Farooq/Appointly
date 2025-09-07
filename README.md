@@ -25,6 +25,12 @@ As an admin (optional, Phase 2), I can:
 - Manage all providers & users.
 - Monitor bookings & system health.
 
+Service flow :
+user requesed the appointment (PENDING)
+provider scheduled the appointment (CONFIRMED)
+user cancelled the appointment (CANCELLED)
+user attend appointment (COMPLETED)
+
 ## 2. Tech stack :
 
 - **Frontend**: [`Next.js`, `TailwindCSS`].
@@ -41,6 +47,12 @@ providers → id, userId (FK), bio, services_offered.
 services → id, providerId, name, duration, price.
 availability → id, providerId, dayOfWeek, startTime, endTime.
 appointments → id, clientId, providerId, serviceId, startTime, endTime, status (pending | confirmed | cancelled | completed).
+
+- user have many services 
+- many services belongs to same user
+- each service has many appointments 
+- many appointments belong to same service 
+
 
 ## Business model :
 #### **Free — $0/month** :

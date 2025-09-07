@@ -7,7 +7,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
-import Table from "@/components/DataTable";
+import Table from "./DataTable";
 
 const SiteHeader = () => {
   return (
@@ -19,12 +19,7 @@ const SiteHeader = () => {
           className="mx-2 data-[orientation=vertical]:h-4"
         />
         <div className="flex justify-between items-center">
-          <h1 className="text-base font-medium">Services</h1>
-
-          <Button className="flex flex-row flex-nowrap gap-[5px] py-[5px] px-[10px]">
-            <IconPlus className="stroke-black" />
-            <span className="hidden lg:inline text-black">Add Section</span>
-          </Button>
+          <h1 className="text-base font-medium">Appointments</h1>
         </div>
       </div>
     </header>

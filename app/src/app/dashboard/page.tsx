@@ -5,7 +5,6 @@ import { SiteHeader } from "@/components/site-header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
 import data from "./data.json";
-import Table from "@/components/DataTable";
 
 export default function Page() {
   return (
@@ -28,7 +27,6 @@ export default function Page() {
                 <ChartAreaInteractive />
               </div>
               {/** data table */}
-              <Table />
             </div>
           </div>
         </div>
