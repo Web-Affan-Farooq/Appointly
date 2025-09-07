@@ -5,9 +5,7 @@ import { useForm } from "react-hook-form";
 // _____ utils ...
 import { cn } from "@/lib/utils";
 // _____ Components  ...
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Input, Label, Button } from "@/components/common";
 import Image from "next/image";
 import Link from "next/link";
 // _____ Libraries  ....
@@ -17,6 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { simpleLogin, loginWithGoogle } from "./action";
 // ____ types and validations ...
 import { LoginAPIRequestSchema } from "@/validations/LoginFormSchema";
+import { PasswordInput } from "../common";
 
 export function LoginForm({
   className,
@@ -78,7 +77,7 @@ export function LoginForm({
               Forgot your password?
             </Link>
           </div>
-          <Input
+          <PasswordInput
             id="password"
             type="password"
             required
@@ -88,7 +87,7 @@ export function LoginForm({
         </div>
         <Button
           type="submit"
-          className={`w-full ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-white cursor-pointer"}`}
+          className={`w-full ${loading ? "cursor-not-allowed" : "cursor-pointer"}`}
         >
           Login
         </Button>
@@ -98,8 +97,7 @@ export function LoginForm({
           </span>
         </div>
         <Button
-          variant="outline"
-          className={`w-full ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-white cursor-pointer"}`}
+          className={`w-full flex flex-row flex-nowrap justify-center font-normal items-center gap-[20px] ${loading ? "cursor-not-allowed" : "cursor-pointer"}`}
           onClick={() => {
             setLoading(true);
             loginWithGoogle();

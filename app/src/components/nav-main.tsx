@@ -7,7 +7,7 @@ import {
   type Icon,
 } from "@tabler/icons-react";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/common";
 import {
   SidebarGroup,
   SidebarGroupContent,

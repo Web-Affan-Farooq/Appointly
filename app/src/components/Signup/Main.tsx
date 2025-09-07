@@ -2,9 +2,7 @@
 // _____ utils ...
 import { cn } from "@/lib/utils";
 // _____ Components ...
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Input, Label, Button } from "@/components/common";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -18,6 +16,7 @@ import { useForm } from "react-hook-form";
 // _____ actions ...
 import { createAccount, signUpWithGoogle } from "./actions";
 import { useState } from "react";
+import { PasswordInput } from "../common";
 
 export function SignupForm({
   className,
@@ -55,7 +54,7 @@ export function SignupForm({
         <h1 className="text-2xl font-bold">Create account</h1>
         <p className="text-muted-foreground text-sm text-balance">
           Get started with
-          <strong className="text-pink font-bold">Appointly</strong>
+          <strong className="text-pink font-bold">&nbsp; Appointly</strong>
         </p>
       </div>
       <div className="grid gap-6">
@@ -92,7 +91,7 @@ export function SignupForm({
               Forgot your password?
             </Link>
           </div>
-          <Input
+          <PasswordInput
             id="password"
             type="password"
             required
@@ -109,8 +108,7 @@ export function SignupForm({
           </span>
         </div>
         <Button
-          variant="outline"
-          className={`w-full ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-white cursor-pointer"}`}
+          className={`w-full flex flex-row flex-nowrap justify-center items-center gap-[20px] font-normal ${loading ? "cursor-not-allowed" : "cursor-pointer"}`}
           onClick={() => {
             signUpWithGoogle();
             setLoading(true);
@@ -128,8 +126,8 @@ export function SignupForm({
       </div>
       <div className="text-center text-sm">
         Already have an account?
-        <Link href="/create-account" className="text-pink font-bold">
-          Login
+        <Link href="/login" className="text-pink font-bold">
+          &nbsp; Login
         </Link>
       </div>
     </form>
