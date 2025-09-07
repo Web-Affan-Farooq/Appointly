@@ -15,7 +15,11 @@ const Card = ({
 
 const data = [
   {
-    key: "Services",
+    key: "Completed",
+    value: 4,
+  },
+  {
+    key: "Cancelled",
     value: 4,
   },
 ];

@@ -1,15 +1,17 @@
 import { pgTable, text, timestamp, boolean, numeric, pgEnum } from "drizzle-orm/pg-core";
+import { PlanEnum } from "./plan";
 
-const RoleEnum = pgEnum("role",["USER","PROVIDER","ADMIN"])
+export const  RoleEnum = pgEnum("role",["USER","PROVIDER","ADMIN"])
 
 // Better auth related schema  ...
-const user = pgTable("user", {
+export const  user = pgTable("user", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
   emailVerified: boolean("email_verified").default(false).notNull(),
   image: text("image"),
   role:RoleEnum().default("USER").notNull(),
+  plan:PlanEnum().default("FREE").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()
@@ -17,7 +19,7 @@ const user = pgTable("user", {
     .notNull(),
 });
 
-const session = pgTable("session", {
+export const  session = pgTable("session", {
   id: text("id").primaryKey(),
   expiresAt: timestamp("expires_at").notNull(),
   token: text("token").notNull().unique(),
@@ -32,7 +34,7 @@ const session = pgTable("session", {
     .references(() => user.id, { onDelete: "cascade" }),
 });
 
-const account = pgTable("account", {
+export const  account = pgTable("account", {
   id: text("id").primaryKey(),
   accountId: text("account_id").notNull(),
   providerId: text("provider_id").notNull(),
@@ -52,7 +54,7 @@ const account = pgTable("account", {
     .notNull(),
 });
 
-const verification = pgTable("verification", {
+export const  verification = pgTable("verification", {
   id: text("id").primaryKey(),
   identifier: text("identifier").notNull(),
   value: text("value").notNull(),
@@ -66,7 +68,7 @@ const verification = pgTable("verification", {
 
 
 // _____ Stripe Customer record ...
-const stripeCustomer = pgTable("stripe_customer", {
+export const  stripeCustomer = pgTable("stripe_customer", {
   id: text("id").primaryKey(), // your internal ID
   stripeCustomerId: text("stripe_customer_id").notNull().unique(), // from Stripe
   userId: text("user_id")
@@ -76,7 +78,7 @@ const stripeCustomer = pgTable("stripe_customer", {
 });
 
 // Stripe Subscriptions
-const subscription = pgTable("subscription", {
+export const  subscription = pgTable("subscription", {
   id: text("id").primaryKey(),
   stripeSubscriptionId: text("stripe_subscription_id").notNull().unique(),
   userId: text("user_id")
@@ -88,7 +90,7 @@ const subscription = pgTable("subscription", {
 });
 
 // Payments
-const payment = pgTable("payment", {
+export const  payment = pgTable("payment", {
   id: text("id").primaryKey(),
   stripePaymentId: text("stripe_payment_id").notNull().unique(),
   userId: text("user_id")
@@ -100,13 +102,3 @@ const payment = pgTable("payment", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-export {
-  user,
-  payment,
-  account,
-  subscription,
-  stripeCustomer,
-  session,
-  RoleEnum,
-  verification,
-}

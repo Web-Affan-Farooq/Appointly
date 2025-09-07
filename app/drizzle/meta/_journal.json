@@ -15,6 +15,13 @@
       "when": 1757245453438,
       "tag": "0001_daffy_mystique",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1757262119099,
+      "tag": "0002_lazy_pepper_potts",
+      "breakpoints": true
     }
   ]
 }

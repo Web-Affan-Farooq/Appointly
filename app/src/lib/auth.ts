@@ -3,7 +3,7 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import db from "@/db";
 import { nextCookies } from "better-auth/next-js";
-import * as Schema from "@/db/schema";
+import * as Schema from "@/db/schemas/users";
 
 export const auth = betterAuth({
   emailAndPassword: {

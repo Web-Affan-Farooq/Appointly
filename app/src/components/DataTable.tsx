@@ -1,12 +1,11 @@
 "use client";
-
 import React, { useState } from "react";
 
 interface Appointments {
   id: number;
   name: string;
   email: string;
-  status: "CANCEL" | "PENDING" | "CONFIRM";
+  status: "CANCELED" | "PENDING" | "CONFIRM";
 }
 
 const appointments: Appointments[] = [
@@ -26,7 +25,7 @@ const appointments: Appointments[] = [
     id: 3,
     name: "Peter Jones",
     email: "peter.jones@example.com",
-    status: "CANCEL",
+    status: "CANCELED",
   },
   {
     id: 4,
@@ -85,7 +84,7 @@ const Table = () => {
                   className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full
                     ${appointment.status === "CONFIRM" ? "bg-green-100 text-green-800" : ""}
                     ${appointment.status === "PENDING" ? "bg-yellow-100 text-yellow-800" : ""}
-                    ${appointment.status === "CANCEL" ? "bg-red-100 text-red-800" : ""}
+                    ${appointment.status === "CANCELED" ? "bg-red-100 text-red-800" : ""}
                   `}
                 >
                   {appointment.status}
