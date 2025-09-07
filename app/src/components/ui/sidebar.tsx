@@ -262,14 +262,17 @@ function SidebarTrigger({
     <Button
       data-sidebar="trigger"
       data-slot="sidebar-trigger"
-      className={cn("size-7", className)}
+      className={cn(
+        "w-[33px] h-[33px] rounded-sm flex justify-center items-center",
+        className
+      )}
       onClick={(event) => {
         onClick?.(event);
         toggleSidebar();
       }}
       {...props}
     >
-      <PanelLeftIcon />
+      <PanelLeftIcon size={15} />
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   );
