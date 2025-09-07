@@ -1,4 +1,6 @@
-import { pgTable, text, timestamp, boolean, numeric } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, boolean, numeric, pgEnum } from "drizzle-orm/pg-core";
+
+const RoleEnum = pgEnum("role",["USER","PROVIDER","ADMIN"])
 
 // Better auth related schema  ...
 const user = pgTable("user", {
@@ -7,6 +9,7 @@ const user = pgTable("user", {
   email: text("email").notNull().unique(),
   emailVerified: boolean("email_verified").default(false).notNull(),
   image: text("image"),
+  role:RoleEnum().default("USER").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()
@@ -104,5 +107,6 @@ export {
   subscription,
   stripeCustomer,
   session,
+  RoleEnum,
   verification,
 }

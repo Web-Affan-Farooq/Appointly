@@ -1,6 +1,6 @@
 "use client";
 // _____ Hooks  ...
-import { useActionState, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 // _____ utils ...
 import { cn } from "@/lib/utils";
@@ -16,10 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 // _____ Actions  ....
 import { simpleLogin, loginWithGoogle } from "./action";
 // ____ types and validations ...
-import {
-  LoginAPIRequestSchema,
-  LoginAPIResponseSchema,
-} from "@/validations/LoginFormSchema";
+import { LoginAPIRequestSchema } from "@/validations/LoginFormSchema";
 
 export function LoginForm({
   className,
