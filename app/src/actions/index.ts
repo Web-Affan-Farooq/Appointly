@@ -1,1 +1,0 @@
-export {default as LoginAction} from "./auth/login";
