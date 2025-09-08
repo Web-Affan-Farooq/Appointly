@@ -13,7 +13,7 @@ export const appointment = pgTable("appointments", {
   ended_on: timestamp("ended_on", { withTimezone: true }).notNull(),
 
   // status lifecycle
-  status: AppointmentStatus("status").default("REQUESTED").notNull(),
+  status: AppointmentStatus("status").default("PENDING").notNull(),
 
   // customer info
   customer_name: text("customer_name"),
