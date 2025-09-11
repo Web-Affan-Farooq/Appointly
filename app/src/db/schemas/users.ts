@@ -4,13 +4,13 @@ import { PlanEnum } from "./plan";
 export const  RoleEnum = pgEnum("role",["USER","PROVIDER","ADMIN"])
 
 // Better auth related schema  ...
-export const  user = pgTable("user", {
+export const user = pgTable("user", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
   emailVerified: boolean("email_verified").default(false).notNull(),
   image: text("image"),
-  role:RoleEnum().default("USER").notNull(),
+  role:RoleEnum().default("PROVIDER").notNull(),
   plan:PlanEnum().default("FREE").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
@@ -19,7 +19,7 @@ export const  user = pgTable("user", {
     .notNull(),
 });
 
-export const  session = pgTable("session", {
+export const session = pgTable("session", {
   id: text("id").primaryKey(),
   expiresAt: timestamp("expires_at").notNull(),
   token: text("token").notNull().unique(),
