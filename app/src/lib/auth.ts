@@ -3,7 +3,7 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import db from "@/db";
 import { nextCookies } from "better-auth/next-js";
-import * as Schema from "@/db/schemas/users";
+import * as Schema from "@/db/schemas/tables/users";
 import { Resend } from "resend";
 import AccountVerificationEmail from "@/components/emails/VerifyAccount";
 

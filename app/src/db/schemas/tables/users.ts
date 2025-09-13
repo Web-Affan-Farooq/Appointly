@@ -1,11 +1,11 @@
-import { pgTable, text, timestamp, boolean, numeric, pgEnum } from "drizzle-orm/pg-core";
+import {uuid, pgTable, text, timestamp, boolean, numeric, pgEnum } from "drizzle-orm/pg-core";
 import { PlanEnum } from "./plan";
 
 export const  RoleEnum = pgEnum("role",["USER","PROVIDER","ADMIN"])
 
 // Better auth related schema  ...
 export const user = pgTable("user", {
-  id: text("id").primaryKey(),
+  id: uuid("id").primaryKey().defaultRandom(),
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
   emailVerified: boolean("email_verified").default(false).notNull(),

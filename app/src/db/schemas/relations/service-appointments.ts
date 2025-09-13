@@ -1,6 +1,6 @@
 import { relations } from "drizzle-orm";
-import { service } from "../services";
-import { appointment } from "../appointments";
+import { service } from "../tables/services";
+import { appointment } from "../tables/appointments";
 
 export const serviceRelationWithAppointments = relations(service, ({many}) => ({
     appointments:many(appointment)

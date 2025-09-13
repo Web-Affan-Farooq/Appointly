@@ -50,7 +50,7 @@ export function AddServiceForm({
         <h2 className="font-semibold text-lg border-b pb-1">
           Basic Information{" "}
           <svg
-            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium ItemButtonIcon css-140r284"
+            className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium ItemButtonIcon css-140r284"
             focusable="false"
             aria-hidden="true"
             viewBox="0 0 24 24"
