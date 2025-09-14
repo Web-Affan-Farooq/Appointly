@@ -1,5 +1,5 @@
 {
-  "id": "8fa4fbc8-8e1d-401f-a28d-7cbe21498627",
+  "id": "e97ff610-1cbd-449d-bbcf-5bb8c34015c3",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -110,7 +110,7 @@
         },
         "user_id": {
           "name": "user_id",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
@@ -230,7 +230,7 @@
         },
         "user_id": {
           "name": "user_id",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
@@ -361,7 +361,7 @@
         },
         "user_id": {
           "name": "user_id",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         }
@@ -402,10 +402,9 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
+          "notNull": true
         },
         "name": {
           "name": "name",
@@ -440,14 +439,6 @@
           "notNull": true,
           "default": "'PROVIDER'"
         },
-        "plan": {
-          "name": "plan",
-          "type": "plan",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'FREE'"
-        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp",
@@ -461,6 +452,12 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "stripe_account_id": {
+          "name": "stripe_account_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
@@ -540,15 +537,6 @@
         "CONFIRMED",
         "COMPLETED",
         "CANCELLED"
-      ]
-    },
-    "public.plan": {
-      "name": "plan",
-      "schema": "public",
-      "values": [
-        "FREE",
-        "PRIMARY",
-        "PREMIUM"
       ]
     },
     "public.weekdays": {

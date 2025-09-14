@@ -1,5 +1,7 @@
 import { z } from "zod";
+import CountriesData from "@/data/countries.json";
 
+const countryCodes = CountriesData.map((country) => (country.code))
 const SignupAPIRequestSchema = z
   .object({
     name: z
@@ -26,7 +28,12 @@ const SignupAPIRequestSchema = z
       .refine((val) => /[@$!%*?&]/.test(val), {
         message: "Password must include special characters",
       }),
+      country:z.literal(countryCodes,"Invalid country code")
   })
   .strict();
 
-export { SignupAPIRequestSchema };
+const SignupAPIResponseSchema = z.object({
+  url:z.string()
+}).strict();
+
+export { SignupAPIRequestSchema, SignupAPIResponseSchema };

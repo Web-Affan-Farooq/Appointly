@@ -1,22 +1,21 @@
 import {uuid, pgTable, text, timestamp, boolean, numeric, pgEnum } from "drizzle-orm/pg-core";
-import { PlanEnum } from "./plan";
 
 export const  RoleEnum = pgEnum("role",["USER","PROVIDER","ADMIN"])
 
 // Better auth related schema  ...
 export const user = pgTable("user", {
-  id: uuid("id").primaryKey().defaultRandom(),
+  id: text("id").primaryKey(),
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
   emailVerified: boolean("email_verified").default(false).notNull(),
   image: text("image"),
   role:RoleEnum().default("PROVIDER").notNull(),
-  plan:PlanEnum().default("FREE").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()
     .$onUpdate(() => /* @__PURE__ */ new Date())
     .notNull(),
+  stripe_account_id:text("stripe_account_id")
 });
 
 export const session = pgTable("session", {
@@ -29,7 +28,7 @@ export const session = pgTable("session", {
     .notNull(),
   ipAddress: text("ip_address"),
   userAgent: text("user_agent"),
-  userId: uuid("user_id")
+  userId: text("user_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
 });
@@ -38,7 +37,7 @@ export const  account = pgTable("account", {
   id: text("id").primaryKey(),
   accountId: text("account_id").notNull(),
   providerId: text("provider_id").notNull(),
-  userId: uuid("user_id")
+  userId: text("user_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
   accessToken: text("access_token"),
@@ -65,40 +64,3 @@ export const  verification = pgTable("verification", {
     .$onUpdate(() => /* @__PURE__ */ new Date())
     .notNull(),
 });
-
-
-// // _____ Stripe Customer record ...
-// export const  stripeCustomer = pgTable("stripe_customer", {
-//   id: text("id").primaryKey(), // your internal ID
-//   stripeCustomerId: text("stripe_customer_id").notNull().unique(), // from Stripe
-//   userId: text("user_id")
-//     .notNull()
-//     .references(() => user.id, { onDelete: "cascade" }),
-//   createdAt: timestamp("created_at").defaultNow().notNull(),
-// });
-
-// // Stripe Subscriptions
-// export const  subscription = pgTable("subscription", {
-//   id: uuid("id").primaryKey(),
-//   stripeSubscriptionId: text("stripe_subscription_id").notNull().unique(),
-//   userId: uuid("user_id")
-//     .notNull()
-//     .references(() => user.id, { onDelete: "cascade" }),
-//   status: text("status").notNull(), // active, canceled, etc.
-//   currentPeriodEnd: timestamp("current_period_end").notNull(),
-//   createdAt: timestamp("created_at").defaultNow().notNull(),
-// });
-
-// // Payments
-// export const  payment = pgTable("payment", {
-//   id: text("id").primaryKey(),
-//   stripePaymentId: text("stripe_payment_id").notNull().unique(),
-//   userId: uuid("user_id")
-//     .notNull()
-//     .references(() => user.id, { onDelete: "cascade" }),
-//   amount: numeric("amount", { precision: 10, scale: 2 }).notNull(),
-//   currency: text("currency").notNull(),
-//   status: text("status").notNull(), // succeeded, failed, pending
-//   createdAt: timestamp("created_at").defaultNow().notNull(),
-// });
-

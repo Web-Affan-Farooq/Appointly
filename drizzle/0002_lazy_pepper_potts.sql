@@ -1,1 +1,0 @@
-ALTER TABLE "user" ADD COLUMN "plan" "plan" DEFAULT 'FREE' NOT NULL;

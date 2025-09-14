@@ -2,6 +2,7 @@
 // _____ Hooks  ...
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 // _____ utils ...
 import { cn } from "@/lib/utils";
 // _____ Components  ...
@@ -15,7 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { simpleLogin, loginWithGoogle } from "./action";
 // ____ types and validations ...
 import { LoginAPIRequestSchema } from "@/validations/LoginFormSchema";
-import { PasswordInput } from "../common";
+import { PasswordInput } from "@/components/common";
 
 export function LoginForm({
   className,
@@ -31,14 +32,17 @@ export function LoginForm({
   });
 
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const login = async (formData: z.infer<typeof LoginAPIRequestSchema>) => {
     setLoading(true);
-    const { message, success } = await simpleLogin(formData);
-    if (!success) {
+    const { message, success, redirect } = await simpleLogin(formData);
+
+    if (!success && !redirect) {
       // show error
     }
     alert(message);
+    router.push("/dashboard");
     setLoading(false);
   };
   return (
@@ -77,12 +81,7 @@ export function LoginForm({
               Forgot your password?
             </Link>
           </div>
-          <PasswordInput
-            id="password"
-            type="password"
-            required
-            {...register("password")}
-          />
+          <PasswordInput id="password" required {...register("password")} />
           {errors.password && <p>{errors.password.message}</p>}
         </div>
         <Button

@@ -30,7 +30,7 @@
 - **Create use facing services page with search bar** 
 - **Create a dynamic route page for service details**
 - on the details page the user should be navigated to the booking page
-- on submission of booking form , the checkout link should be sent to user on his email
+- on submission of booking form
 - View available slots via React Calendar / FullCalendar.
 - Book appointment (status: PENDING).
 

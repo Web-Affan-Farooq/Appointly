@@ -1,5 +1,5 @@
 "use client";
-import { CreateAccountForm } from "@/components";
+import { CreateAccountForm } from "@/components/pages";
 
 export default function SignupPage() {
   return (

@@ -39,6 +39,9 @@ user attend appointment (COMPLETED)
 - **Calendar UI**: [ `React Calendar` , `FullCalendar`].
 - **Reminders: Email**: (Resend, Nodemailer) / optional push notifications.
 
+## 3. RElated guides:
+- [stripe accept payment features](https://docs.stripe.com/connect/enable-payment-acceptance-guide)
+
 ## 3. Database Schema (MVP Level)
 
 Tables you’ll need:
@@ -49,12 +52,15 @@ availability → id, providerId, dayOfWeek, startTime, endTime.
 appointments → id, clientId, providerId, serviceId, startTime, endTime, status (pending | confirmed | cancelled | completed).
 
 - user have many services 
-- many services belongs to same user
+- many services belongs to sam`e user
 - each service has many appointments 
 - many appointments belong to same service 
 
+## Test accounts :
 
-## Business model :
+
+
+<!-- ## Business model :
 #### **Free — $0/month** :
 - 1 service
 - 100 appointments / month (total)
@@ -86,7 +92,7 @@ appointments → id, clientId, providerId, serviceId, startTime, endTime, status
 - White-label option (remove SaaS branding, use custom domain)
 - API access & integrations (Zapier, CRMs, etc.)
 - Priority onboarding + dedicated account manager
-- 24/7 premium support
+- 24/7 premium support -->
 
 ## 4. Database schema points :
 - user creates an account with email , password , plan

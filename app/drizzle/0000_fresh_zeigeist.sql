@@ -1,5 +1,4 @@
 CREATE TYPE "public"."appointment_status" AS ENUM('PENDING', 'CONFIRMED', 'COMPLETED', 'CANCELLED');--> statement-breakpoint
-CREATE TYPE "public"."plan" AS ENUM('FREE', 'PRIMARY', 'PREMIUM');--> statement-breakpoint
 CREATE TYPE "public"."weekdays" AS ENUM('MONDAY', 'TUESDAYs', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY');--> statement-breakpoint
 CREATE TYPE "public"."role" AS ENUM('USER', 'PROVIDER', 'ADMIN');--> statement-breakpoint
 CREATE TABLE "appointments" (
@@ -17,7 +16,7 @@ CREATE TABLE "appointments" (
 CREATE TABLE "services" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"created_at" timestamp DEFAULT now(),
-	"user_id" uuid NOT NULL,
+	"user_id" text NOT NULL,
 	"name" varchar NOT NULL,
 	"description" varchar(400) NOT NULL,
 	"price" integer,
@@ -35,7 +34,7 @@ CREATE TABLE "account" (
 	"id" text PRIMARY KEY NOT NULL,
 	"account_id" text NOT NULL,
 	"provider_id" text NOT NULL,
-	"user_id" uuid NOT NULL,
+	"user_id" text NOT NULL,
 	"access_token" text,
 	"refresh_token" text,
 	"id_token" text,
@@ -55,20 +54,20 @@ CREATE TABLE "session" (
 	"updated_at" timestamp NOT NULL,
 	"ip_address" text,
 	"user_agent" text,
-	"user_id" uuid NOT NULL,
+	"user_id" text NOT NULL,
 	CONSTRAINT "session_token_unique" UNIQUE("token")
 );
 --> statement-breakpoint
 CREATE TABLE "user" (
-	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"id" text PRIMARY KEY NOT NULL,
 	"name" text NOT NULL,
 	"email" text NOT NULL,
 	"email_verified" boolean DEFAULT false NOT NULL,
 	"image" text,
 	"role" "role" DEFAULT 'PROVIDER' NOT NULL,
-	"plan" "plan" DEFAULT 'FREE' NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"stripe_account_id" text,
 	CONSTRAINT "user_email_unique" UNIQUE("email")
 );
 --> statement-breakpoint

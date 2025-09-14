@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/sidebar";
 
 // ____ Actions ...
-import { logout } from "./logout";
+import { logout } from "../../logout";
 import { useRouter } from "next/navigation";
 
 export function NavUser({

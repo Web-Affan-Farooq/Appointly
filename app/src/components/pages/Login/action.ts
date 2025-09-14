@@ -11,10 +11,11 @@ export const simpleLogin = async ({
 }:z.infer<typeof LoginAPIRequestSchema>) :Promise<z.infer<typeof LoginAPIResponseSchema>>=> {
   
     try {
-    auth.api.signInEmail({
-      body: { email, password },
-    });
 
+      await auth.api.signInEmail({
+      body: { email, password},
+    });
+    
     return {
         message:"Login successfull",
         redirect:"/dashboard",

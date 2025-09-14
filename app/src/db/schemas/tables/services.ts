@@ -1,4 +1,4 @@
-import {pgTable,time ,uuid, varchar,integer, timestamp,boolean, pgEnum} from "drizzle-orm/pg-core";
+import {pgTable,time ,text,uuid, varchar,integer, timestamp,boolean, pgEnum} from "drizzle-orm/pg-core";
 import { user } from "./users";
 
 export const WeekDays = pgEnum("weekdays",[
@@ -14,7 +14,7 @@ export const WeekDays = pgEnum("weekdays",[
 export const service = pgTable("services",{
     id:uuid("id").primaryKey().defaultRandom(),
     created_at:timestamp("created_at").defaultNow(),
-    user_id:uuid("user_id").notNull().references(() => user.id, {onDelete:"cascade"}),
+    user_id:text("user_id").notNull().references(() => user.id, {onDelete:"cascade"}),
     name:varchar("name").notNull(),
     description:varchar("description",{length:400}).notNull(),
     price:integer("price"),

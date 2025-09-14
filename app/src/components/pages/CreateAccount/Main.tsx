@@ -9,14 +9,21 @@ import Image from "next/image";
 // _____ Libraries ...
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 // _____ Types ...
-import { SignupAPIRequestSchema } from "@/validations/SignupFormSchema";
+import {
+  SignupAPIRequestSchema,
+  SignupAPIResponseSchema,
+} from "@/validations/SignupFormSchema";
 // _____ Hooks ...
 import { useForm } from "react-hook-form";
 // _____ actions ...
-import { createAccount, signUpWithGoogle } from "./actions";
+import { signUpWithGoogle } from "./actions";
 import { useState } from "react";
-import { PasswordInput } from "../common";
+import { PasswordInput } from "@/components/common";
+
+// ____ Constant data ...
+import CountriesData from "@/data/countries.json";
 
 export function SignupForm({
   className,
@@ -35,12 +42,14 @@ export function SignupForm({
   const signup = async (formData: z.infer<typeof SignupAPIRequestSchema>) => {
     setLoading(true);
     try {
-      await createAccount({
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
-      });
-    } catch (err) {}
+      const response = await axios.post("/api/create-account", formData);
+      const { data }: { data: z.infer<typeof SignupAPIResponseSchema> } =
+        response;
+      window.document.location.href = data.url;
+    } catch (err) {
+      console.log(err);
+      alert("An error occured while creating account");
+    }
     setLoading(false);
   };
 
@@ -81,6 +90,7 @@ export function SignupForm({
           />
           {errors.email && <p>{errors.email.message}</p>}
         </div>
+
         <div className="grid gap-3">
           <div className="flex items-center">
             <Label htmlFor="password">Password</Label>
@@ -91,14 +101,25 @@ export function SignupForm({
               Forgot your password?
             </Link>
           </div>
-          <PasswordInput
-            id="password"
-            type="password"
-            required
-            {...register("password")}
-          />
+          <PasswordInput id="password" required {...register("password")} />
           {errors.password && <p>{errors.password.message}</p>}
         </div>
+        <div className="grid gap-3">
+          <Label htmlFor="Select your country">Select Country</Label>
+          <select
+            id="country"
+            className="text-sm px-[10px] py-[5px] shadow-md shadow-gray-400"
+            {...register("country")}
+          >
+            {CountriesData.map((country, idx) => (
+              <option value={country.code} key={idx}>
+                {country.name}
+              </option>
+            ))}
+          </select>
+          {errors.country && <p>{errors.country.message}</p>}
+        </div>
+
         <Button type="submit" className="w-full">
           Signup
         </Button>
@@ -107,22 +128,6 @@ export function SignupForm({
             Or continue with
           </span>
         </div>
-        <Button
-          className={`w-full flex flex-row flex-nowrap justify-center items-center gap-[20px] font-normal ${loading ? "cursor-not-allowed" : "cursor-pointer"}`}
-          onClick={() => {
-            signUpWithGoogle();
-            setLoading(true);
-          }}
-        >
-          <Image
-            src={"/icons/google.svg"}
-            alt="login with google account"
-            width={19}
-            height={19}
-            className="w-[19px] h-[19px]"
-          />
-          Signup with Google
-        </Button>
       </div>
       <div className="text-center text-sm">
         Already have an account?
