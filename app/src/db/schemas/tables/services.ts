@@ -1,5 +1,6 @@
 import {pgTable,time ,text,uuid, varchar,integer, timestamp,boolean, pgEnum} from "drizzle-orm/pg-core";
 import { user } from "./users";
+import { InferSelectModel } from "drizzle-orm";
 
 export const WeekDays = pgEnum("weekdays",[
     "MONDAY",
@@ -27,3 +28,5 @@ export const service = pgTable("services",{
     max_appointments_per_day:integer("max_appointments_per_day"),
     ratings:integer("ratings").array().default([])
 });
+
+export type Service = InferSelectModel<typeof service>;

@@ -1,11 +1,17 @@
 "use client";
+// _____ Hooks ...
 import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
+// _____ Utils ...
 import { cn } from "@/lib/utils";
+// _____ Components ...
 import { Input, Label, Button, Checkbox } from "@/components/common";
+// _____ Libraries ...
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+// _____ Types and schemas ...
 import { AddServiceAPIRequest } from "@/validations/AddServiceAPISchema";
+// _____ Constants ...
 import { days } from "@/constants";
 
 export function AddServiceForm({
@@ -20,7 +26,7 @@ export function AddServiceForm({
   } = useForm<z.infer<typeof AddServiceAPIRequest>>({
     resolver: zodResolver(AddServiceAPIRequest),
     mode: "onChange",
-    defaultValues: { days_of_availability: [] },
+    defaultValues: { working_days: [] },
   });
 
   const [loading, setLoading] = useState(false);
@@ -106,7 +112,7 @@ export function AddServiceForm({
             <Label>Select Working Days</Label>
             <Controller
               control={control}
-              name="days_of_availability"
+              name="working_days"
               render={({ field }) => (
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                   {days.map((day) => (
@@ -132,9 +138,9 @@ export function AddServiceForm({
                 </div>
               )}
             />
-            {errors.days_of_availability && (
+            {errors.working_days && (
               <p className="text-sm text-red-500">
-                {errors.days_of_availability.message}
+                {errors.working_days.message}
               </p>
             )}
           </div>
@@ -161,6 +167,7 @@ export function AddServiceForm({
             <Label>Price</Label>
             <Input
               type="number"
+              disabled
               {...register("price", { valueAsNumber: true })}
             />
             {errors.price && (
