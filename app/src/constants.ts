@@ -7,6 +7,13 @@ const days = [
   "SATURDAY",
   "SUNDAY",
 ];
+const serviceCategories = [
+  "All",  
+  "Salon",
+    "Hair cut",
+    "Interview",
+    "Clinic",
+]
 
 const plans = [
   {
@@ -60,4 +67,4 @@ const plans = [
     ]
   },
 ]
-export {days, plans}
+export {days, plans, serviceCategories}

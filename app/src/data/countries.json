@@ -1,54 +1,67 @@
 [
-    {
-        "code": "US",
-        "name": "United States"
-    },
-    {
-        "code": "CA",
-        "name": "Canada"
-    },
-    {
-        "code": "GB",
-        "name": "United Kingdom"
-    },
-    {
-        "code": "PK",
-        "name": "Pakistan"
-    },
-    {
-        "code": "IN",
-        "name": "India"
-    },
-    {
-        "code": "AU",
-        "name": "Australia"
-    },
-    {
-        "code": "DE",
-        "name": "Germany"
-    },
-    {
-        "code": "FR",
-        "name": "France"
-    },
-    {
-        "code": "IT",
-        "name": "Italy"
-    },
-    {
-        "code": "ES",
-        "name": "Spain"
-    },
-    {
-        "code": "SA",
-        "name": "Saudi Arabia"
-    },
-    {
-        "code": "AE",
-        "name": "United Arab Emirates"
-    },
-    {
-        "code": "LK",
-        "name": "Sri Lanka"
-    }
+  {
+    "code": "US",
+    "name": "United States",
+    "currency": "USD"
+  },
+  {
+    "code": "CA",
+    "name": "Canada",
+    "currency": "CAD"
+  },
+  {
+    "code": "GB",
+    "name": "United Kingdom",
+    "currency": "GBP"
+  },
+  {
+    "code": "PK",
+    "name": "Pakistan",
+    "currency": "PKR"
+  },
+  {
+    "code": "IN",
+    "name": "India",
+    "currency": "INR"
+  },
+  {
+    "code": "AU",
+    "name": "Australia",
+    "currency": "AUD"
+  },
+  {
+    "code": "DE",
+    "name": "Germany",
+    "currency": "EUR"
+  },
+  {
+    "code": "FR",
+    "name": "France",
+    "currency": "EUR"
+  },
+  {
+    "code": "IT",
+    "name": "Italy",
+    "currency": "EUR"
+  },
+  {
+    "code": "ES",
+    "name": "Spain",
+    "currency": "EUR"
+  },
+  {
+    "code": "SA",
+    "name": "Saudi Arabia",
+    "currency": "SAR"
+  },
+  {
+    "code": "AE",
+    "name": "United Arab Emirates",
+    "currency": "AED"
+  },
+  {
+    "code": "LK",
+    "name": "Sri Lanka",
+    "currency": "LKR"
+  }
 ]

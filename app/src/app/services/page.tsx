@@ -1,6 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Card from "./Card";
+import { serviceCategories } from "@/constants";
+import { Input } from "@/components/common";
 
 const allServices = [
   {
@@ -9,7 +11,6 @@ const allServices = [
     provider: "The Barber's Shop",
     category: "salon",
     price: 45,
-    image: "https://placehold.co/400x300/e0e7ff/1d4ed8?text=Haircut",
     description: "A classic haircut with professional styling and finish.",
   },
   {
@@ -18,7 +19,6 @@ const allServices = [
     provider: "Bliss Spa",
     category: "clinic",
     price: 85,
-    image: "https://placehold.co/400x300/dbeafe/1e40af?text=Massage",
     description: "Relaxing full body massage to relieve muscle tension.",
   },
   {
@@ -27,7 +27,6 @@ const allServices = [
     provider: "Success Mentors Inc.",
     category: "interview",
     price: 150,
-    image: "https://placehold.co/400x300/c7d2fe/3730a3?text=Coaching",
     description:
       "Personalized career coaching session to help you achieve your goals.",
   },
@@ -37,7 +36,6 @@ const allServices = [
     provider: "Bright Smiles Dental",
     category: "clinic",
     price: 200,
-    image: "https://placehold.co/400x300/a5b4fc/4338ca?text=Dental",
     description:
       "Professional teeth whitening for a brighter, more confident smile.",
   },
@@ -47,7 +45,6 @@ const allServices = [
     provider: "Glamour Studio",
     category: "salon",
     price: 70,
-    image: "https://placehold.co/400x300/818cf8/4f46e5?text=Makeup",
     description:
       "Flawless makeup application for special occasions or daily wear.",
   },
@@ -57,7 +54,6 @@ const allServices = [
     provider: "Resume Pro",
     category: "interview",
     price: 50,
-    image: "https://placehold.co/400x300/6366f1/3b0764?text=Resume",
     description: "Detailed review and feedback on your resume to stand out.",
   },
   {
@@ -66,7 +62,6 @@ const allServices = [
     provider: "Bliss Spa",
     category: "clinic",
     price: 95,
-    image: "https://placehold.co/400x300/4f46e5/4338ca?text=Massage",
     description:
       "Focused deep tissue massage to target specific problem areas.",
   },
@@ -76,13 +71,11 @@ const allServices = [
     provider: "Glamour Studio",
     category: "salon",
     price: 110,
-    image: "https://placehold.co/400x300/4338ca/3b0764?text=Lashes",
     description:
       "Professional application of classic or volume eyelash extensions.",
   },
 ];
 
-const categories: string[] = ["All", "salon", "interview", "clinic"];
 interface Service {
   id: number;
   name: string;
@@ -104,7 +97,9 @@ const ServicesPage = () => {
     // Filter by category
     if (activeCategory !== "All") {
       newServices = newServices.filter(
-        (service) => service.category === activeCategory
+        (service) =>
+          service.category.trim().toLowerCase() ===
+          activeCategory.trim().toLowerCase()
       );
     }
 
@@ -129,16 +124,16 @@ const ServicesPage = () => {
               <h1 className="text-4xl font-bold text-gray-900 mb-2">
                 Available Services
               </h1>
-              <p className="text-lg text-gray-600 mb-8">
+              <p className="text-md text-gray-600 mb-8">
                 Browse and book appointments with our top providers.
               </p>
 
               {/* Search Bar */}
               <div className="relative mb-8">
-                <input
+                <Input
                   type="text"
                   placeholder="Search for services or providers..."
-                  className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-300 shadow-sm"
+                  className="w-full md:w-[60vw] border-none pl-12 pr-4 py-3 transition-all duration-300 shadow-sm text-gray-700 bg-gray-300"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
@@ -147,7 +142,7 @@ const ServicesPage = () => {
 
               {/* Categories Scrollbar */}
               <div className="flex overflow-x-auto no-scrollbar pb-4 mb-8 space-x-3">
-                {categories.map((category) => (
+                {serviceCategories.map((category) => (
                   <button
                     key={category}
                     onClick={() => setActiveCategory(category)}

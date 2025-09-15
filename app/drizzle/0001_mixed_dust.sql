@@ -1,0 +1,1 @@
+ALTER TABLE "services" ALTER COLUMN "working_days" SET DATA TYPE text[];
