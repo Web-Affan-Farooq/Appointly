@@ -1,5 +1,4 @@
 CREATE TYPE "public"."appointment_status" AS ENUM('PENDING', 'CONFIRMED', 'COMPLETED', 'CANCELLED');--> statement-breakpoint
-CREATE TYPE "public"."weekdays" AS ENUM('MONDAY', 'TUESDAYs', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY');--> statement-breakpoint
 CREATE TYPE "public"."role" AS ENUM('USER', 'PROVIDER', 'ADMIN');--> statement-breakpoint
 CREATE TABLE "appointments" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
@@ -18,11 +17,13 @@ CREATE TABLE "services" (
 	"created_at" timestamp DEFAULT now(),
 	"user_id" text NOT NULL,
 	"name" varchar NOT NULL,
+	"provider_name" varchar,
+	"category" varchar NOT NULL,
 	"description" varchar(400) NOT NULL,
 	"price" integer,
 	"currency" varchar NOT NULL,
 	"is_active" boolean DEFAULT true,
-	"working_days" "weekdays"[] NOT NULL,
+	"working_days" text[] NOT NULL,
 	"start_time" time NOT NULL,
 	"end_time" time NOT NULL,
 	"duration" integer NOT NULL,

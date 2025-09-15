@@ -1,5 +1,5 @@
 {
-  "id": "e97ff610-1cbd-449d-bbcf-5bb8c34015c3",
+  "id": "15892396-9300-4073-a853-d772e33acec0",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -120,6 +120,18 @@
           "primaryKey": false,
           "notNull": true
         },
+        "provider_name": {
+          "name": "provider_name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "category": {
+          "name": "category",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
         "description": {
           "name": "description",
           "type": "varchar(400)",
@@ -147,8 +159,7 @@
         },
         "working_days": {
           "name": "working_days",
-          "type": "weekdays[]",
-          "typeSchema": "public",
+          "type": "text[]",
           "primaryKey": false,
           "notNull": true
         },
@@ -537,19 +548,6 @@
         "CONFIRMED",
         "COMPLETED",
         "CANCELLED"
-      ]
-    },
-    "public.weekdays": {
-      "name": "weekdays",
-      "schema": "public",
-      "values": [
-        "MONDAY",
-        "TUESDAYs",
-        "WEDNESDAY",
-        "THURSDAY",
-        "FRIDAY",
-        "SATURDAY",
-        "SUNDAY"
       ]
     },
     "public.role": {
