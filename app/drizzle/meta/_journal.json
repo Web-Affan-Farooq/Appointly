@@ -8,6 +8,20 @@
       "when": 1757953731435,
       "tag": "0000_secret_gorilla_man",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1758015579136,
+      "tag": "0001_ambiguous_kat_farrell",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1758017845892,
+      "tag": "0002_complete_absorbing_man",
+      "breakpoints": true
     }
   ]
 }

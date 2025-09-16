@@ -1,0 +1,1 @@
+ALTER TABLE "services" ALTER COLUMN "max_appointments_per_day" SET NOT NULL;

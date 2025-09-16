@@ -10,7 +10,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 export async function DELETE(req:NextRequest) {
   try {
     const { email } = await req.json();
-
     // 1️⃣ Get the user from DB
     const [existingUser] = await db
       .select()
@@ -27,12 +26,13 @@ export async function DELETE(req:NextRequest) {
     const deleted = await stripe.accounts.del(stripeAccountId);
     console.log("Deleted Stripe account:", deleted);
 
+
     // 3️⃣ Remove user account ...
     await db
       .delete(user)
       .where(eq(user.email, email));
 
-    return NextResponse.json({ message: "Account deleted successfully", redirect:"/" },{status:200});
+    return NextResponse.json({ message: "Accounts deleted successfully", redirect:"/" },{status:200});
   } catch (err: any) {
     console.error("Error deleting Stripe account:", err);
     return NextResponse.json({ error: err.message }, { status: 500 });

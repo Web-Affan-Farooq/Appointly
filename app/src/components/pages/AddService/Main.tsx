@@ -49,14 +49,13 @@ export function AddServiceForm({
 
   const onSubmit = async (formData: z.infer<typeof AddServiceAPIRequest>) => {
     console.log(formData);
-    // const { message, success, service } = await addServiceAction(formData);
-    // if (!success || !service) {
-    //   toast(message);
-    // } else {
-    //   toast(message);
-    //   // Optionally redirect after success
-    //   // router.push("/dashboard/services");
-    // }
+    const { message, success, service } = await addServiceAction(formData);
+    if (!success || !service) {
+      toast(message);
+    } else {
+      toast(message);
+      router.push("/dashboard/services");
+    }
   };
 
   useEffect(() => {
