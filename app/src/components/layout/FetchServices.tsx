@@ -21,6 +21,7 @@ const FetchServices = ({ children }: { children: React.ReactNode }) => {
       }
       console.log("______ Fetch Completed ...");
     };
+    getData();
     setInterval(() => {
       getData();
     }, 180000);

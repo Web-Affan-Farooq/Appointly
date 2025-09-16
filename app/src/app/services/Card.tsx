@@ -1,14 +1,8 @@
 import { Button } from "@/components/common";
+import { ServicesAPISchema } from "@/validations/ServicesAPISchema";
+import { z } from "zod";
 
-interface Service {
-  id: number;
-  name: string;
-  provider: string;
-  category: string;
-  price: number;
-  description: string;
-}
-const Card = ({ service }: { service: Service }) => {
+const Card = ({ service }: { service: z.infer<typeof ServicesAPISchema> }) => {
   return (
     <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl shadow-gray-400 duration-300 overflow-hidden">
       <div className="p-6">
@@ -21,7 +15,7 @@ const Card = ({ service }: { service: Service }) => {
             {service.price}
           </span>
         </div>
-        <p className="text-sm text-gray-600 mb-2">{service.provider}</p>
+        <p className="text-sm text-gray-600 mb-2">{service.provider_name}</p>
         <p className="text-gray-500 text-sm mb-4 line-clamp-2">
           {service.description}
         </p>
