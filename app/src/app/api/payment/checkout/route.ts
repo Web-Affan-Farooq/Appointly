@@ -1,59 +1,131 @@
-//  /api/payment/create/route.ts ...
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
-import bcrypt from "bcrypt";
-import {
-  CheckoutAPIRequestSchema,
-  CheckoutAPIResponseSchema,
-} from "@/validations/CheckoutAPISchema";
+import db from "@/db";
+import { appointment, service } from "@/db/schemas";
 import { z } from "zod";
+import { BookingFormAPIRequest } from "@/validations/BookAppointmentSchema";
+import { v4 } from "uuid";
+import { eq } from "drizzle-orm";
 
-/* ____ Stripe instance ... */
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
+// ____ Function for getting service name ...
+const findService = async (service_id: string) => {
+  const [requiredService] = await db
+    .select({ name: service.name })
+    .from(service)
+    .where(eq(service.id, service_id));
+  return requiredService.name;
+};
+
+interface PivotObject {
+  appointment_id: string;
+  transfer_group: string;
+  service_name: string;
+}
+
 export const POST = async (req: NextRequest) => {
+  /*
+  Attached multiple trycatch blocks for effective error handling ...
+  */
+  const body: z.infer<typeof BookingFormAPIRequest> = await req.json();
+  console.log("-------------- Get body -------------- : ",body);
+  console.log(body);
+  // ____ For storing data from different blocks ...
+  const pivot: PivotObject = {
+    appointment_id: "",
+    service_name: "",
+    transfer_group: "",
+  };
+  console.log("-------------- Iniatlized pivot -------------- : ");
+  console.log(pivot);
+  // ____ Insert appointment in db and make sure to make it globally available ...
   try {
-    const body = CheckoutAPIRequestSchema.parse(await req.json());
-
-    try {
-      const hashPassword:string= await bcrypt.hash(body.password, 10);
-      /* ____ Create customer ... */
-      const customer = await stripe.customers.create({
-        email: body.email,
-        name: body.name,
-      });
-
-      /* ____ Create payment ... */
-  
-      const response: z.infer<typeof CheckoutAPIResponseSchema> = {
-        message: "Payment completed successfully",
-        url: "",
-      };
-
-      /* ____ return values ... */
-      return NextResponse.json(response, {
-        status: 200,
-      });
-    } catch (err) {
-      /* ____ return values ... */
-      console.log("Error : ", err);
-      return NextResponse.json(
-        {
-          message: "An error occured while creating subscription",
-          url: "",
-        },
-        {
-          status: 402,
-        }
-      );
-    }
+  console.log("-------------- Inserting apointment -------------- : ");
+    const [newAppointment] = await db
+      .insert(appointment)
+      .values({
+        customer_name: body.customer_name,
+        customer_email: body.customer_email,
+        service_id: body.service_id,
+        transfer_group: `appointment_${v4()}`,
+      })
+      .returning();
+  console.log("-------------- Inserted successfully -------------- : ");
+  console.log(newAppointment);
+    // ____ Manipulate globally ...
+    pivot.appointment_id = newAppointment.id;
+    pivot.transfer_group = newAppointment.transfer_group!;
+  console.log("-------------- Updated pivot -------------- : ");
+    console.log(pivot);
   } catch (err) {
+  console.log("-------------- An error occured -------------- : ");
+  console.log(err);
+  return NextResponse.json({
+      message: "Error while creating appointment",
+      url: null,
+    });
+  }
+
+  try {
+  console.log("-------------- Fetching service name -------------- : ");
+    const serviceName = await findService(body.service_id);
+  console.log("-------------- service name -------------- : ");
+  console.log(serviceName);  
+  // ____ Manipulate globally ...
+    pivot.service_name = serviceName;
+  console.log("-------------- Updated pivot -------------- : ");
+  console.log(pivot);
+  } catch (err) {
+  console.log("-------------- An error occured -------------- : ");
     console.log(err);
-    const response: z.infer<typeof CheckoutAPIResponseSchema> = {
-      message: "An error occured",
-      url: "",
-    };
-    return NextResponse.json(response, { status: 500 });
+    return NextResponse.json({
+      message: "Service not found",
+      url: null,
+    });
+  }
+
+  // _____ Create Checkout Session (customer pays into platform account) ...
+  try {
+  console.log("-------------- Creating checkout -------------- : ");
+  console.log("-------------- Pivot -------------- : ");
+  console.log(pivot);
+  const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      mode: "payment",
+      customer_email:body.customer_email,
+      line_items: [
+        {
+          price_data: {
+            currency: body.currency.toLowerCase(),
+            product_data: {
+              name: `Appointment for ${pivot.service_name}`,
+            },
+            unit_amount: body.price * 100,
+          },
+          quantity: 1,
+        },
+      ],
+      success_url: new URL("/checkout/success",req.url).toString(),
+      cancel_url: new URL("/checkout/failed",req.url).toString(),
+      metadata: {
+        appointment_id: pivot.appointment_id,
+        transfer_group: pivot.transfer_group,
+      },
+    });
+  console.log("-------------- Checkout completed -------------- : ");
+  console.log(session);
+  return NextResponse.json({
+      url: session.url!,
+      message: "Redirecting to checkout",
+    });
+  } catch (err) {
+  console.log("-------------- An error occured -------------- : ");
+    console.log(err);
+    return NextResponse.json({
+      message: "Error in creating payment",
+      url: null,
+    });
   }
 };

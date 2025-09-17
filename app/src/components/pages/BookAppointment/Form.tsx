@@ -1,10 +1,10 @@
 "use client";
 // ____ Components ...
-import { Button, Input } from "@/components/common";
+import { Button, Input, Loader } from "@/components/common";
 // ____ Lib ...
 import { z } from "zod";
+import axios from "axios";
 import { toast } from "sonner";
-import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import { zodResolver } from "@hookform/resolvers/zod";
 // ____ Actions ...
 import bookAppointmentAction from "@/actions/BookAppointment";
@@ -16,13 +16,10 @@ import {
 // ____ Hooks ...
 import { useService } from "@/stores/service";
 import { useForm } from "react-hook-form";
-import axios from "axios";
+import { useState } from "react";
 
 const Form = () => {
   const { selectedService } = useService();
-  const stripe = useStripe();
-  const elements = useElements();
-
   const {
     register,
     handleSubmit,
@@ -37,12 +34,15 @@ const Form = () => {
     },
   });
 
-  const onSubmit = async (data: z.infer<typeof BookingFormAPIRequest>) => {
-    console.log("Form data:", data);
+  const onSubmit = async (formData: z.infer<typeof BookingFormAPIRequest>) => {
+    // console.log(formData);
     try {
-      // const response = await axios.post("/api/payment/intent");
+      const response = await axios.post("/api/payment/checkout", formData);
+      const { data } = response;
+      window.document.location.href = data.url;
     } catch (error) {
       console.error("Submission error:", error);
+      toast.error(error.message);
     }
   };
 
@@ -124,9 +124,9 @@ const Form = () => {
       <Button
         type="submit"
         disabled={isSubmitting}
-        className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white ${isSubmitting ? "bg-pink/80 cursor-not-allowed" : "bg-pink focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"}`}
+        className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium flex flex-row flex-now flex-nowrap justify-center items-center gap-[5px] text-white ${isSubmitting ? "bg-pink/80 cursor-not-allowed" : "bg-pink focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"}`}
       >
-        {isSubmitting ? "Booking..." : "Book Appointment"}
+        {isSubmitting ? <Loader /> : <span>Book appointment</span>}
       </Button>
     </form>
   );
