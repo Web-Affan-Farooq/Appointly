@@ -37,7 +37,7 @@ const AddServiceAPIRequest = z
         /^([01]\d|2[0-3]):([0-5]\d)(:[0-5]\d)?$/,
         "Invalid time format (HH:MM or HH:MM:SS)"
       ),
-
+    details:z.string("Invalid details").array().nonempty("Please provide atleast"),
     end_time: z
       .string("End time is required")
       .regex(

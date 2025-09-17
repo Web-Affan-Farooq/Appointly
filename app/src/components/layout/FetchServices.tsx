@@ -6,12 +6,12 @@ import { FetchServicesAction } from "@/actions";
 import { toast } from "sonner";
 
 const FetchServices = ({ children }: { children: React.ReactNode }) => {
-  const { setService } = useService();
+  const { setService, setLoading } = useService();
 
   useEffect(() => {
     const getData = async () => {
       console.log("______ Running data fetches ...");
-
+      setLoading();
       try {
         const servicesData = await FetchServicesAction();
         setService(servicesData);
@@ -20,6 +20,7 @@ const FetchServices = ({ children }: { children: React.ReactNode }) => {
         toast.error("An error occured");
       }
       console.log("______ Fetch Completed ...");
+      setLoading();
     };
     getData();
     setInterval(() => {

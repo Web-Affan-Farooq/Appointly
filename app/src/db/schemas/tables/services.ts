@@ -18,7 +18,8 @@ export const service = pgTable("services",{
     end_time:time("end_time").notNull(),
     duration:integer("duration").notNull(),
     max_appointments_per_day:integer("max_appointments_per_day").notNull(),
-    ratings:integer("ratings").array().default([]).notNull()
+    ratings:integer("ratings").array().default([]).notNull(),
+    details:text("details").array().default([]).notNull(),
 });
 
 export type Service = InferSelectModel<typeof service>;

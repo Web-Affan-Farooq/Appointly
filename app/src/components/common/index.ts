@@ -6,3 +6,4 @@ export {default as Checkbox} from "./checkbox"
 export {default as Separator} from "./separator"
 export { Badge , badgeVariants} from "./badge";
 export {Avatar ,AvatarFallback, AvatarImage} from "./avatar"
+export {default as Loader} from "./Loader"

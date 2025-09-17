@@ -4,9 +4,10 @@ import Card from "./Card";
 import { serviceCategories } from "@/constants";
 import { Input } from "@/components/common";
 import { useService } from "@/stores/service";
+import Catalog from "./Catalog";
 
 const ServicesPage = () => {
-  const { services } = useService();
+  const { services, loading } = useService();
   const [searchTerm, setSearchTerm] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
 
@@ -42,7 +43,7 @@ const ServicesPage = () => {
               <h1 className="text-4xl font-bold text-gray-900 mb-2">
                 Available Services
               </h1>
-              <p className="text-md text-gray-600 mb-8">
+              <p className="text-sm sm:text-md text-gray-600 mb-8">
                 Browse and book appointments with our top providers.
               </p>
 
@@ -51,7 +52,7 @@ const ServicesPage = () => {
                 <Input
                   type="text"
                   placeholder="Search for services or providers..."
-                  className="w-full md:w-[60vw] border-none pl-12 pr-4 py-3 transition-all duration-300 shadow-sm text-gray-700 bg-gray-300"
+                  className="placeholder:text-sm w-full md:w-[60vw] w-[80vw] border-none pl-12 pr-4 py-3 transition-all duration-300 shadow-sm text-gray-700 bg-gray-300"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
@@ -76,21 +77,7 @@ const ServicesPage = () => {
               </div>
 
               {/* Services Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredServices.length > 0 ? (
-                  filteredServices.map((service) => (
-                    <Card key={service.id} service={service} />
-                  ))
-                ) : (
-                  <div className="col-span-full text-center text-gray-500 py-12">
-                    <i className="fas fa-exclamation-triangle text-4xl mb-4"></i>
-                    <p className="text-xl">No services found.</p>
-                    <p className="text-sm">
-                      Try a different search term or category.
-                    </p>
-                  </div>
-                )}
-              </div>
+              <Catalog filteredServices={filteredServices} loading={loading} />
             </div>
           </div>
         </section>

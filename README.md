@@ -56,6 +56,8 @@ appointments → id, clientId, providerId, serviceId, startTime, endTime, status
 - each service has many appointments 
 - many appointments belong to same service 
 
+
+
 ## Test accounts :
 
 
@@ -104,3 +106,4 @@ appointments → id, clientId, providerId, serviceId, startTime, endTime, status
 - Create a landing page 
 - Create a signup page for providers
 - Create a login page 
+

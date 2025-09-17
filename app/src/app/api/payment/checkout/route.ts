@@ -10,26 +10,11 @@ import {
 import { z } from "zod";
 
 /* ____ Stripe instance ... */
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2025-08-27.basil",
-});
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
-/* ___ Stripe pricing ... */
-const prices: Record<"PREMIUM" | "PRIMARY" | "FREE", string> = {
-  PREMIUM: process.env.STRIPE_PREMIUM!,
-  PRIMARY: process.env.STRIPE_PRIMARY!,
-  FREE: "",
-};
-
-const PaymentHandler = async (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {
   try {
     const body = CheckoutAPIRequestSchema.parse(await req.json());
-
-    /* ____ Call the payment handler ... */
-    const urls = {
-      success: new URL("/payment-success", req.url).toString(),
-      failed: new URL("/payment-failed", req.url).toString(),
-    };
 
     try {
       const hashPassword:string= await bcrypt.hash(body.password, 10);
@@ -40,30 +25,10 @@ const PaymentHandler = async (req: NextRequest) => {
       });
 
       /* ____ Create payment ... */
-      const session = await stripe.checkout.sessions.create({
-        mode: "subscription",
-        payment_method_types: ["card"],
-        customer: customer.id,
-        line_items: [
-          {
-            price: prices[body.plan],
-            quantity: 1,
-          },
-        ],
-        metadata: {
-          name: body.name,
-          email: body.email,
-          password: hashPassword,
-          plan: body.plan,
-        },
-        success_url: urls.success,
-        cancel_url: urls.failed,
-        expand: ["subscription"],
-      });
-
+  
       const response: z.infer<typeof CheckoutAPIResponseSchema> = {
         message: "Payment completed successfully",
-        url: session.url!,
+        url: "",
       };
 
       /* ____ return values ... */
@@ -76,7 +41,7 @@ const PaymentHandler = async (req: NextRequest) => {
       return NextResponse.json(
         {
           message: "An error occured while creating subscription",
-          url: urls.failed,
+          url: "",
         },
         {
           status: 402,
@@ -92,4 +57,3 @@ const PaymentHandler = async (req: NextRequest) => {
     return NextResponse.json(response, { status: 500 });
   }
 };
-export { PaymentHandler as POST };

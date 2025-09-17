@@ -24,6 +24,7 @@ const getServices = async () :Promise<Data>=> {
             duration:service.duration,
             max_appointments_per_day:service.max_appointments_per_day,
             ratings:service.ratings,
+            details:service.details,
             appointmentsCount: sql<number>`count(${appointment.id})`.as("appointments_count"),  // ---- this field must be converted to number , it's returning string of number
     }).from(service)
       .leftJoin(appointment, eq(appointment.service_id, service.id))

@@ -3,13 +3,17 @@ import React, { useMemo } from "react";
 import { IconCircleCheck, IconArrowNarrowRight } from "@tabler/icons-react";
 import { useService } from "@/stores/service";
 import { useParams } from "next/navigation";
+// import { Loader } from "lucide-react";
+import { Button, Loader } from "@/components/common";
+import Link from "next/link";
 
 const ServiceDetailsPage = () => {
   const { id } = useParams();
-  const { services } = useService();
+  const { services, loading, setSelectedService } = useService();
+
   const requiredService = useMemo(() => {
     return services.find((s) => s.id === id);
-  }, []);
+  }, [services]);
 
   if (!requiredService) {
     return (
@@ -18,6 +22,19 @@ const ServiceDetailsPage = () => {
           <section>
             <div className="flex items-center justify-center min-h-screen bg-gray-50">
               <p className="text-xl text-gray-500">Service not found.</p>
+            </div>
+          </section>
+        </article>
+      </main>
+    );
+  }
+  if (loading) {
+    return (
+      <main>
+        <article>
+          <section>
+            <div className="flex items-center justify-center min-h-screen bg-gray-50">
+              <Loader />
             </div>
           </section>
         </article>
@@ -42,7 +59,7 @@ const ServiceDetailsPage = () => {
                       {requiredService.provider_name}
                     </p>
                   </div>
-                  <span className="bg-gray-200 text-pink text-sm font-semibold px-4 py-1 rounded-full">
+                  <span className="bg-gray-200 text-indigo text-sm font-semibold px-4 py-1 rounded-full">
                     <span className="text-green-500">$</span>
                     {requiredService.price}
                   </span>
@@ -61,25 +78,30 @@ const ServiceDetailsPage = () => {
                   <h3 className="text-xl font-semibold text-gray-800 mb-2">
                     What's Included:
                   </h3>
-                  {/* <ul className="list-inside text-gray-600 space-y-1">
+                  <ul className="list-inside text-gray-600 space-y-1">
                     {requiredService.details.map((detail, index) => (
                       <li key={index} className="flex items-center">
                         <IconCircleCheck
                           className="stroke-green-400"
                           size={15}
-                        />{" "}
+                        />
                         &nbsp;
                         <span className="text-sm">{detail}</span>
                       </li>
                     ))}
-                  </ul> */}
+                  </ul>
                 </div>
 
                 {/* Booking Button */}
-                <button className="bg-pink hover:bg-pink/ text-black cursor-pointer hover:bg-pink/90 py-1 px-3 rounded-md font-semibold text-md transition-colors duration-300 shadow-lg hover:shadow-xl flex flex-row flex-nowrap justify-center items-center gap-[10px]">
-                  <span>Book this service</span>
-                  <IconArrowNarrowRight />
-                </button>
+                <Link
+                  href={"/book-appointment"}
+                  onClick={() => setSelectedService(requiredService)}
+                >
+                  <Button className="bg-pink hover:bg-pink/50 text-black cursor-pointer hover:bg-pink/90 py-1 px-3 rounded-md font-semibold text-md transition-colors duration-300 shadow-lg hover:shadow-xl flex flex-row flex-nowrap justify-center items-center gap-[10px]">
+                    <span>Book this service</span>
+                    <IconArrowNarrowRight />
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>

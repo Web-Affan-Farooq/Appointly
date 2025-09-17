@@ -1,28 +1,17 @@
 "use client";
-// _____ Hooks ...
 import { useState, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { useRouter } from "next/navigation";
-// _____ Utils ...
 import { cn } from "@/lib/utils";
-// _____ Components ...
 import { Input, Label, Button, Checkbox } from "@/components/common";
-// import { useToast } from "@/components/ui/use-toast"; // assuming you're using a toast component
-// _____ Libraries ...
+import { IconPlus, IconX } from "@tabler/icons-react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
-// _____ Types and schemas ...
-import {
-  AddServiceAPIRequest,
-  AddServiceAPIResponse,
-} from "@/validations/AddServiceAPISchema";
-// _____ Constants ...
+import { AddServiceAPIRequest } from "@/validations/AddServiceAPISchema";
 import { days, serviceCategories } from "@/constants";
-// _____ Actions ...
 import { getCountry, addServiceAction } from "./action";
-// _____ Placeholder data ...
 import CountriesData from "@/data/countries.json";
 
 export function AddServiceForm({
@@ -30,25 +19,27 @@ export function AddServiceForm({
   ...props
 }: React.ComponentProps<"form">) {
   const router = useRouter();
-  // const { toast } = useToast(); // Assuming you have a toast provider
   const {
     register,
     handleSubmit,
     control,
     setValue,
+    getValues,
     formState: { errors, isSubmitting },
   } = useForm<z.infer<typeof AddServiceAPIRequest>>({
     resolver: zodResolver(AddServiceAPIRequest),
     mode: "onChange",
     defaultValues: {
       working_days: [],
+      details: [],
       user_id: "",
       currency: "",
     },
   });
 
+  const [detailValue, setDetailValue] = useState("");
+
   const onSubmit = async (formData: z.infer<typeof AddServiceAPIRequest>) => {
-    console.log(formData);
     const { message, success, service } = await addServiceAction(formData);
     if (!success || !service) {
       toast(message);
@@ -62,7 +53,6 @@ export function AddServiceForm({
     const getData = async () => {
       try {
         const { data, error } = await authClient.getSession();
-
         if (error || !data) {
           toast(error?.message || "User not authenticated.");
           router.push("/login");
@@ -74,7 +64,6 @@ export function AddServiceForm({
         const { country, success } = await getCountry(data.user.id);
         if (!success || !country) {
           toast("Could not retrieve country information.");
-          router.push("/login");
           return;
         }
 
@@ -89,62 +78,123 @@ export function AddServiceForm({
         }
       } catch (error) {
         toast("An unexpected error occurred.");
-        console.error("Error fetching data:", error);
+        console.error(error);
       }
     };
     getData();
-  }, [router, setValue, toast]);
+  }, [router, setValue]);
 
   return (
     <form
-      className={cn("flex flex-col gap-8 max-w-3xl mx-auto p-6", className)}
+      className={cn(
+        "flex flex-col gap-10 max-w-4xl mx-auto p-8 bg-white rounded-2xl shadow-md",
+        className
+      )}
       {...props}
       onSubmit={handleSubmit(onSubmit)}
     >
       {/* Header */}
       <div className="text-center space-y-2">
-        <h1 className="text-2xl font-bold">Add a New Service</h1>
-        <p className="text-muted-foreground text-sm">
-          Fill out the details below to create your service
+        <h1 className="text-3xl font-bold text-gray-900">Add a New Service</h1>
+        <p className="text-gray-500 text-sm">
+          Provide details to create your service offering
         </p>
       </div>
+
       {/* Basic Info */}
-      <section className="space-y-4">
-        <h2 className="font-semibold text-lg border-b pb-1">
+      <section className="space-y-6">
+        <h2 className="font-semibold text-lg text-gray-800 border-b pb-2">
           Basic Information
         </h2>
         <div className="grid gap-6 md:grid-cols-2">
-          <div className="space-y-2">
-            <Label htmlFor="name">Name of your service</Label>
-            <Input id="name" placeholder="ABC Service" {...register("name")} />
+          <div>
+            <Label htmlFor="name" className="mb-1">
+              Service Name
+            </Label>
+            <Input
+              id="name"
+              placeholder="Ex: Haircut, Web Design..."
+              {...register("name")}
+            />
             {errors.name && (
               <p className="text-sm text-red-500">{errors.name.message}</p>
             )}
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="category">Select category</Label>
+          <div>
+            <Label className="mb-1">Highlights</Label>
+            <div className="flex flex-col gap-2">
+              <div className="flex gap-2">
+                <Input
+                  placeholder="Ex: Free consultation"
+                  value={detailValue}
+                  onChange={(e) => setDetailValue(e.target.value)}
+                />
+                <Button
+                  type="button"
+                  className="px-3"
+                  onClick={() => {
+                    if (detailValue.trim()) {
+                      setValue("details", [
+                        ...getValues().details,
+                        detailValue,
+                      ]);
+                      setDetailValue("");
+                    }
+                  }}
+                >
+                  <IconPlus size={18} />
+                </Button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {getValues().details.map((value, idx) => (
+                  <span
+                    key={idx}
+                    className="flex items-center gap-1 bg-pink-100 text-pink-700 text-xs px-3 py-1 rounded-full"
+                  >
+                    {value}
+                    <IconX
+                      size={14}
+                      className="cursor-pointer"
+                      onClick={() =>
+                        setValue(
+                          "details",
+                          getValues().details.filter((_, i) => i !== idx)
+                        )
+                      }
+                    />
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <Label htmlFor="category" className="mb-1">
+              Category
+            </Label>
             <select
               {...register("category")}
-              className="w-full border rounded p-2"
+              className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-indigo-500"
             >
-              {serviceCategories
-                .slice(1, serviceCategories.length)
-                .map((category) => (
-                  <option key={category} value={category}>
-                    {category}
-                  </option>
-                ))}
+              {serviceCategories.slice(1).map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
             </select>
             {errors.category && (
               <p className="text-sm text-red-500">{errors.category.message}</p>
             )}
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="provider_name">Organization or provider name</Label>
+
+          <div>
+            <Label htmlFor="provider_name" className="mb-1">
+              Provider / Organization
+            </Label>
             <Input
               id="provider_name"
-              placeholder="Haircut etc..."
+              placeholder="Your business or name"
               {...register("provider_name")}
             />
             {errors.provider_name && (
@@ -153,12 +203,15 @@ export function AddServiceForm({
               </p>
             )}
           </div>
-          <div className="space-y-2 md:col-span-2">
-            <Label htmlFor="description">Description</Label>
+
+          <div className="md:col-span-2">
+            <Label htmlFor="description" className="mb-1">
+              Description
+            </Label>
             <textarea
               id="description"
-              placeholder="Write about your service..."
-              className="w-full border rounded p-2 min-h-[100px]"
+              placeholder="Write a detailed description of your service..."
+              className="w-full border rounded-lg p-3 min-h-[120px] focus:ring-2 focus:ring-indigo-500"
               {...register("description")}
             />
             {errors.description && (
@@ -169,49 +222,51 @@ export function AddServiceForm({
           </div>
         </div>
       </section>
+
       {/* Schedule */}
-      <section className="space-y-4">
-        <h2 className="font-semibold text-lg border-b pb-1">Schedule</h2>
+      <section className="space-y-6">
+        <h2 className="font-semibold text-lg text-gray-800 border-b pb-2">
+          Schedule
+        </h2>
         <div className="grid gap-6 md:grid-cols-2">
-          <div className="space-y-2">
-            <Label htmlFor="start_time">Start Time</Label>
+          <div>
+            <Label htmlFor="start_time" className="mb-1">
+              Start Time
+            </Label>
             <Input id="start_time" type="time" {...register("start_time")} />
-            {errors.start_time && (
-              <p className="text-sm text-red-500">
-                {errors.start_time.message}
-              </p>
-            )}
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="end_time">End Time</Label>
+          <div>
+            <Label htmlFor="end_time" className="mb-1">
+              End Time
+            </Label>
             <Input id="end_time" type="time" {...register("end_time")} />
-            {errors.end_time && (
-              <p className="text-sm text-red-500">{errors.end_time.message}</p>
-            )}
           </div>
-          <div className="space-y-2 md:col-span-2">
-            <Label>Select Working Days</Label>
+          <div className="md:col-span-2">
+            <Label className="mb-1">Working Days</Label>
             <Controller
               name="working_days"
               control={control}
               render={({ field }) => (
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   {days.map((day) => (
                     <label
                       key={day}
-                      htmlFor={`day-${day}`}
-                      className="flex items-center gap-2 border rounded p-2 cursor-pointer"
+                      className={cn(
+                        "flex items-center gap-2 border rounded-lg p-2 cursor-pointer transition",
+                        field.value.includes(day)
+                          ? "bg-indigo-100 border-indigo-500"
+                          : "hover:bg-gray-50"
+                      )}
                     >
                       <Checkbox
-                        id={`day-${day}`}
                         checked={field.value.includes(day)}
-                        onCheckedChange={(checked) => {
+                        onCheckedChange={(checked) =>
                           field.onChange(
                             checked
                               ? [...field.value, day]
                               : field.value.filter((d) => d !== day)
-                          );
-                        }}
+                          )
+                        }
                       />
                       {day}
                     </label>
@@ -219,358 +274,67 @@ export function AddServiceForm({
                 </div>
               )}
             />
-            {errors.working_days && (
-              <p className="text-sm text-red-500">
-                {errors.working_days.message}
-              </p>
-            )}
           </div>
         </div>
       </section>
+
       {/* Pricing */}
-      <section className="space-y-4">
-        <h2 className="font-semibold text-lg border-b pb-1">
+      <section className="space-y-6">
+        <h2 className="font-semibold text-lg text-gray-800 border-b pb-2">
           Pricing & Limits
         </h2>
         <div className="grid gap-6 md:grid-cols-2">
-          <div className="space-y-2">
-            <Label htmlFor="duration">Duration (minutes)</Label>
+          <div>
+            <Label className="mb-1" htmlFor="duration">
+              Duration (minutes)
+            </Label>
             <Input
               id="duration"
               type="number"
               {...register("duration", { valueAsNumber: true })}
             />
-            {errors.duration && (
-              <p className="text-sm text-red-500">{errors.duration.message}</p>
-            )}
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="price">Price</Label>
+          <div>
+            <Label className="mb-1" htmlFor="price">
+              Price
+            </Label>
             <Input
               id="price"
               type="number"
               {...register("price", { valueAsNumber: true })}
             />
-            {errors.price && (
-              <p className="text-sm text-red-500">{errors.price.message}</p>
-            )}
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="currency">Currency</Label>
-            <Input id="currency" {...register("currency")} disabled />
-            {errors.currency && (
-              <p className="text-sm text-red-500">{errors.currency.message}</p>
-            )}
+          <div>
+            <Label className="mb-1" htmlFor="currency">
+              Currency
+            </Label>
+            <Input id="currency" disabled {...register("currency")} />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="max_appointments_per_day">
-              Max Appointments per Day
+          <div>
+            <Label className="mb-1" htmlFor="max_appointments_per_day">
+              Max Appointments / Day
             </Label>
             <Input
               id="max_appointments_per_day"
               type="number"
               {...register("max_appointments_per_day", { valueAsNumber: true })}
             />
-            {errors.max_appointments_per_day && (
-              <p className="text-sm text-red-500">
-                {errors.max_appointments_per_day.message}
-              </p>
-            )}
           </div>
         </div>
       </section>
+
       {/* Submit */}
-      <Button
-        type="submit"
-        className="w-full md:w-auto self-center px-10"
-        disabled={isSubmitting}
-      >
-        {isSubmitting ? "Submitting..." : "Add Service"}
-      </Button>
+      <div className="flex justify-center">
+        <Button
+          type="submit"
+          className={`w-full md:w-auto px-10 py-2 rounded-lg ${isSubmitting ? "cursor-not-allowed bg-pink/80" : ""} text-white font-medium shadow`}
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Submitting..." : "Add Service"}
+        </Button>
+      </div>
     </form>
   );
 }
 
 export default AddServiceForm;
-// "use client";
-// // _____ Hooks ...
-// import { useState, useEffect } from "react";
-// import { useForm, Controller } from "react-hook-form";
-// import { useRouter } from "next/navigation";
-// // _____ Utils ...
-// import { cn } from "@/lib/utils";
-// // _____ Components ...
-// import { Input, Label, Button, Checkbox } from "@/components/common";
-// // _____ Libraries ...
-// import { z } from "zod";
-// import { zodResolver } from "@hookform/resolvers/zod";
-// import { authClient } from "@/lib/auth-client";
-// // _____ Types and schemas ...
-// import {
-//   AddServiceAPIRequest,
-//   AddServiceAPIResponse,
-// } from "@/validations/AddServiceAPISchema";
-// // _____ Constants ...
-// import { days, serviceCategories } from "@/constants";
-// // _____ Actions ...
-// import { getCountry, addServiceAction } from "./action";
-// // _____ Placeholder data ...
-// import CountriesData from "@/data/countries.json";
-
-// export function AddServiceForm({
-//   className,
-//   ...props
-// }: React.ComponentProps<"form">) {
-//   const router = useRouter();
-//   const {
-//     register,
-//     handleSubmit,
-//     control,
-//     setValue,
-//     formState: { errors },
-//   } = useForm<z.infer<typeof AddServiceAPIRequest>>({
-//     resolver: zodResolver(AddServiceAPIRequest),
-//     mode: "onChange",
-//     defaultValues: { working_days: [], user_id: "", currency: "" },
-//   });
-
-//   const [loading, setLoading] = useState(false);
-//   // const [currency, setCurrency] = useState("");
-
-//   const onSubmit = async (formData: z.infer<typeof AddServiceAPIRequest>) => {
-//     setLoading(true);
-//     const { message, success, service } = await addServiceAction(formData);
-//     if (!success && !service) {
-//       alert(message);
-//     }
-//     alert(message);
-//     setLoading(false);
-//   };
-//   useEffect(() => {
-//     const getData = async () => {
-//       const { data, error } = await authClient.getSession();
-//       if (!data && error) {
-//         alert(error.message);
-//       }
-//       if (data) {
-//         const { country, success } = await getCountry(data.user.id);
-//         setValue("user_id", data.user.id);
-//         if (!success && !country) {
-//           router.push("/login");
-//         }
-//         if (country) {
-//           const [requiredCurrency] = CountriesData.filter(
-//             (countryData) => countryData.code === country
-//           );
-//           setValue("currency", requiredCurrency.currency, {
-//             shouldValidate: true,
-//           });
-//         }
-//       }
-//     };
-//     getData();
-//   }, []);
-
-//   return (
-//     <form
-//       className={cn("flex flex-col gap-8 max-w-3xl mx-auto p-6", className)}
-//       {...props}
-//       onSubmit={handleSubmit(onSubmit)}
-//     >
-//       {/* Header */}
-//       <div className="text-center space-y-2">
-//         <h1 className="text-2xl font-bold">Add a New Service</h1>
-//         <p className="text-muted-foreground text-sm">
-//           Fill out the details below to create your service
-//         </p>
-//       </div>
-
-//       {/* Basic Info */}
-//       <section className="space-y-4">
-//         <h2 className="font-semibold text-lg border-b pb-1">
-//           Basic Information
-//           <svg
-//             className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium ItemButtonIcon css-140r284"
-//             focusable="false"
-//             aria-hidden="true"
-//             viewBox="0 0 24 24"
-//           >
-//             <path d="M9.29 15.88 13.17 12 9.29 8.12a.996.996 0 0 1 0-1.41c.39-.39 1.02-.39 1.41 0l4.59 4.59c.39.39.39 1.02 0 1.41L10.7 17.3c-.39.39-1.02.39-1.41 0-.38-.39-.39-1.03 0-1.42"></path>
-//           </svg>
-//         </h2>
-//         <div className="grid gap-6 md:grid-cols-2">
-//           <div className="space-y-2">
-//             <Label>Name of your service</Label>
-//             <Input placeholder="ABC Service" {...register("name")} />
-//             {errors.name && (
-//               <p className="text-sm text-red-500">{errors.name.message}</p>
-//             )}
-//           </div>
-//           <div className="space-y-2">
-//             <Label>Select category</Label>
-//             <select name="category" id="category" >
-//               {serviceCategories.map((category, idx) => (
-//                 <option value={category} key={idx}>
-//                   {category}
-//                 </option>
-//               ))}
-//             </select>
-//             <Input
-//               placeholder="Haircut etc... "
-//               {...register("provider_name")}
-//             />
-//             {errors.provider_name && (
-//               <p className="text-sm text-red-500">
-//                 {errors.provider_name.message}
-//               </p>
-//             )}
-//           </div>
-//           <div className="space-y-2">
-//             <Label>Organization or provider name </Label>
-//             <Input
-//               placeholder="Haircut etc... "
-//               {...register("provider_name")}
-//             />
-//             {errors.provider_name && (
-//               <p className="text-sm text-red-500">
-//                 {errors.provider_name.message}
-//               </p>
-//             )}
-//           </div>
-//           <div className="space-y-2 md:col-span-2">
-//             <Label>Description</Label>
-//             <textarea
-//               placeholder="Write about your service..."
-//               className="w-full border rounded p-2 min-h-[100px]"
-//               {...register("description")}
-//             />
-//             {errors.description && (
-//               <p className="text-sm text-red-500">
-//                 {errors.description.message}
-//               </p>
-//             )}
-//           </div>
-//         </div>
-//       </section>
-
-//       {/* Schedule */}
-//       <section className="space-y-4">
-//         <h2 className="font-semibold text-lg border-b pb-1">Schedule</h2>
-//         <div className="grid gap-6 md:grid-cols-2">
-//           <div className="space-y-2">
-//             <Label>Start Time</Label>
-//             <Input type="time" {...register("start_time")} />
-//             {errors.start_time && (
-//               <p className="text-sm text-red-500">
-//                 {errors.start_time.message}
-//               </p>
-//             )}
-//           </div>
-//           <div className="space-y-2">
-//             <Label>End Time</Label>
-//             <Input type="time" {...register("end_time")} />
-//             {errors.end_time && (
-//               <p className="text-sm text-red-500">{errors.end_time.message}</p>
-//             )}
-//           </div>
-//           <div className="space-y-2 md:col-span-2">
-//             <Label>Select Working Days</Label>
-//             <Controller
-//               control={control}
-//               name="working_days"
-//               render={({ field }) => (
-//                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-//                   {days.map((day) => (
-//                     <label
-//                       key={day}
-//                       className="flex items-center gap-2 border rounded p-2 cursor-pointer"
-//                     >
-//                       <Checkbox
-//                         checked={field.value.includes(day)}
-//                         onCheckedChange={(checked) => {
-//                           if (checked) {
-//                             field.onChange([...field.value, day]);
-//                           } else {
-//                             field.onChange(
-//                               field.value.filter((d: string) => d !== day)
-//                             );
-//                           }
-//                         }}
-//                       />
-//                       {day}
-//                     </label>
-//                   ))}
-//                 </div>
-//               )}
-//             />
-//             {errors.working_days && (
-//               <p className="text-sm text-red-500">
-//                 {errors.working_days.message}
-//               </p>
-//             )}
-//           </div>
-//         </div>
-//       </section>
-
-//       {/* Pricing */}
-//       <section className="space-y-4">
-//         <h2 className="font-semibold text-lg border-b pb-1">
-//           Pricing & Limits
-//         </h2>
-//         <div className="grid gap-6 md:grid-cols-2">
-//           <div className="space-y-2">
-//             <Label>Duration (minutes)</Label>
-//             <Input
-//               type="number"
-//               {...register("duration", { valueAsNumber: true })}
-//             />
-//             {errors.duration && (
-//               <p className="text-sm text-red-500">{errors.duration.message}</p>
-//             )}
-//           </div>
-//           <div className="space-y-2">
-//             <Label>Price</Label>
-//             <Input
-//               type="number"
-//               {...register("price", { valueAsNumber: true })}
-//             />
-//             {errors.price && (
-//               <p className="text-sm text-red-500">{errors.price.message}</p>
-//             )}
-//           </div>
-//           <div className="space-y-2">
-//             <Label>Currency</Label>
-//             <Input {...register("currency")} disabled />
-//             {errors.currency && (
-//               <p className="text-sm text-red-500">{errors.currency.message}</p>
-//             )}
-//           </div>
-//           <div className="space-y-2">
-//             <Label>Max Appointments per Day</Label>
-//             <Input
-//               type="number"
-//               {...register("max_appointments_per_day", { valueAsNumber: true })}
-//             />
-//             {errors.max_appointments_per_day && (
-//               <p className="text-sm text-red-500">
-//                 {errors.max_appointments_per_day.message}
-//               </p>
-//             )}
-//           </div>
-//         </div>
-//       </section>
-
-//       {/* Submit */}
-//       <Button
-//         type="submit"
-//         className={`w-full md:w-auto self-center px-10 ${
-//           loading ? "cursor-not-allowed" : "cursor-pointer"
-//         }`}
-//       >
-//         {loading ? "Submitting..." : "Add Service"}
-//       </Button>
-//     </form>
-//   );
-// }
-
-// export default AddServiceForm;

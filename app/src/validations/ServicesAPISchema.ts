@@ -20,6 +20,7 @@ const ServicesAPISchema = z.object(
       ratings:z.int().array(),
       appointmentsCount: z.int(),
       remainingAppointments: z.int(),
+      details:z.string().array(),
     }
 ).strict();
 

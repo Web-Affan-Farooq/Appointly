@@ -3,8 +3,10 @@ import { z} from "zod";
 const BookingFormAPIRequest  = z
   .object({
     customer_name: z.string().min(1, { message: "Customer name is required." }),
-    customer_email: z.string().email({ message: "Invalid email address." }),
-    service_id: z.string().uuid({ message: "Please select a service." }),
+    customer_email: z.email({ message: "Invalid email address." }),
+    service_id: z.string(),
+    price:z.int(),
+    currency:z.string(),
 //     started_on: z
 //       .string()
 //       .datetime({ message: "Start date and time is required." }),
