@@ -1,6 +1,7 @@
 import { pgTable, uuid, timestamp, text } from "drizzle-orm/pg-core";
 import { service } from "./services";
 import { AppointmentStatus } from "./appointment-type"
+import { InferSelectModel } from "drizzle-orm";
 
 export const appointment = pgTable("appointments", {
   id: uuid("id").primaryKey().defaultRandom().notNull(),
@@ -28,3 +29,5 @@ export const appointment = pgTable("appointments", {
   started_on: timestamp("started_on", { withTimezone: true }),
   ended_on: timestamp("ended_on", { withTimezone: true }),
 });
+
+export type Appointment = InferSelectModel<typeof appointment>

@@ -1,59 +1,30 @@
 "use client";
 import React, { useState } from "react";
 import { IconDotsVertical } from "@tabler/icons-react";
-
-interface Appointments {
-  id: number;
-  name: string;
-  email: string;
-  status: "PENDING" | "CONFIRMED" | "COMPLETED" | "CANCELLED";
-}
-/*
-"PENDING", "CONFIRMED", "COMPLETED", "CANCELLED", 
-*/
-const appointments: Appointments[] = [
-  {
-    id: 1,
-    name: "John Doe",
-    email: "john.doe@example.com",
-    status: "CONFIRMED",
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    email: "jane.smith@example.com",
-    status: "PENDING",
-  },
-  {
-    id: 3,
-    name: "Peter Jones",
-    email: "peter.jones@example.com",
-    status: "CANCELLED",
-  },
-  {
-    id: 4,
-    name: "Emily White",
-    email: "emily.white@example.com",
-    status: "COMPLETED",
-  },
-];
+import type { AppointmentObjectSecured } from "@/@types/types";
+import { useDashboard } from "@/stores/dashboard";
 
 const Table = () => {
+  const { selectedService } = useDashboard();
   const [selectedAppointments, setSelectedAppointments] = useState<
-    Appointments[]
+    AppointmentObjectSecured[]
   >([]);
 
   const toggleSelectAll = (checked: boolean) => {
     if (checked) {
-      setSelectedAppointments(appointments);
+      setSelectedAppointments(selectedService.appointments);
     } else {
       setSelectedAppointments([]);
     }
   };
 
-  const isAllSelected = selectedAppointments.length === appointments.length;
+  const isAllSelected =
+    selectedAppointments.length === selectedService.appointments.length;
 
-  const toggleRow = (appointment: Appointments, checked: boolean) => {
+  const toggleRow = (
+    appointment: AppointmentObjectSecured,
+    checked: boolean
+  ) => {
     if (checked) {
       setSelectedAppointments([...selectedAppointments, appointment]);
     } else {
@@ -122,7 +93,7 @@ const Table = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {appointments.map((appointment) => {
+            {selectedService.appointments.map((appointment) => {
               const isSelected = selectedAppointments.some(
                 (app) => app.id === appointment.id
               );
@@ -145,10 +116,10 @@ const Table = () => {
                     />
                   </td>
                   <td className="py-4 whitespace-nowrap text-sm text-gray-900">
-                    {appointment.name}
+                    {appointment.customer_name}
                   </td>
                   <td className="py-4 whitespace-nowrap text-sm text-gray-500">
-                    {appointment.email}
+                    {appointment.customer_email}
                   </td>
                   <td className="py-4 whitespace-nowrap">
                     <span

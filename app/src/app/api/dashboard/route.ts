@@ -6,13 +6,21 @@ import { eq } from "drizzle-orm";
 
 export const POST = async (req:NextRequest) => {
     const {userId} = await req.json();
-
-    const servicesData = await db.select().from(service).where(eq(service.user_id, userId));
+    const serviceData = await db.query.service.findMany({
+        where:eq(service.user_id, userId),
+        with:{
+            appointments:{
+                columns:{
+                    transfer_group:false
+                }
+            },
+        }
+    });
 
     return NextResponse.json(
         {
             data:{
-                services:servicesData,
+                services:serviceData,
             }
         }
     )

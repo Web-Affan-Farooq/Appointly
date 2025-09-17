@@ -17,11 +17,10 @@
 
 - **Create use facing services page with search bar** 
 - **Create a dynamic route page for service details**
-- Create a appointment booking form .
-- on the details page the user should be navigated to the booking page
-- Create backend of book appointment
-- View available slots via React Calendar / FullCalendar.
-- Book appointment (status: PENDING).
+- **Create a appointment booking form .**
+- **on the details page the user should be navigated to the booking page**
+- **Create backend of book appointment**
+- **Book appointment (status: PENDING).**
 
 ## Milestone 4 — Provider Dashboard Actionstask
 

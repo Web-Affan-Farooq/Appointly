@@ -6,17 +6,11 @@ import { z } from "zod";
 import axios from "axios";
 import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
-// ____ Actions ...
-import bookAppointmentAction from "@/actions/BookAppointment";
 // ____ Types and schemas ...
-import {
-  BookingFormAPIRequest,
-  BookingFormAPIResponse,
-} from "@/validations/BookAppointmentSchema";
+import { BookingFormAPIRequest } from "@/validations/BookAppointmentSchema";
 // ____ Hooks ...
 import { useService } from "@/stores/service";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
 
 const Form = () => {
   const { selectedService } = useService();
@@ -42,7 +36,7 @@ const Form = () => {
       window.document.location.href = data.url;
     } catch (error) {
       console.error("Submission error:", error);
-      toast.error(error.message);
+      toast.error(error.message); // ignore this error
     }
   };
 

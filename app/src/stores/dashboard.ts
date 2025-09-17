@@ -4,7 +4,9 @@ import {persist,createJSONStorage} from "zustand/middleware";
 
 interface DashboardState {
     services:ServiceData[];
+    selectedService:ServiceData | null;
     setServices:(list:ServiceData[]) => void;    
+    selectService:(service:ServiceData) => void;
 }
 
 export const useDashboard = create<DashboardState>()(
@@ -12,11 +14,17 @@ export const useDashboard = create<DashboardState>()(
             (set) => (
     {
         services:[],
-        setServices:(list) => set(() => ({services:list})) 
+        selectedService:null,
+        setServices:(list) => set(() => ({services:list})),
+        selectService:(service) => set(() => (
+            {
+                selectedService:service
+            }
+        )),
     }
 ),
       {
-        name: "services-page-data",
+        name: "dashboard-data",
         storage: createJSONStorage(() => sessionStorage),
       }
     )

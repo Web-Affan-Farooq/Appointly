@@ -101,9 +101,3 @@ appointments → id, clientId, providerId, serviceId, startTime, endTime, status
 - user have many services 
 - many services belongs to same user
 - Each service has appointments limit 
-
-## **Notes :**
-- Create a landing page 
-- Create a signup page for providers
-- Create a login page 
-

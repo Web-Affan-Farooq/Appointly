@@ -15,6 +15,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
+import { useDashboard } from "@/stores/dashboard";
 
 export function NavMain({
   items,
@@ -25,6 +26,7 @@ export function NavMain({
     icon?: Icon;
   }[];
 }) {
+  const { services, selectService } = useDashboard();
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2">
@@ -48,7 +50,11 @@ export function NavMain({
             id="services"
             className="py-[6px] px-[10px] bg-pink rounded-md"
           >
-            <option value="service-1">Service-1</option>
+            {services.map((service, idx) => (
+              <option onClick={() => selectService(service)} key={idx}>
+                {service.name}
+              </option>
+            ))}
           </select>
         </SidebarMenu>
         <SidebarMenu>
