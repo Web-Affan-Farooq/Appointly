@@ -1,6 +1,6 @@
 "use client";
 
-import useDashboardAnalytics from "./useDashboardAnalytics";
+// import useDashboardAnalytics from "./useDashboardAnalytics";
 
 const Card = ({
   dataKey,
@@ -18,18 +18,10 @@ const Card = ({
 };
 
 const DashboardCard = () => {
-  const { completedAppointments, totalAppointments } = useDashboardAnalytics();
-
-  console.log(useDashboardAnalytics());
-
   return (
     <div className="flex flex-row flex-nowrap gap-[10px]">
       <div className="flex flex-row flex-wrap gap-5 px-7 pb-5">
-        <Card
-          dataKey={"Total appointments"}
-          value={totalAppointments?.length}
-        />
-        <Card dataKey={"Completed"} value={completedAppointments.length} />
+        <Card dataKey={"Revenue"} value={"AED 5"} />
       </div>
     </div>
   );

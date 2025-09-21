@@ -1,4 +1,3 @@
-import { GalleryVerticalEnd } from "lucide-react";
 import { AddServiceForm } from "@/components/pages";
 
 export default function LoginPage() {

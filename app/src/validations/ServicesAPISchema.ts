@@ -1,5 +1,4 @@
 import {z} from  "zod";
-import type { Service } from "@/db/schemas";
 
 const ServicesAPISchema = z.object(
     {

@@ -3,8 +3,9 @@ import { ChartAreaInteractive } from "@/components/pages/Dashboard/chart-area-in
 import DashboardCard from "@/components/pages/Dashboard/DashboardCard";
 import { SiteHeader } from "@/components/pages/Dashboard/site-header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import ServiceDetails from "@/components/pages/Dashboard/ServiceDetails";
 
-import data from "./data.json";
+// import data from "./data.json";
 
 export default function Page() {
   return (
@@ -26,6 +27,7 @@ export default function Page() {
               <div className="px-4 lg:px-6">
                 <ChartAreaInteractive />
               </div>
+              <ServiceDetails />
               {/** data table */}
             </div>
           </div>

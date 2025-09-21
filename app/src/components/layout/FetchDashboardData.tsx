@@ -28,7 +28,7 @@ const FetchDashboardData = ({ children }: { children: React.ReactNode }) => {
 
     console.log(selectedService);
     console.log(selectService);
-  }, []);
+  }, [setServices, selectService, selectedService]);
   return <>{children}</>;
 };
 export default FetchDashboardData;

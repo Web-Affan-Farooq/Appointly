@@ -33,8 +33,9 @@ export async function DELETE(req:NextRequest) {
       .where(eq(user.email, email));
 
     return NextResponse.json({ message: "Accounts deleted successfully", redirect:"/" },{status:200});
-  } catch (err: any) {
+  } catch (err) {
     console.error("Error deleting Stripe account:", err);
+    // ignore this error
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }

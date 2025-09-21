@@ -4,7 +4,6 @@ import { cn } from "@/lib/utils";
 // _____ Components ...
 import { Input, Label, Button } from "@/components/common";
 import Link from "next/link";
-import Image from "next/image";
 
 // _____ Libraries ...
 import { z } from "zod";
@@ -18,7 +17,6 @@ import {
 // _____ Hooks ...
 import { useForm } from "react-hook-form";
 // _____ actions ...
-import { signUpWithGoogle } from "./actions";
 import { useState } from "react";
 import { PasswordInput } from "@/components/common";
 

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { days, serviceCategories } from "@/constants";
+import { days } from "@/constants";
 import type { Service } from "@/db/schemas/tables/services";
 
 const AddServiceAPIRequest = z

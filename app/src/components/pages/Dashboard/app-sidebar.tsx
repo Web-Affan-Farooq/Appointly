@@ -4,23 +4,23 @@ import * as React from "react";
 import {
   IconCamera,
   IconChartBar,
-  IconDashboard,
-  IconDatabase,
+  // IconDashboard,
+  // IconDatabase,
   IconFileAi,
   IconFileDescription,
-  IconFileWord,
+  // IconFileWord,
   IconFolder,
   IconHelp,
   IconInnerShadowTop,
-  IconListDetails,
-  IconReport,
-  IconSearch,
-  IconBell,
+  // IconListDetails,
+  // IconReport,
+  // IconSearch,
+  // IconBell,
   IconSettings,
   IconUsers,
 } from "@tabler/icons-react";
 
-import { NavDocuments } from "@/components/pages/Dashboard/nav-documents";
+// import { NavDocuments } from "@/components/pages/Dashboard/nav-documents";
 import { NavMain } from "@/components/pages/Dashboard/nav-main";
 import { NavSecondary } from "@/components/pages/Dashboard/nav-secondary";
 import { NavUser } from "@/components/pages/Dashboard/nav-user";

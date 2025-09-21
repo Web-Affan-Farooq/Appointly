@@ -1,4 +1,4 @@
-import {pgTable,time ,text,uuid, varchar,integer, timestamp,boolean, pgEnum} from "drizzle-orm/pg-core";
+import {pgTable,time ,text,uuid, varchar,integer, timestamp,boolean} from "drizzle-orm/pg-core";
 import { user } from "./users";
 import { InferSelectModel } from "drizzle-orm";
 

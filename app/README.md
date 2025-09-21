@@ -38,12 +38,9 @@ Reminder system for upcoming appointments.
 ✅ Deliverable: User + provider both receive reminders.
 
 ## Milestone 6 — Analytics & Reporting
-
-- Provider dashboard:
+- on dashboards Create cards for total earnings this month , a side div for any popup , after that a grid showing details of selected service , on right click , alert shown with inputwith existing value , suer can e able to edit and submit it , service should be automatically editted
 - Number of appointments per week/month.
 - No-shows, cancellations, revenue earned.
-- Graphs with Shadcn charts or Recharts.
-✅ Deliverable: Provider analytics dashboard.
 
 ## Milestone 7 — Polish & Launch
 

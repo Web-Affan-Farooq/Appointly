@@ -1,8 +1,8 @@
 import { AppSidebar } from "@/components/pages/Dashboard/app-sidebar";
-import { ChartAreaInteractive } from "@/components/pages/Dashboard/chart-area-interactive";
-import DashboardCard from "@/components/pages/Dashboard/DashboardCard";
-import { IconPlus } from "@tabler/icons-react";
-import { Button, Separator } from "@/components/common";
+// import { ChartAreaInteractive } from "@/components/pages/Dashboard/chart-area-interactive";
+// import DashboardCard from "@/components/pages/Dashboard/DashboardCard";
+// import { IconPlus } from "@tabler/icons-react";
+import { Separator } from "@/components/common";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";

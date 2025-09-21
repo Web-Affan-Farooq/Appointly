@@ -13,7 +13,7 @@ const ServiceDetailsPage = () => {
 
   const requiredService = useMemo(() => {
     return services.find((s) => s.id === id);
-  }, [services]);
+  }, [services, id]);
 
   if (!requiredService) {
     return (

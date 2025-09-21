@@ -1,5 +1,4 @@
 "use server";
-import { authClient } from "@/lib/auth-client";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 export const logout = async ():Promise<{message:string}> => {

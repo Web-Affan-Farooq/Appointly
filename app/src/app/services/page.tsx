@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useMemo } from "react";
-import Card from "./Card";
 import { serviceCategories } from "@/constants";
 import { Input } from "@/components/common";
 import { useService } from "@/stores/service";

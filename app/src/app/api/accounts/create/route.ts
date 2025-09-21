@@ -66,8 +66,9 @@ export async function POST(req: Request) {
     attachStripeAccountId(body.email, account.id);
     console.log("Process completed ....");
     return NextResponse.json({ url: accountLink.url });
-  } catch (err: any) {
+  } catch (err) {
     console.log(err);
+    // ignore this error
     return NextResponse.json({ error: err.message }, { status: 400 });
   }
 }
