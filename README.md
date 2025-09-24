@@ -5,8 +5,6 @@ Break down requirements from 3 perspectives:
 
 ### 👤 Users
 As a client, I can:
-
-- Sign up, log in, and manage my profile.
 - Browse available services/providers.
 - View provider availability (calendar slots).
 - Book/cancel/reschedule appointments.
@@ -14,8 +12,6 @@ As a client, I can:
 - View my upcoming & past appointments.
 
 As a provider, I can:
-- Sign up & create a service profile.
-- Set working hours & availability.
 - Approve/reject/cancel bookings.
 - Manage services (title, price, duration).
 - See dashboard (list of today’s appointments, analytics).
@@ -39,7 +35,7 @@ user attend appointment (COMPLETED)
 - **Calendar UI**: [ `React Calendar` , `FullCalendar`].
 - **Reminders: Email**: (Resend, Nodemailer) / optional push notifications.
 
-## 3. RElated guides:
+## 3. Related guides:
 - [stripe accept payment features](https://docs.stripe.com/connect/enable-payment-acceptance-guide)
 
 ## 3. Database Schema (MVP Level)
@@ -67,3 +63,4 @@ This project is under development and soon be published . Before production depl
 - thumbnail
 - mdx guide
 - Readme defining all API routes , layout
+

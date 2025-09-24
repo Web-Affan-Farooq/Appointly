@@ -11,6 +11,7 @@ type UpdateServiceResponse = {
 const UpdateServiceAction = async (
   values: Partial<InferSelectModel<typeof service>>
 ): Promise<UpdateServiceResponse> => {
+  console.log("Data recieved : ",values)
   try {
     await db.update(service).set(values);
     return {

@@ -9,6 +9,7 @@ import { useDashboard } from "@/stores/dashboard";
 const FetchDashboardData = ({ children }: { children: React.ReactNode }) => {
   const { setServices, selectService, selectedService } = useDashboard();
   useEffect(() => {
+    console.log("Running fetches ....");
     const getData = async () => {
       const session = await authClient.getSession();
       if (session.error) {
@@ -22,13 +23,14 @@ const FetchDashboardData = ({ children }: { children: React.ReactNode }) => {
       }
     };
     getData();
+    console.log("Fetch completed ....");
     setInterval(() => {
+      console.log("Running fetches ....");
       getData();
+      console.log("Fetch complete ....");
     }, 180000);
+  }, []);
 
-    console.log(selectedService);
-    console.log(selectService);
-  }, [setServices, selectService, selectedService]);
   return <>{children}</>;
 };
 export default FetchDashboardData;

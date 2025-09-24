@@ -38,7 +38,7 @@ Reminder system for upcoming appointments.
 ✅ Deliverable: User + provider both receive reminders.
 
 ## Milestone 6 — Analytics & Reporting
-- on dashboards Create cards for total earnings this month , a side div for any popup , after that a grid showing details of selected service , on right click , alert shown with inputwith existing value , suer can e able to edit and submit it , service should be automatically editted
+- on dashboards Create cards for total earnings this month , a side div for any popup
 - Number of appointments per week/month.
 - No-shows, cancellations, revenue earned.
 
