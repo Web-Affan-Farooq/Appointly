@@ -2,9 +2,14 @@
 // _____ utils ...
 import { cn } from "@/lib/utils";
 // _____ Components ...
-import { Input, Label, Button } from "@/components/common";
 import Link from "next/link";
-
+import {
+  PasswordInput,
+  Loader,
+  Input,
+  Label,
+  Button,
+} from "@/components/common";
 // _____ Libraries ...
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,7 +23,6 @@ import {
 import { useForm } from "react-hook-form";
 // _____ actions ...
 import { useState } from "react";
-import { PasswordInput } from "@/components/common";
 
 // ____ Constant data ...
 import CountriesData from "@/data/countries.json";
@@ -118,8 +122,18 @@ export function SignupForm({
           {errors.country && <p>{errors.country.message}</p>}
         </div>
 
-        <Button type="submit" className="w-full">
-          Signup
+        <Button
+          type="submit"
+          disabled={loading}
+          className={`${loading ? "bg-pink/50 cursor-not-allowed" : ""}`}
+        >
+          {loading ? (
+            <>
+              <span>Please wait</span> <Loader />
+            </>
+          ) : (
+            <span>Signup</span>
+          )}
         </Button>
         <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
           <span className="bg-background text-muted-foreground relative z-10 px-2">

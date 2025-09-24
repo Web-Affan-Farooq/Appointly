@@ -292,11 +292,12 @@ const ServiceDetails = () => {
                 />
               </div>
               <button
+                disabled={loading}
                 type="button"
                 onClick={handleSave}
-                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+                className={`mt-4 px-4 py-2 ${loading ? "bg-pink/50 cursor-not-allowed" : "bg-pink cursor-pointer"} text-white rounded`}
               >
-                Save changes
+                {loading ? "Saving" : "Save changes"}
               </button>
             </div>
           </SheetContent>

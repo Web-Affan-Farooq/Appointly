@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { useDashboard } from "@/stores/dashboard";
 
 const FetchDashboardData = ({ children }: { children: React.ReactNode }) => {
-  const { setServices, selectService, selectedService } = useDashboard();
+  const { setServices, selectService } = useDashboard();
   useEffect(() => {
     console.log("Running fetches ....");
     const getData = async () => {
