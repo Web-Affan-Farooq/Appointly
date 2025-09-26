@@ -14,7 +14,7 @@ export function CTA() {
                 Ready to Transform Your
                 <span className="block">Appointment Experience?</span>
               </h2>
-              <p className="text-xl text-white/90 leading-relaxed">
+              <p className="text-xl text-white/90 leading-relaxed max-sm:text-sm">
                 Join thousands of satisfied users who have streamlined their
                 appointment management with Appointly. Start your free trial
                 today!
@@ -31,36 +31,41 @@ export function CTA() {
               ].map((benefit, index) => (
                 <div key={index} className="flex items-center space-x-3">
                   <CheckCircle className="h-5 w-5 text-white flex-shrink-0" />
-                  <span className="text-white/90">{benefit}</span>
+                  <span className="text-white/90 max-sm:text-sm">
+                    {benefit}
+                  </span>
                 </div>
               ))}
             </div>
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <Button className="bg-white text-black hover:bg-gray-100 px-8 py-4 text-lg">
+              <Button className="flex flex-row flex-nowrap justify-center items-center bg-yellow px-8 py-4 text-lg hover:background-button-hover transition-all duration-200 ease-in-out">
                 <Users className="h-5 w-5 mr-2" />
-                Start as Client
-                <ArrowRight className="h-5 w-5 ml-2" />
+                <span>Start as Client</span>
               </Button>
-              <Button className="border-2 border-white text-white hover:bg-white hover:text-black px-8 py-4 text-lg">
+              <Button className="transition-all duration-200 ease-in-out flex flex-row flex-nowrap justify-center items-center text-white hover:bg-white hover:text-black px-8 py-4 text-lg">
                 <Calendar className="h-5 w-5 mr-2" />
-                Join as Provider
-                <ArrowRight className="h-5 w-5 ml-2" />
+                <span>Join as Provider</span>
               </Button>
             </div>
 
             {/* Social Proof */}
             <div className="pt-6 border-t border-white/20">
-              <p className="text-white/80 text-sm mb-4">
+              <p className="text-white/80 text-sm mb-4 max-sm:text-sm">
                 Join 10,000+ users who trust Appointly
               </p>
               <div className="flex space-x-2">
                 {[...Array(5)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="w-8 h-8 bg-white/20 rounded-full"
-                  ></div>
+                  <div key={i} className="w-8 h-8 bg-white/20 rounded-full">
+                    <Image
+                      src="/images/profile.jpg"
+                      alt="image"
+                      width={50}
+                      height={50}
+                      className="rounded-full"
+                    />
+                  </div>
                 ))}
                 <span className="text-white/90 text-sm self-center ml-2">
                   and thousands more...

@@ -78,7 +78,7 @@ export function Features() {
           <h2 className="text-3xl lg:text-5xl font-bold text-black">
             Everything You Need to Succeed
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto max-sm:text-sm">
             Whether you're booking appointments or managing your service
             business, Appointly provides all the tools you need in one powerful
             platform.
@@ -89,7 +89,7 @@ export function Features() {
         <div className="mb-20">
           <div className="text-center mb-10">
             <h3 className="text-2xl font-bold text-black mb-2">For Clients</h3>
-            <p className="text-gray-600">
+            <p className="text-gray-600 max-sm:text-sm">
               Find and book with the best service providers
             </p>
           </div>
@@ -107,7 +107,7 @@ export function Features() {
                   <h4 className="text-xl font-semibold text-black">
                     {feature.title}
                   </h4>
-                  <p className="text-gray-600 leading-relaxed">
+                  <p className="text-gray-600 leading-relaxed max-sm:text-sm">
                     {feature.description}
                   </p>
                 </div>
@@ -140,7 +140,7 @@ export function Features() {
                   <h4 className="text-xl font-semibold text-black">
                     {feature.title}
                   </h4>
-                  <p className="text-gray-600 leading-relaxed">
+                  <p className="text-gray-600 leading-relaxed max-sm:text-sm">
                     {feature.description}
                   </p>
                 </div>

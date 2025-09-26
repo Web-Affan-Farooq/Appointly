@@ -85,7 +85,7 @@ export function HowItWorks() {
           <h2 className="text-3xl lg:text-5xl font-bold text-black">
             How Appointly Works
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="max-sm:text-sm text-xl text-gray-600 max-w-3xl mx-auto">
             A streamlined process designed for both clients and service
             providers to make appointment management effortless.
           </p>
@@ -119,7 +119,9 @@ export function HowItWorks() {
                         {step.title}
                       </h4>
                     </div>
-                    <p className="text-gray-600">{step.description}</p>
+                    <p className="text-gray-600 max-sm:text-sm">
+                      {step.description}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -183,7 +185,9 @@ export function HowItWorks() {
                         {step.title}
                       </h4>
                     </div>
-                    <p className="text-gray-600">{step.description}</p>
+                    <p className="text-gray-600 max-sm:text-sm">
+                      {step.description}
+                    </p>
                   </div>
                 </div>
               ))}

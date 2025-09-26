@@ -4,13 +4,13 @@ import Image from "next/image";
 import { Calendar, Users, ArrowRight, CheckCircle } from "lucide-react";
 export function Hero() {
   return (
-    <section className="w-full bg-gradient-to-br from-white via-purple-50 to-pink-50 py-10 xl:py-32">
+    <section className="w-full bg-gradient-to-br from-white via-purple-50 to-pink-50 py-32">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Column - Text Content */}
-          <div className="space-y-8">
+          <div className="space-y-4">
             {/* Badge */}
-            <div className="inline-flex items-center px-4 py-2 rounded-full bg-[#e189fa]/10 border border-[#e189fa]/20">
+            <div className="inline-flex items-center px-4 py-1 rounded-full bg-[#e189fa]/10 border border-[#e189fa]/20">
               <span className="text-sm font-medium text-[#e189fa]">
                 ✨ Transform Your Appointment Management
               </span>
@@ -23,7 +23,7 @@ export function Hero() {
                 <span className="block text-[#e189fa]">Appointments</span>
                 <span className="block">Effortlessly</span>
               </h1>
-              <p className="text-xl text-gray-600 leading-relaxed max-w-lg">
+              <p className="text-xl text-gray-600 leading-relaxed max-w-lg max-sm:text-sm">
                 The all-in-one platform that connects clients with top-rated
                 service providers while automating appointment management for
                 businesses.
@@ -31,7 +31,7 @@ export function Hero() {
             </div>
 
             {/* Value Props */}
-            <div className="space-y-3">
+            <div className="space-y-2">
               {[
                 "Find & book with top-rated professionals",
                 "Automated scheduling & notifications",
@@ -39,7 +39,9 @@ export function Hero() {
               ].map((feature, index) => (
                 <div key={index} className="flex items-center space-x-3">
                   <CheckCircle className="h-5 w-5 text-[#dbc81d] flex-shrink-0" />
-                  <span className="text-gray-700">{feature}</span>
+                  <span className="text-gray-700 max-sm:text-sm">
+                    {feature}
+                  </span>
                 </div>
               ))}
             </div>

@@ -1,14 +1,24 @@
+import {} from // Calendar,
+// Mail,
+// Phone,
+// MapPin,
+// Twitter,
+// Linkedin,
+// Instagram,
+// Facebook,
+"lucide-react";
+import Link from "next/link";
 import {
-  Calendar,
-  Mail,
-  Phone,
-  MapPin,
-  Twitter,
-  Linkedin,
-  Instagram,
-  Facebook,
-} from "lucide-react";
-import { Button, Input } from "@/components/common";
+  IconMail,
+  IconPhone,
+  IconBrandFacebook,
+  IconBrandInstagram,
+  IconBrandLinkedin,
+  IconBrandX,
+  IconMapPin2,
+  IconCalendarEvent,
+} from "@tabler/icons-react";
+import { Input } from "@/components/common";
 export function Footer() {
   const companyLinks = [
     { name: "About Us", href: "#" },
@@ -46,10 +56,10 @@ export function Footer() {
           {/* Company Info */}
           <div className="lg:col-span-2 space-y-6">
             <div className="flex items-center">
-              <Calendar className="h-8 w-8 mr-2 text-[#e189fa]" />
+              <IconCalendarEvent className="h-8 w-8 mr-2 text-[#e189fa]" />
               <span className="text-2xl font-bold">Appointly</span>
             </div>
-            <p className="text-gray-400 leading-relaxed max-w-md">
+            <p className="text-gray-400 leading-relaxed max-w-md max-sm:text-sm">
               The all-in-one platform that connects clients with top-rated
               service providers while automating appointment management for
               businesses.
@@ -58,33 +68,39 @@ export function Footer() {
             {/* Contact Info */}
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
-                <Mail className="h-4 w-4 text-[#e189fa]" />
-                <span className="text-gray-400">hello@appointly.com</span>
+                <IconMail className="h-4 w-4 text-[#e189fa]" />
+                <span className="text-gray-400 max-sm:text-sm">
+                  hello@appointly.com
+                </span>
               </div>
               <div className="flex items-center space-x-3">
-                <Phone className="h-4 w-4 text-[#e189fa]" />
-                <span className="text-gray-400">+1 (555) 123-4567</span>
+                <IconPhone className="h-4 w-4 text-[#e189fa]" />
+                <span className="text-gray-400 max-sm:text-sm">
+                  +1 (555) 123-4567
+                </span>
               </div>
               <div className="flex items-center space-x-3">
-                <MapPin className="h-4 w-4 text-[#e189fa]" />
-                <span className="text-gray-400">San Francisco, CA</span>
+                <IconMapPin2 className="h-4 w-4 text-[#e189fa]" />
+                <span className="text-gray-400 max-sm:text-sm">
+                  San Francisco, CA
+                </span>
               </div>
             </div>
 
             {/* Social Media */}
             <div className="flex space-x-4">
-              <Button className="text-gray-400 hover:text-[#e189fa] p-2">
-                <Twitter className="h-5 w-5" />
-              </Button>
-              <Button className="text-gray-400 hover:text-[#e189fa] p-2">
-                <Linkedin className="h-5 w-5" />
-              </Button>
-              <Button className="text-gray-400 hover:text-[#e189fa] p-2">
-                <Instagram className="h-5 w-5" />
-              </Button>
-              <Button className="text-gray-400 hover:text-[#e189fa] p-2">
-                <Facebook className="h-5 w-5" />
-              </Button>
+              <button className="text-gray-400 hover:text-black cursor-pointer transition-all duration-300 ease-in-out hover:bg-pink hover:text-black cursor-pointer[#e189fa] p-2 border border-pink rounded-full">
+                <IconBrandX className="h-5 w-5" size={20} />
+              </button>
+              <button className="text-gray-400 transition-all duration-300 ease-in-out hover:bg-pink hover:text-black cursor-pointer p-2 border border-pink rounded-full">
+                <IconBrandLinkedin className="h-5 w-5" size={20} />
+              </button>
+              <button className="text-gray-400 transition-all duration-300 ease-in-out hover:bg-pink hover:text-black cursor-pointer p-2 border border-pink rounded-full">
+                <IconBrandInstagram className="h-5 w-5" size={20} />
+              </button>
+              <button className="text-gray-400 transition-all duration-300 ease-in-out hover:bg-pink hover:text-black cursor-pointer p-2 border border-pink rounded-full">
+                <IconBrandFacebook className="h-5 w-5" size={20} />
+              </button>
             </div>
           </div>
 
@@ -94,12 +110,12 @@ export function Footer() {
             <ul className="space-y-3">
               {companyLinks.map((link, index) => (
                 <li key={index}>
-                  <a
+                  <Link
                     href={link.href}
-                    className="text-gray-400 hover:text-white transition-colors"
+                    className="text-gray-400 hover:text-white transition-colors max-sm:text-sm"
                   >
                     {link.name}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -111,12 +127,12 @@ export function Footer() {
             <ul className="space-y-3">
               {productLinks.map((link, index) => (
                 <li key={index}>
-                  <a
+                  <Link
                     href={link.href}
-                    className="text-gray-400 hover:text-white transition-colors"
+                    className="text-gray-400 hover:text-white transition-colors max-sm:text-sm"
                   >
                     {link.name}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -128,12 +144,12 @@ export function Footer() {
             <ul className="space-y-3">
               {supportLinks.map((link, index) => (
                 <li key={index}>
-                  <a
+                  <Link
                     href={link.href}
-                    className="text-gray-400 hover:text-white transition-colors"
+                    className="text-gray-400 hover:text-white transition-colors max-sm:text-sm"
                   >
                     {link.name}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -145,7 +161,7 @@ export function Footer() {
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div>
               <h4 className="text-xl font-semibold mb-2">Stay Updated</h4>
-              <p className="text-gray-400">
+              <p className="text-gray-400 max-sm:text-sm">
                 Get the latest features and industry insights delivered to your
                 inbox.
               </p>
@@ -156,9 +172,9 @@ export function Footer() {
                 placeholder="Enter your email"
                 className="bg-gray-900 border-gray-700 text-white placeholder-gray-500"
               />
-              <Button className="bg-[#e189fa] hover:bg-[#d175f0] text-black px-6">
+              <button className="bg-[#e189fa] hover:bg-[#d175f0] text-black px-6">
                 Subscribe
-              </Button>
+              </button>
             </div>
           </div>
         </div>
@@ -168,18 +184,18 @@ export function Footer() {
       <div className="border-t border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <div className="text-gray-400">
+            <div className="text-gray-400 max-sm:text-sm">
               © 2024 Appointly. All rights reserved.
             </div>
             <div className="flex space-x-6">
               {legalLinks.map((link, index) => (
-                <a
+                <Link
                   key={index}
                   href={link.href}
-                  className="text-gray-400 hover:text-white transition-colors text-sm"
+                  className="max-sm:text-sm text-gray-400 hover:text-white transition-colors text-sm"
                 >
                   {link.name}
-                </a>
+                </Link>
               ))}
             </div>
           </div>

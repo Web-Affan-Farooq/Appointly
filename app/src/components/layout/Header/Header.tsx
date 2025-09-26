@@ -21,7 +21,7 @@ const Header = () => {
   const [navStatus, setNavStatus] = useState(false);
 
   return (
-    <header className="bg-gray-200 flex flex-row flex-nowrap justify-between items-center max-sm:py-7 max-sm:px-7 sm:px-7 sm:py-7 md:px-12 md:py-7 relative">
+    <header className="z-30 fixed w-full m-auto backdrop-blur-3xl bg-gray-400/30 flex flex-row flex-nowrap justify-between items-center max-sm:py-7 max-sm:px-7 sm:px-7 sm:py-7 md:px-12 md:py-7 xl:px-24 xl:py-10">
       <div className="font-bold text-xl flex flex-row flex-nowrap gap-[6px] justify-center items-center">
         {navStatus ? (
           <IconX
@@ -39,7 +39,7 @@ const Header = () => {
 
       <div className="flex flex-row flex-nowrap max-sm:hidden sm:gap-[20px] md:gap-[30px] justify-center items-center">
         {links.map((link, idx) => (
-          <Link href={link.url} key={idx} className="text-md text-gray-400">
+          <Link href={link.url} key={idx} className="text-md text-black">
             {link.name}
           </Link>
         ))}

@@ -83,7 +83,7 @@ export function Testimonials() {
           <h2 className="text-3xl lg:text-5xl font-bold text-black">
             Loved by Thousands
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto max-sm:text-sm">
             See what our clients and service providers are saying about their
             experience with Appointly.
           </p>
@@ -125,7 +125,7 @@ export function Testimonials() {
                 </div>
 
                 {/* Content */}
-                <p className="text-gray-700 leading-relaxed">
+                <p className="text-gray-700 leading-relaxed max-sm:text-sm">
                   "{testimonial.content}"
                 </p>
 
