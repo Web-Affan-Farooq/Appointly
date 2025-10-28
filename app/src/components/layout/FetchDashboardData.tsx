@@ -18,6 +18,7 @@ const FetchDashboardData = ({ children }: { children: React.ReactNode }) => {
         const response = await FetchProviderDashboardDataAction(
           session.data.user.id
         );
+        console.log(response.services);
         setServices(response.services);
         selectService(response.services[0]);
       }
@@ -29,7 +30,7 @@ const FetchDashboardData = ({ children }: { children: React.ReactNode }) => {
       getData();
       console.log("Fetch complete ....");
     }, 180000);
-  }, []);
+  }, [selectService, setServices]);
 
   return <>{children}</>;
 };

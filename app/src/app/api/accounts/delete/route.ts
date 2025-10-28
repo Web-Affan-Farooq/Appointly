@@ -36,6 +36,6 @@ export async function DELETE(req:NextRequest) {
   } catch (err) {
     console.error("Error deleting Stripe account:", err);
     // ignore this error
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    return NextResponse.json({ error: "An error occured" }, { status: 500 });
   }
 }

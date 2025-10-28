@@ -7,7 +7,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
-import Table from "./DataTable";
+import { DataTable } from "@/components/pages/Appointments";
 
 const SiteHeader = () => {
   return (
@@ -44,7 +44,7 @@ export default function Page() {
             <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
               {/* <DashboardCard /> */}
               <div className="px-4 lg:px-6">
-                <Table />
+                <DataTable />
               </div>
               {/** data table */}
             </div>

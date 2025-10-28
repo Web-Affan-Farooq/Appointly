@@ -36,7 +36,7 @@ const Form = () => {
       window.document.location.href = data.url;
     } catch (error) {
       console.error("Submission error:", error);
-      toast.error(error.message); // ignore this error
+      toast.error("An error occured"); // ignore this error
     }
   };
 

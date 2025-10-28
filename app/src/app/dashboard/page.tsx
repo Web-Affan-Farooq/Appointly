@@ -1,9 +1,10 @@
+"use client";
 import { AppSidebar } from "@/components/pages/Dashboard/app-sidebar";
 import { ChartAreaInteractive } from "@/components/pages/Dashboard/chart-area-interactive";
 import DashboardCard from "@/components/pages/Dashboard/DashboardCard";
 import { SiteHeader } from "@/components/pages/Dashboard/site-header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import ServiceDetails from "@/components/pages/Dashboard/ServiceDetails";
+import ServiceDetails from "@/components/pages/Dashboard/ServiceDetails/ServiceDetails";
 
 // import data from "./data.json";
 

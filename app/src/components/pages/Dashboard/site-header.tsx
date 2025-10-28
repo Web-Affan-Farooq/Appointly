@@ -1,5 +1,4 @@
-import { IconPlus } from "@tabler/icons-react";
-import { Button, Separator } from "@/components/common";
+import { Separator } from "@/components/common";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 
 export function SiteHeader() {
@@ -13,11 +12,6 @@ export function SiteHeader() {
         />
         <div className="flex justify-between items-center">
           <h1 className="text-base font-medium">Dashboard</h1>
-
-          <Button className="flex flex-row flex-nowrap gap-[5px] py-[5px] px-[10px]">
-            <IconPlus className="stroke-black" />
-            <span className="hidden lg:inline text-black">Add Section</span>
-          </Button>
         </div>
       </div>
     </header>

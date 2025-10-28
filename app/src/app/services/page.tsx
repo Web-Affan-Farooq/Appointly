@@ -37,7 +37,7 @@ const ServicesPage = () => {
     <main>
       <article>
         <section>
-          <div className="min-h-screen bg-gray-50 font-sans p-4 sm:p-8 md:p-12">
+          <div className="min-h-screen bg-gray-50 font-sans px-4 py-16 sm:px-8 sm:py-20 md:px-12 md:py-26">
             <div className="max-w-7xl mx-auto py-8">
               <h1 className="text-4xl font-bold text-gray-900 mb-2">
                 Available Services

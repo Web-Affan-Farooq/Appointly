@@ -45,7 +45,6 @@ Reminder system for upcoming appointments.
 ## Milestone 7 — Polish & Launch
 
 - Add custom branding for providers.
-- Add white-label option (custom domain).
 - Deploy on Vercel + Supabase.
 
 Prepare landing page + README + demo video.

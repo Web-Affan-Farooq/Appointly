@@ -69,6 +69,6 @@ export async function POST(req: Request) {
   } catch (err) {
     console.log(err);
     // ignore this error
-    return NextResponse.json({ error: err.message }, { status: 400 });
+    return NextResponse.json({ error: "An error occured" }, { status: 400 });
   }
 }

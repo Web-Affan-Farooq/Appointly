@@ -1,5 +1,5 @@
 import { Button } from "@/components/common";
-import { ArrowRight, Calendar, Users, CheckCircle } from "lucide-react";
+import { Calendar, Users, CheckCircle } from "lucide-react";
 import Image from "next/image";
 
 export function CTA() {

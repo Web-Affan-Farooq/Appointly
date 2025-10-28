@@ -1,12 +1,4 @@
-import {} from // Calendar,
-// Mail,
-// Phone,
-// MapPin,
-// Twitter,
-// Linkedin,
-// Instagram,
-// Facebook,
-"lucide-react";
+"use client";
 import Link from "next/link";
 import {
   IconMail,
@@ -19,7 +11,11 @@ import {
   IconCalendarEvent,
 } from "@tabler/icons-react";
 import { Input } from "@/components/common";
+import { usePathname } from "next/navigation";
+import { pagesNotAllowed } from "@/constants";
+
 export function Footer() {
+  const pathname = usePathname();
   const companyLinks = [
     { name: "About Us", href: "#" },
     { name: "Careers", href: "#" },
@@ -48,6 +44,9 @@ export function Footer() {
     { name: "GDPR", href: "#" },
   ];
 
+  if (pagesNotAllowed.includes(pathname)) {
+    return <></>;
+  }
   return (
     <footer className="w-full bg-black text-white">
       {/* Main Footer Content */}

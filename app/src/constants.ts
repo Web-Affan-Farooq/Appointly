@@ -7,6 +7,17 @@ const days = [
   "SATURDAY",
   "SUNDAY",
 ];
+const pagesNotAllowed = [
+  "/dashboard",
+  "/dashboard/appointments",
+  "/add-service",
+  "/book-appointment",
+  "/login",
+  "/create-account",
+  "/checkout/failed",
+  "/checkout/success",
+];
+
 const serviceCategories = [
   "All",  
   "Salon",
@@ -67,4 +78,4 @@ const plans = [
     ]
   },
 ]
-export {days, plans, serviceCategories}
+export {days, plans, serviceCategories,pagesNotAllowed}

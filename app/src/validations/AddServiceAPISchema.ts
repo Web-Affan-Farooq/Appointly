@@ -51,8 +51,7 @@ const AddServiceAPIRequest = z
 
     max_appointments_per_day: z
       .number("Must be a number")
-      .positive("Must be positive")
-      .optional(),
+      .positive("Must be positive"),
   })
   .strict();
 

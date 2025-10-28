@@ -1,7 +1,9 @@
 "use client";
 import { IconMenu2, IconX } from "@tabler/icons-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React, { useState } from "react";
+import { pagesNotAllowed } from "@/constants";
 
 const links = [
   {
@@ -19,7 +21,11 @@ const links = [
 ];
 const Header = () => {
   const [navStatus, setNavStatus] = useState(false);
+  const pathname = usePathname();
 
+  if (pagesNotAllowed.includes(pathname)) {
+    return <></>;
+  }
   return (
     <header className="z-30 fixed w-full m-auto backdrop-blur-3xl bg-gray-400/30 flex flex-row flex-nowrap justify-between items-center max-sm:py-7 max-sm:px-7 sm:px-7 sm:py-7 md:px-12 md:py-7 xl:px-24 xl:py-10">
       <div className="font-bold text-xl flex flex-row flex-nowrap gap-[6px] justify-center items-center">
@@ -43,12 +49,18 @@ const Header = () => {
             {link.name}
           </Link>
         ))}
-        <button className="bg-pink rounded-xl px-[20px] py-[5px] ">
+        <Link
+          href="/login"
+          className="bg-pink rounded-xl px-[20px] py-[5px] cursor-pointer"
+        >
           Signin
-        </button>
-        <button className="bg-pink rounded-xl px-[20px] py-[5px] ">
+        </Link>
+        <Link
+          href="/create-account"
+          className="bg-pink rounded-xl px-[20px] py-[5px] cursor-pointer"
+        >
           Signup
-        </button>
+        </Link>
       </div>
 
       <div
@@ -59,12 +71,18 @@ const Header = () => {
             {link.name}
           </Link>
         ))}
-        <button className="bg-pink rounded-xl px-[20px] py-[5px] ">
+        <Link
+          href={"/login"}
+          className="bg-pink rounded-xl px-[20px] py-[5px] cursor-pointer"
+        >
           Signin
-        </button>
-        <button className="bg-pink rounded-xl px-[20px] py-[5px] ">
+        </Link>
+        <Link
+          href={"/create-account"}
+          className="bg-pink rounded-xl px-[20px] py-[5px] cursor-pointer"
+        >
           Signup
-        </button>
+        </Link>
       </div>
     </header>
   );
