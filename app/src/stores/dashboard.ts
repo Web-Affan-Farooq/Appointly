@@ -3,6 +3,7 @@ import { ServiceData } from "@/@types/types";
 import { persist, createJSONStorage } from "zustand/middleware";
 import CancelAppointmentAction from "@/actions/AppointmentCancelAction";
 import { toast } from "sonner";
+import ScheduleAppointmentAction from "@/actions/ScheduleAppointmentAction";
 
 interface DashboardState {
   services: ServiceData[];
@@ -10,6 +11,7 @@ interface DashboardState {
   setServices: (list: ServiceData[]) => void;
   selectService: (service: ServiceData) => void;
   cancelAppointment: (ids: string[]) => void;
+  scheduleAppointment: (ids: string[]) => void;
 }
 
 export const useDashboard = create<DashboardState>()(
@@ -53,6 +55,27 @@ export const useDashboard = create<DashboardState>()(
         const updatedAppointments = selectedService.appointments.map((app) => {
           if (ids.includes(app.id)) {
             return { ...app, status: "CANCELLED" };
+          } else return app;
+        });
+
+        toast.success(message);
+
+        return set((state) => ({
+          selectedService: { ...state.selectedService, updatedAppointments },
+        }));
+      },
+      scheduleAppointment: async (ids) => {
+        // _____ Update in database ...
+        const { message, success } = await ScheduleAppointmentAction(ids);
+        if (!success) {
+          toast.error(message);
+        }
+
+        // _____ Update state...
+        const { selectedService } = get();
+        const updatedAppointments = selectedService.appointments.map((app) => {
+          if (ids.includes(app.id)) {
+            return { ...app, status: "CONFIRMED" };
           } else return app;
         });
 

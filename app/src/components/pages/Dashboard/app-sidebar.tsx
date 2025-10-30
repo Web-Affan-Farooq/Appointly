@@ -43,11 +43,6 @@ const data = {
       url: "/dashboard/appointments",
       icon: IconUsers,
     },
-    {
-      title: "Projects",
-      url: "#",
-      icon: IconFolder,
-    },
   ],
   navClouds: [
     {

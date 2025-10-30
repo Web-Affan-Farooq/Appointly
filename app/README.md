@@ -24,7 +24,7 @@
 
 ## Milestone 4 — Provider Dashboard Actionstask
 
-- Provider can confirm/reject/cancel bookings.
+- Provider can confirm/reject/.
 - Update appointment status accordingly.
 - Show today’s schedule in dashboard.
 
@@ -43,9 +43,4 @@ Reminder system for upcoming appointments.
 - No-shows, cancellations, revenue earned.
 
 ## Milestone 7 — Polish & Launch
-
-- Add custom branding for providers.
-- Deploy on Vercel + Supabase.
-
 Prepare landing page + README + demo video.
-✅ Deliverable: Live product, ready to showcase or pitch.

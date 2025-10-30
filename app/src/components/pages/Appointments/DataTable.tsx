@@ -15,13 +15,20 @@ const Table = () => {
     toogleLoading,
   } = useAppointments();
 
-  const { selectedService, cancelAppointment } = useDashboard();
+  const { selectedService, cancelAppointment, scheduleAppointment } =
+    useDashboard();
 
   const [open, setOpen] = useState(false);
 
   const cancel = async () => {
     toogleLoading();
     cancelAppointment(selectedAppointments);
+    setSelectedAppointments([]);
+    toogleLoading();
+  };
+  const schedule = async () => {
+    toogleLoading();
+    scheduleAppointment(selectedAppointments);
     setSelectedAppointments([]);
     toogleLoading();
   };
@@ -48,6 +55,13 @@ const Table = () => {
                 onClick={cancel}
               >
                 Cancel
+              </button>
+              <button
+                type="button"
+                className="cursor-pointer bg-green-600 text-white px-[10px] py-[2px] rounded-xl"
+                onClick={schedule}
+              >
+                Schedule
               </button>
             </div>
           </div>
