@@ -7,6 +7,7 @@ const BookingFormAPIRequest  = z
     service_id: z.string(),
     price:z.int(),
     currency:z.string(),
+    token:z.number("Token must be a number").positive("Token number must be positive")
 //     started_on: z
 //       .string()
 //       .datetime({ message: "Start date and time is required." }),

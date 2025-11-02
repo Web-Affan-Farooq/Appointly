@@ -1,6 +1,5 @@
 import { z } from "zod";
 import { days } from "@/constants";
-import type { Service } from "@/db/schemas/tables/services";
 
 const AddServiceAPIRequest = z
   .object({
@@ -8,17 +7,15 @@ const AddServiceAPIRequest = z
       .string("Name is required")
       .min(3, "Minimum 3 characters required")
       .max(100, "Maximum 100 characters allowed"),
-      user_id:z.string(),
-      category:z.string(),
-      provider_name:z.string(),
+    user_id: z.string(),
+    category: z.string(),
+    provider_name: z.string(),
     description: z
       .string("Description is required")
       .min(50, "Minimum 50 characters required")
       .max(300, "Maximum 300 characters allowed"),
 
-    price: z
-      .number("Price is required")
-      .nonnegative("Price cannot be negative"),
+    price: z.number("Price is required").nonnegative("Price cannot be negative"),
 
     currency: z
       .string("Currency is required")
@@ -33,34 +30,49 @@ const AddServiceAPIRequest = z
 
     start_time: z
       .string("Start time is required")
-      .regex(
-        /^([01]\d|2[0-3]):([0-5]\d)(:[0-5]\d)?$/,
-        "Invalid time format (HH:MM or HH:MM:SS)"
-      ),
-    details:z.string("Invalid details").array().nonempty("Please provide atleast"),
+      .regex(/^([01]\d|2[0-3]):([0-5]\d)(:[0-5]\d)?$/, "Invalid time format"),
+
+    details: z
+      .array(z.string())
+      .nonempty("Please provide at least one detail"),
+
     end_time: z
       .string("End time is required")
-      .regex(
-        /^([01]\d|2[0-3]):([0-5]\d)(:[0-5]\d)?$/,
-        "Invalid time format (HH:MM or HH:MM:SS)"
-      ),
+      .regex(/^([01]\d|2[0-3]):([0-5]\d)(:[0-5]\d)?$/, "Invalid time format"),
 
-    duration: z
-      .number("Duration is required")
-      .positive("Duration must be positive"),
+    duration: z.number("Duration is required").positive("Duration must be positive"),
 
-    max_appointments_per_day: z
-      .number("Must be a number")
-      .positive("Must be positive"),
+    max_appointments_per_day: z.number("Must be a number").positive("Must be positive"),
+
+    max_capacity: z.number("Must be a number").positive("Must be positive"),
   })
-  .strict();
+  .strict()
+  .superRefine((data, ctx) => {
+    // parse start/end time into minutes
+    const [startHour, startMin] = data.start_time.split(":").map(Number);
+    const [endHour, endMin] = data.end_time.split(":").map(Number);
 
-const AddServiceAPIResponse = z
-  .object({
-    success: z.boolean(),
-    message: z.string(),
-    service: z.custom<Service>().optional(),
-  })
-  .strict();
+    const totalAvailableMinutes = (endHour * 60 + endMin) - (startHour * 60 + startMin);
 
-export { AddServiceAPIRequest, AddServiceAPIResponse };
+    if (totalAvailableMinutes <= 0) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "End time must be after start time",
+        path: ["end_time"],
+      });
+      return;
+    }
+
+    // total possible appointments in a day (if capacity is 1)
+    const maxPossibleAppointments = Math.floor(totalAvailableMinutes / data.duration) * data.max_capacity;
+
+    if (data.max_appointments_per_day > maxPossibleAppointments) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `With ${data.max_capacity} capacity and ${data.duration} min per appointment, only ${maxPossibleAppointments} appointments fit in the available time. Please adjust your values.`,
+        path: ["max_appointments_per_day"],
+      });
+    }
+  });
+
+export { AddServiceAPIRequest };

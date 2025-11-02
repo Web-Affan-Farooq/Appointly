@@ -1,14 +1,18 @@
-import type { NextRequest } from "next/server";
-import { NextResponse } from "next/server";
+"use server";
 import Stripe from "stripe";
 import db from "@/db";
 import { appointment, service } from "@/db/schemas";
 import { z } from "zod";
-import { BookingFormAPIRequest } from "@/validations/BookAppointmentSchema";
 import { v4 } from "uuid";
 import { eq } from "drizzle-orm";
+import { BookingFormAPIRequest } from "@/validations/BookAppointmentSchema";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+
+const urls = {
+  success: process.env.BETTER_AUTH_URL + "/checkout/success",
+  failure: process.env.BETTER_AUTH_URL + "/checkout/failed",
+};
 
 // ____ Function for getting service name ...
 const findService = async (service_id: string) => {
@@ -25,13 +29,18 @@ interface PivotObject {
   service_name: string;
 }
 
-export const POST = async (req: NextRequest) => {
+const BookAppointmentAction = async (
+  formData: z.infer<typeof BookingFormAPIRequest>
+) :Promise<{
+    message:string;
+    success:boolean;
+    url?:string
+}>=> {
   /*
   Attached multiple trycatch blocks for effective error handling ...
   */
-  const body: z.infer<typeof BookingFormAPIRequest> = await req.json();
-  console.log("-------------- Get body -------------- : ", body);
-  console.log(body);
+  console.log("-------------- Get formData -------------- : ", formData);
+  console.log(formData);
   // ____ For storing data from different blocks ...
   const pivot: PivotObject = {
     appointment_id: "",
@@ -46,17 +55,18 @@ export const POST = async (req: NextRequest) => {
     const [newAppointment] = await db
       .insert(appointment)
       .values({
-        customer_name: body.customer_name,
-        customer_email: body.customer_email,
-        service_id: body.service_id,
+        customer_name: formData.customer_name,
+        customer_email: formData.customer_email,
+        service_id: formData.service_id,
         transfer_group: `appointment_${v4()}`,
+        token: formData.token,
       })
       .returning();
     console.log("-------------- Inserted successfully -------------- : ");
     console.log(newAppointment);
 
     console.log("-------------- Fetching service name -------------- : ");
-    const serviceName = await findService(body.service_id);
+    const serviceName = await findService(formData.service_id);
     console.log("-------------- service name -------------- : ");
     console.log(serviceName);
     // ____ Manipulate globally ...
@@ -68,15 +78,10 @@ export const POST = async (req: NextRequest) => {
   } catch (err) {
     console.log("-------------- An error occured -------------- : ");
     console.log(err);
-    return NextResponse.json(
-      {
+    return {
         message: "Error while creating appointment",
-        url: null,
-      },
-      {
-        status: 500,
+        success:false
       }
-    );
   }
 
   // _____ Create Checkout Session (customer pays into platform account) ...
@@ -84,24 +89,34 @@ export const POST = async (req: NextRequest) => {
     console.log("-------------- Creating checkout -------------- : ");
     console.log("-------------- Checking Pivot -------------- : ");
     console.log(pivot);
+    console.log(
+      "-------------- Updating service appointment count -------------- : "
+    );
+    await db
+      .update(service)
+      .set({
+        appointmentsCount: formData.token,
+      })
+      .where(eq(service.id, formData.service_id));
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       mode: "payment",
-      customer_email: body.customer_email,
+      customer_email: formData.customer_email,
       line_items: [
         {
           price_data: {
-            currency: body.currency.toLowerCase(),
+            currency: formData.currency.toLowerCase(),
             product_data: {
               name: `Appointment for ${pivot.service_name}`,
             },
-            unit_amount: body.price * 100,
+            unit_amount: formData.price * 100,
           },
           quantity: 1,
         },
       ],
-      success_url: new URL("/checkout/success", req.url).toString(),
-      cancel_url: new URL("/checkout/failed", req.url).toString(),
+      success_url: urls.success,
+      cancel_url: urls.failure,
       metadata: {
         appointment_id: pivot.appointment_id,
         transfer_group: pivot.transfer_group,
@@ -109,37 +124,19 @@ export const POST = async (req: NextRequest) => {
     });
     console.log("-------------- Checkout completed -------------- : ");
     console.log(session);
-    return NextResponse.json({
+    return {
       url: session.url!,
+      success:true,
       message: "Redirecting to checkout",
-    });
+    }
   } catch (err) {
     console.log("-------------- An error occured -------------- : ");
     console.log(err);
-    return NextResponse.json({
-      message: "Error in creating payment",
-      url: null,
-    },{status:500});
+    return {
+        message: "Error in creating payment",
+        success:false,
+      }
   }
 };
 
-/*
-
-import Stripe from "stripe";
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
-
-export async function transferToProvider(appointment: any, providerStripeAccountId: string) {
-  const providerAmount = Math.floor(appointment.price * 0.97 * 100); // cents
-
-  const transfer = await stripe.transfers.create({
-    amount: providerAmount,
-    currency: appointment.currency,
-    destination: providerStripeAccountId,
-    transfer_group: appointment.transfer_group,
-  });
-
-  console.log("Transfer success:", transfer.id);
-  return transfer;
-}
-
-*/
+export default BookAppointmentAction;

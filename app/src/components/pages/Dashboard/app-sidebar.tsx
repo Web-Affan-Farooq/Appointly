@@ -6,7 +6,6 @@ import {
   IconChartBar,
   IconFileAi,
   IconFileDescription,
-  IconFolder,
   IconHelp,
   IconInnerShadowTop,
   IconSettings,

@@ -3,7 +3,6 @@
 import { Button, Input, Loader } from "@/components/common";
 // ____ Lib ...
 import { z } from "zod";
-import axios from "axios";
 import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 // ____ Types and schemas ...
@@ -11,6 +10,7 @@ import { BookingFormAPIRequest } from "@/validations/BookAppointmentSchema";
 // ____ Hooks ...
 import { useService } from "@/stores/service";
 import { useForm } from "react-hook-form";
+import { BookAppointmentAction } from "@/actions";
 
 const Form = () => {
   const { selectedService } = useService();
@@ -22,6 +22,7 @@ const Form = () => {
     resolver: zodResolver(BookingFormAPIRequest),
     mode: "onChange",
     defaultValues: {
+      token: selectedService.appointmentsCount + 1,
       service_id: selectedService.id,
       price: selectedService.price,
       currency: selectedService.currency,
@@ -29,14 +30,13 @@ const Form = () => {
   });
 
   const onSubmit = async (formData: z.infer<typeof BookingFormAPIRequest>) => {
-    // console.log(formData);
-    try {
-      const response = await axios.post("/api/payment/checkout", formData);
-      const { data } = response;
-      window.document.location.href = data.url;
-    } catch (error) {
-      console.error("Submission error:", error);
-      toast.error("An error occured"); // ignore this error
+    const { message, success, url } = await BookAppointmentAction(formData);
+
+    if (!success) {
+      toast.error(message);
+    } else if (url) {
+      toast.success(message);
+      window.document.location.href = url;
     }
   };
 

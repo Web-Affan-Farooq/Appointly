@@ -44,3 +44,5 @@ Reminder system for upcoming appointments.
 
 ## Milestone 7 — Polish & Launch
 Prepare landing page + README + demo video.
+
+- attach token system 

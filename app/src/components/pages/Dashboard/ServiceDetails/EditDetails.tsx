@@ -43,6 +43,9 @@ export const EditDetails = () => {
   // _____ For Toogling visibility of sheet component  ...
   const [open, setOpen] = useState(false);
 
+  // _____ For controlling if sheet can be closed (only after save success) ...
+  const [saved, setSaved] = useState(false);
+
   // _____ For controlling service working days  ...
   const [serviceWorkingDays, setServiceWorkingDays] = useState([
     ...selectedService.working_days,
@@ -59,18 +62,32 @@ export const EditDetails = () => {
       const { message, success } = await UpdateServiceAction(updatedData);
       if (!success) {
         toast.error(message);
-        setOpen(false);
       } else {
         toast.success(message);
+        setSaved(true);
+        setOpen(false);
       }
       setLoading(false);
     }
   };
   return (
-    <Sheet open={open}>
+    <Sheet
+      open={open}
+      onOpenChange={(newOpen) => {
+        if (!newOpen && !saved) return;
+        setOpen(newOpen);
+      }}
+    >
       <SheetTrigger className="absolute top-3 right-3 cursor-pointer">
-        <IconEdit size={17} onClick={() => setOpen(true)} />
+        <IconEdit
+          size={17}
+          onClick={() => {
+            setOpen(true);
+            setSaved(false);
+          }}
+        />
       </SheetTrigger>
+
       <SheetContent className="h-[100vh] overflow-y-auto">
         <SheetHeader>
           <SheetTitle>Edit service</SheetTitle>

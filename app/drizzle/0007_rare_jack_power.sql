@@ -1,0 +1,2 @@
+ALTER TABLE "services" ADD COLUMN "last_count_reset" timestamp DEFAULT now() NOT NULL;--> statement-breakpoint
+ALTER TABLE "services" ADD COLUMN "appointment_count" integer DEFAULT 0 NOT NULL;
