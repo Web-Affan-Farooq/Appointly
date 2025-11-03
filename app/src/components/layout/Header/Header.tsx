@@ -27,7 +27,7 @@ const Header = () => {
     return <></>;
   }
   return (
-    <header className="z-30 fixed w-full m-auto backdrop-blur-3xl bg-gray-400/30 flex flex-row flex-nowrap justify-between items-center max-sm:py-7 max-sm:px-7 sm:px-7 sm:py-7 md:px-12 md:py-7 xl:px-24 xl:py-10">
+    <header className="z-30 fixed w-full m-auto backdrop-blur-3xl bg-gray-400/30 flex flex-row flex-nowrap justify-between items-center max-sm:p-7 sm:p-7 md:px-12 md:py-4 xl:px-24 xl:py-10">
       <div className="font-bold text-xl flex flex-row flex-nowrap gap-[6px] justify-center items-center">
         {navStatus ? (
           <IconX

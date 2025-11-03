@@ -46,7 +46,7 @@ const ServiceDetailsPage = () => {
     <main>
       <article>
         <section>
-          <div className="min-h-screen bg-gray-50 font-sans p-4 sm:p-8 md:p-12">
+          <div className="min-h-screen bg-gray-50 font-sans max-sm:px-3 max-sm:py-23 sm:px-7 sm:py-23 md:p-25">
             <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
               {/* Service Content */}
               <div className="p-6 sm:p-8">

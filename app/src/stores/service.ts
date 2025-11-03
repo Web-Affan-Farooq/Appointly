@@ -17,7 +17,7 @@ export const useService = create<ServiceState>()(
   persist(
     (set) => ({
       services: [],
-      loading: false,
+      loading:false,
       selectedService:{
         name:"",
         description:"",

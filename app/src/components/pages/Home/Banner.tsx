@@ -10,8 +10,8 @@ export function Hero() {
           {/* Left Column - Text Content */}
           <div className="space-y-4">
             {/* Badge */}
-            <div className="inline-flex items-center px-4 py-1 rounded-full bg-[#e189fa]/10 border border-[#e189fa]/20">
-              <span className="text-sm font-medium text-[#e189fa]">
+            <div className="inline-flex items-center px-4 py-1 rounded-full bg-pink/40 border border-[#e189fa]/20">
+              <span className="text-sm font-medium text-black">
                 ✨ Transform Your Appointment Management
               </span>
             </div>
