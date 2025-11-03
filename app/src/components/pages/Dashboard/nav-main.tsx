@@ -49,14 +49,21 @@ export function NavMain({
             name="services"
             id="services"
             className="py-[6px] px-[10px] bg-pink rounded-md"
+            onChange={(e) => {
+              const selected = services.find(
+                (service) => service.name === e.target.value
+              );
+              if (selected) selectService(selected);
+            }}
           >
             {services.map((service, idx) => (
-              <option onClick={() => selectService(service)} key={idx}>
+              <option key={idx} value={service.name}>
                 {service.name}
               </option>
             ))}
           </select>
         </SidebarMenu>
+
         <SidebarMenu>
           {items.map((item, idx) => (
             <Link href={item.url} key={idx}>

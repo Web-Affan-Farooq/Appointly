@@ -1,3 +1,6 @@
+"use client"
+import { useDashboard } from "@/stores/dashboard";
+import { useMemo } from "react";
 import {create} from "zustand"
 
 interface AppointmentsState {
@@ -20,14 +23,19 @@ const useAppointmentsState = create<AppointmentsState>()((set) => ({
 
 
 export const useAppointments = () => {
-
-    const {selectedAppointments,setSelectedAppointments , loading , toogleLoading } = useAppointmentsState();
-
+    const {selectedService} = useDashboard();
     
+    const {selectedAppointments,setSelectedAppointments , loading , toogleLoading } = useAppointmentsState();
+    
+    const appointments = useMemo(() => {
+        return selectedService.appointments
+    },[selectedService])  
+
     return {
         selectedAppointments,
         setSelectedAppointments,
         loading, 
-        toogleLoading
+        toogleLoading,
+        appointments
     }
 }

@@ -10,6 +10,7 @@ const days = [
 const pagesNotAllowed = [
   "/dashboard",
   "/dashboard/appointments",
+  "/dashboard/schedule",
   "/add-service",
   "/book-appointment",
   "/login",

@@ -1,3 +1,4 @@
+"use client";
 import { Separator } from "@/components/common";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 

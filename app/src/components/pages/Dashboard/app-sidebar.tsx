@@ -10,6 +10,7 @@ import {
   IconInnerShadowTop,
   IconSettings,
   IconUsers,
+  IconCalendarTime,
 } from "@tabler/icons-react";
 
 import { NavMain } from "@/components/pages/Dashboard/nav-main";
@@ -29,7 +30,7 @@ const data = {
   user: {
     name: "shadcn",
     email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    avatar: "/images/user.jpg",
   },
   navMain: [
     {
@@ -41,6 +42,11 @@ const data = {
       title: "Appointments",
       url: "/dashboard/appointments",
       icon: IconUsers,
+    },
+    {
+      title: "Schedule",
+      url: "/dashboard/schedule",
+      icon: IconCalendarTime,
     },
   ],
   navClouds: [

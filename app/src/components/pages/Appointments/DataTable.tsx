@@ -13,10 +13,10 @@ const Table = () => {
     setSelectedAppointments,
     loading,
     toogleLoading,
+    appointments,
   } = useAppointments();
 
-  const { selectedService, cancelAppointment, scheduleAppointment } =
-    useDashboard();
+  const { cancelAppointment, scheduleAppointment } = useDashboard();
 
   const [open, setOpen] = useState(false);
 
@@ -76,7 +76,7 @@ const Table = () => {
         </div>
       ) : (
         <Sheet open={open} onOpenChange={setOpen}>
-          {selectedService?.appointments?.map((appointment, idx) => (
+          {appointments.map((appointment, idx) => (
             <TableRow appointment={appointment} key={idx} />
           ))}
         </Sheet>
