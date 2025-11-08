@@ -1,11 +1,55 @@
 "use server";
 import db from "@/db";
-import { service, user } from "@/db/schemas";
+import { Appointment,Service, service,appointment, user } from "@/db/schemas";
 import { AddServiceAPIRequest } from "@/validations/AddServiceAPISchema";
 import { z } from "zod";
 import Stripe from "stripe";
 import { eq } from "drizzle-orm";
 import { ServiceData } from "@/@types/types";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+dayjs.extend(utc);
+
+const createSlots = async (service: Service, daysForward = 30) => {
+  const slots: Appointment[] = [];
+
+  for (let day = 0; day < daysForward; day++) {
+    const slotDate = dayjs().add(day, "day").startOf("day");
+    let currentStart = slotDate
+      .hour(dayjs(service.start_time).hour())
+      .minute(dayjs(service.start_time).minute());
+
+    const endOfDay = slotDate
+      .hour(dayjs(service.end_time).hour())
+      .minute(dayjs(service.end_time).minute());
+
+    let token = 1;
+
+    while (currentStart.isBefore(endOfDay)) {
+      const currentEnd = currentStart.add(service.duration, "minute");
+
+      // stop if next slot exceeds end_time
+      if (currentEnd.isAfter(endOfDay)) break;
+
+      slots.push({
+        service_id: service.id,
+        customer_name: null,
+        customer_email: null,
+        status: "PENDING",
+        transfer_group: null,
+        token: token++,
+        slot_date: slotDate.format('YYYY-MM-DD'),
+        start_time: currentStart.toDate(),
+        end_time: currentEnd.toDate(),
+      });
+
+      currentStart = currentEnd;
+    }
+  }
+
+  await db.insert(appointment).values(slots);
+};
+
 
 const addServiceAction = async (
   formData: z.infer<typeof AddServiceAPIRequest>

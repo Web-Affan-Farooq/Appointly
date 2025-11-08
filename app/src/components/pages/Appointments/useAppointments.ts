@@ -21,14 +21,13 @@ const useAppointmentsState = create<AppointmentsState>()((set) => ({
     })
 }))
 
-
 export const useAppointments = () => {
     const {selectedService} = useDashboard();
     
     const {selectedAppointments,setSelectedAppointments , loading , toogleLoading } = useAppointmentsState();
     
     const appointments = useMemo(() => {
-        return selectedService.appointments
+        return selectedService.appointments.sort()
     },[selectedService])  
 
     return {

@@ -244,7 +244,7 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({
   }, []);
 
   return (
-    <div className="no-scrollbar calendar-container max-h-full overflow-y-scroll rounded-t-2xl bg-white pb-10 text-slate-800 shadow-xl">
+    <div className="w-full border-2 border-black no-scrollbar calendar-container max-h-full overflow-y-scroll rounded-t-2xl bg-white pb-10 text-slate-800 shadow-xl">
       <div className="sticky -top-px z-50 w-full rounded-t-2xl bg-white px-5 pt-7 sm:px-8 sm:pt-8">
         <div className="mb-4 flex w-full flex-wrap items-center justify-between gap-6">
           <div className="flex flex-wrap gap-2 sm:gap-3">

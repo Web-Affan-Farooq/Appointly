@@ -6,7 +6,8 @@ import { Separator } from "@/components/common";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { CalenderWrapper } from "@/components/pages/Schedule";
+// import { CalenderWrapper } from "@/components/pages/Schedule";
+import MyCalendar from "./Calender";
 
 const SiteHeader = () => {
   return (
@@ -39,11 +40,11 @@ export default function Page() {
       <SidebarInset>
         <SiteHeader />
         <div className="flex flex-1 flex-col selection:text-black selection:bg-pink">
-          <div className="@container/main flex flex-1 flex-col gap-2">
+          <div className="@conta\iner/main flex flex-1 flex-col gap-2">
             <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
               {/* <DashboardCard /> */}
               <div className="px-4 lg:px-6">
-                <CalenderWrapper />
+                <MyCalendar />
               </div>
             </div>
           </div>

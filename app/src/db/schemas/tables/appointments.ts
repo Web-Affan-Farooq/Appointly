@@ -1,4 +1,4 @@
-import { pgTable, uuid, timestamp, text , integer} from "drizzle-orm/pg-core";
+import { date,pgTable, uuid, timestamp, text , integer} from "drizzle-orm/pg-core";
 import { service } from "./services";
 import { AppointmentStatus } from "./appointment-type"
 import { InferSelectModel } from "drizzle-orm";
@@ -17,8 +17,8 @@ export const appointment = pgTable("appointments", {
     .notNull(),
 
   // customer info
-  customer_name: text("customer_name").notNull(),
-  customer_email: text("customer_email").notNull(),
+  customer_name: text("customer_name"),
+  customer_email: text("customer_email"),
 
     // status lifecycle
   status: AppointmentStatus("status").default("PENDING").notNull(),
@@ -26,9 +26,15 @@ export const appointment = pgTable("appointments", {
     // Payment intent ...
     transfer_group:text(),
   // scheduling
-  started_on: timestamp("started_on", { withTimezone: true }),
-  ended_on: timestamp("ended_on", { withTimezone: true }),
-  token:integer("token").notNull()
+  start_time: timestamp("started_time", { withTimezone: true }),
+  end_time: timestamp("end_time", { withTimezone: true }),
+  token:integer("token").notNull(),
+
+  slot_date:date("slot_date").notNull(),
 });
 
 export type Appointment = InferSelectModel<typeof appointment>
+
+/*
+slot_date: indicates the slot 
+*/

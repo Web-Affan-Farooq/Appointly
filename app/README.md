@@ -45,4 +45,35 @@ Reminder system for upcoming appointments.
 ## Milestone 7 — Polish & Launch
 Prepare landing page + README + demo video.
 
-- attach token system 
+- attach token system
+
+## Implementation of the slot technique : (Completed)
+
+- Add a booked boolean (default: false) to appointments column .
+- Optionally, add slot_date (the date the slot belongs to) so you can easily regenerate month-by-month.
+- Keep a foreign key to the service.
+
+#### Slot generation logic :
+- When a service is created, generate slots for (say) 30 days based on max_appointments_per_day and your business hours.
+
+- You can write a small utility that, given a start time and a service duration, loops and inserts rows for the next month.
+
+- You could even run a daily cron job to top up slots when a new month starts — basically always ensure 30 days ahead are ready.
+
+#### Updating services :
+
+- When `max_appointments_per_day` changes, don’t delete everything.
+
+- Fetch all future unbooked slots and delete them.
+
+- Then regenerate new slots for the upcoming period with the new limit.
+
+- Keep past and booked slots untouched.
+
+- If you store slot_date, this becomes a simple date range query.
+
+#### Booking flow
+
+- When a user books, update that slot’s booked → true and attach their details.
+
+- Stripe session logic stays the same — you just associate the payment with that slot ID.
