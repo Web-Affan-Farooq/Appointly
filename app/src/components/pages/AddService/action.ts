@@ -1,55 +1,18 @@
 "use server";
 import db from "@/db";
-import { Appointment,Service, service,appointment, user } from "@/db/schemas";
-import { AddServiceAPIRequest } from "@/validations/AddServiceAPISchema";
+import { service, appointment, user } from "@/db/schemas";
+
+// _____ Libraries ...
 import { z } from "zod";
 import Stripe from "stripe";
 import { eq } from "drizzle-orm";
+
+// _____ Types and schemas ...
+import { AddServiceAPIRequest } from "@/validations/AddServiceAPISchema";
 import { ServiceData } from "@/@types/types";
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-dayjs.extend(utc);
 
-const createSlots = async (service: Service, daysForward = 30) => {
-  const slots: Appointment[] = [];
-
-  for (let day = 0; day < daysForward; day++) {
-    const slotDate = dayjs().add(day, "day").startOf("day");
-    let currentStart = slotDate
-      .hour(dayjs(service.start_time).hour())
-      .minute(dayjs(service.start_time).minute());
-
-    const endOfDay = slotDate
-      .hour(dayjs(service.end_time).hour())
-      .minute(dayjs(service.end_time).minute());
-
-    let token = 1;
-
-    while (currentStart.isBefore(endOfDay)) {
-      const currentEnd = currentStart.add(service.duration, "minute");
-
-      // stop if next slot exceeds end_time
-      if (currentEnd.isAfter(endOfDay)) break;
-
-      slots.push({
-        service_id: service.id,
-        customer_name: null,
-        customer_email: null,
-        status: "PENDING",
-        transfer_group: null,
-        token: token++,
-        slot_date: slotDate.format('YYYY-MM-DD'),
-        start_time: currentStart.toDate(),
-        end_time: currentEnd.toDate(),
-      });
-
-      currentStart = currentEnd;
-    }
-  }
-
-  await db.insert(appointment).values(slots);
-};
-
+// ____ Utils ...
+import CreateSlots from "@/utils/CreateSlots";
 
 const addServiceAction = async (
   formData: z.infer<typeof AddServiceAPIRequest>
@@ -72,6 +35,19 @@ const addServiceAction = async (
       .returning();
 
     console.log("Inserted a new service  : ", newService);
+    console.log("Generating slots  : ", "-------------");
+    const slots = CreateSlots({
+      maxAppointments:formData.max_appointments_per_day, 
+      service_id:newService.id,
+  durationMinutes:newService.duration,
+  workingDays:newService.working_days,
+  startTime:newService.start_time,
+  endTime:newService.end_time,
+    })
+
+    await db.insert(appointment).values(slots)
+    console.log("Generated slots  : ",slots);
+
     console.log(
       "----------------------------Operation completed successfully-----------------------------"
     );
@@ -80,7 +56,7 @@ const addServiceAction = async (
       message: "Added a new service",
       service: {
         ...newService,
-        appointments:[]
+        appointments: [],
       },
     };
   } catch (err) {

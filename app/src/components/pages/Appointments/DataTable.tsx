@@ -16,7 +16,7 @@ const Table = () => {
     appointments,
   } = useAppointments();
 
-  const { cancelAppointment, scheduleAppointment } = useDashboard();
+  const { cancelAppointment } = useDashboard();
 
   const [open, setOpen] = useState(false);
 
@@ -26,12 +26,12 @@ const Table = () => {
     setSelectedAppointments([]);
     toogleLoading();
   };
-  const schedule = async () => {
-    toogleLoading();
-    scheduleAppointment(selectedAppointments);
-    setSelectedAppointments([]);
-    toogleLoading();
-  };
+  // const schedule = async () => {
+  // 	toogleLoading();
+  // 	scheduleAppointment(selectedAppointments);
+  // 	setSelectedAppointments([]);
+  // 	toogleLoading();
+  // };
   return (
     <div className="rounded-md overflow-hidden h-screen">
       {/* Header */}
@@ -56,13 +56,13 @@ const Table = () => {
               >
                 Cancel
               </button>
-              <button
-                type="button"
-                className="cursor-pointer bg-green-600 text-white px-[10px] py-[2px] rounded-xl"
-                onClick={schedule}
-              >
-                Schedule
-              </button>
+              {/* <button
+								type="button"
+								className="cursor-pointer bg-green-600 text-white px-[10px] py-[2px] rounded-xl"
+								onClick={schedule}
+							>
+								Schedule
+							</button> */}
             </div>
           </div>
         ) : (
@@ -76,9 +76,13 @@ const Table = () => {
         </div>
       ) : (
         <Sheet open={open} onOpenChange={setOpen}>
-          {appointments.map((appointment, idx) => (
-            <TableRow appointment={appointment} key={idx} />
-          ))}
+          {appointments.length <= 0 ? (
+            <p className="text-md p-3">No appointments found ...</p>
+          ) : (
+            appointments.map((appointment, idx) => (
+              <TableRow appointment={appointment} key={idx} />
+            ))
+          )}
         </Sheet>
       )}
     </div>

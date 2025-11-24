@@ -10,8 +10,9 @@ const FetchServices = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const getData = async () => {
+      setLoading(true);
+
       console.log("______ Running data fetches ...");
-      setLoading();
       try {
         const servicesData = await FetchServicesAction();
         setService(servicesData);
@@ -19,9 +20,11 @@ const FetchServices = ({ children }: { children: React.ReactNode }) => {
         console.log(err);
         toast.error("An error occured");
       }
+
+      setLoading(false);
       console.log("______ Fetch Completed ...");
-      setLoading();
     };
+
     getData();
     setInterval(() => {
       getData();

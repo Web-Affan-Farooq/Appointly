@@ -1,6 +1,10 @@
 import { pgEnum } from "drizzle-orm/pg-core";
 
-export const AppointmentStatus= pgEnum("appointment_status",["PENDING", "COMPLETED", "CANCELLED"])
+export const AppointmentStatus = pgEnum("appointment_status", [
+	"PENDING",
+	"COMPLETED",
+	"CANCELLED",
+]);
 
 /*
 pending -----  > appointment booked and slot alloted 

@@ -20,7 +20,7 @@ const MyCalendar = () => {
         startAccessor="start_time"
         endAccessor="end_time"
         style={{ height: 600 }}
-        eventPropGetter={(event) => ({
+        eventPropGetter={() => ({
           style: {
             backgroundColor: "var(--pink)",
             border: "none",

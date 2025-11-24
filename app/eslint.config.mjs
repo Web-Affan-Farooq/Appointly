@@ -6,25 +6,31 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const compat = new FlatCompat({
-  baseDirectory: __dirname,
+	baseDirectory: __dirname,
 });
 
 const eslintConfig = [
-  // tell ESLint what to ignore globally
-  {
-    ignores: ["node_modules/**", ".next/**", "out/**", "build/**", "next-env.d.ts"],
-  },
+	// tell ESLint what to ignore globally
+	{
+		ignores: [
+			"node_modules/**",
+			".next/**",
+			"out/**",
+			"build/**",
+			"next-env.d.ts",
+		],
+	},
 
-  // extend Next.js defaults
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+	// extend Next.js defaults
+	...compat.extends("next/core-web-vitals", "next/typescript"),
 
-  // add your own rules
-  {
-    files: ["**/*.ts", "**/*.tsx"],
-    rules: {
-      "react/no-unescaped-entities": "off",
-    },
-  },
+	// add your own rules
+	{
+		files: ["**/*.ts", "**/*.tsx"],
+		rules: {
+			"react/no-unescaped-entities": "off",
+		},
+	},
 ];
 
 export default eslintConfig;

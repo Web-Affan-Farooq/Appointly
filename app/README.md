@@ -48,7 +48,6 @@ Prepare landing page + README + demo video.
 - attach token system
 
 ## Implementation of the slot technique : (Completed)
-
 - Add a booked boolean (default: false) to appointments column .
 - Optionally, add slot_date (the date the slot belongs to) so you can easily regenerate month-by-month.
 - Keep a foreign key to the service.
@@ -77,3 +76,149 @@ Prepare landing page + README + demo video.
 - When a user books, update that slot’s booked → true and attach their details.
 
 - Stripe session logic stays the same — you just associate the payment with that slot ID.
+
+```bash
+docker exec -i appointly-postgres psql -U affan -d mydb < services_rows.sql
+```
+
+check this error in terminal 
+```bash
+
+E:\Appointly\app>npx drizzle-kit generate
+No config path provided, using default 'drizzle.config.ts'
+Reading config file 'E:\Appointly\app\drizzle.config.ts'
+
+~ started_time › start_time column will be renamed
+
++ booked column will be created
+--- all columns conflicts in appointments table resolved ---
+
+6 tables
+appointments 13 columns 0 indexes 1 fks
+services 20 columns 0 indexes 1 fks
+account 13 columns 0 indexes 1 fks
+session 8 columns 0 indexes 1 fks
+user 9 columns 0 indexes 0 fks
+verification 6 columns 0 indexes 0 fks
+
+[✓] Your SQL migration file ➜ drizzle\0011_redundant_marvex.sql 🚀
+
+E:\Appointly\app>npx drizzle-kit migrate
+No config path provided, using default 'drizzle.config.ts'
+Reading config file 'E:\Appointly\app\drizzle.config.ts'
+Using 'postgres' driver for database querying
+[⣟] applying migrations...{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P06',
+  message: 'schema "drizzle" already exists, skipping',
+  file: 'schemacmds.c',
+  line: '132',
+  routine: 'CreateSchemaCommand'
+}
+{
+  severity_local: 'NOTICE',
+  severity: 'NOTICE',
+  code: '42P07',
+  message: 'relation "__drizzle_migrations" already exists, skipping',
+  file: 'parse_utilcmd.c',
+  line: '208',
+  routine: 'transformCreateStmt'
+}
+DrizzleQueryError: Failed query: CREATE TYPE "public"."appointment_status" AS ENUM('PENDING', 'CONFIRMED', 'COMPLETED', 'CANCELLED');
+params:
+    at PostgresJsPreparedQuery.queryWithCache (E:\Appointly\app\node_modules\.pnpm\drizzle-orm@0.44.5_@libsql+_b89d3a22341d06be9134c8f80f0999d8\node_modules\src\pg-core\session.ts:73:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at async <anonymous> (E:\Appointly\app\node_modules\.pnpm\drizzle-orm@0.44.5_@libsql+_b89d3a22341d06be9134c8f80f0999d8\node_modules\src\pg-core\dialect.ts:102:7)
+    at async scope (file:///E:/Appointly/app/node_modules/.pnpm/postgres@3.4.7/node_modules/postgres/src/index.js:260:18)
+    at async sql.begin (file:///E:/Appointly/app/node_modules/.pnpm/postgres@3.4.7/node_modules/postgres/src/index.js:243:14)
+    at async PgDialect.migrate (E:\Appointly\app\node_modules\.pnpm\drizzle-orm@0.44.5_@libsql+_b89d3a22341d06be9134c8f80f0999d8\node_modules\src\pg-core\dialect.ts:95:3)
+    at async migrate (E:\Appointly\app\node_modules\.pnpm\drizzle-orm@0.44.5_@libsql+_b89d3a22341d06be9134c8f80f0999d8\node_modules\src\postgres-js\migrator.ts:10:2) {
+  query: `CREATE TYPE "public"."appointment_status" AS ENUM('PENDING', 'CONFIRMED', 'COMPLETED', 'CANCELLED');`,
+  params: [],
+  cause: PostgresError: type "appointment_status" already exists
+      at ErrorResponse (file:///E:/Appointly/app/node_modules/.pnpm/postgres@3.4.7/node_modules/postgres/src/connection.js:794:26)
+      at handle (file:///E:/Appointly/app/node_modules/.pnpm/postgres@3.4.7/node_modules/postgres/src/connection.js:480:6)
+      at Socket.data (file:///E:/Appointly/app/node_modules/.pnpm/postgres@3.4.7/node_modules/postgres/src/connection.js:315:9)
+      at Socket.emit (node:events:508:28)
+      at addChunk (node:internal/streams/readable:559:12)
+      at readableAddChunkPushByteMode (node:internal/streams/readable:510:3)
+      at Readable.push (node:internal/streams/readable:390:5)
+      at TCP.onStreamRead (node:internal/stream_base_commons:189:23) {
+    severity_local: 'ERROR',
+    severity: 'ERROR',
+    code: '42710',
+    file: 'typecmds.c',
+    line: '1211',
+    routine: 'DefineEnum'
+  }
+}
+```
+
+also check this schema 
+```typescript
+import {
+	date,
+	pgTable,
+	uuid,
+	timestamp,
+	text,
+	boolean,
+	integer,
+} from "drizzle-orm/pg-core";
+import { service } from "./services";
+import { AppointmentStatus } from "./appointment-type";
+import { InferSelectModel } from "drizzle-orm";
+
+export const appointment = pgTable("appointments", {
+	id: uuid("id").primaryKey().defaultRandom().notNull(),
+	service_id: uuid("service_id")
+		.notNull()
+		.references(() => service.id, { onDelete: "cascade" }),
+
+	// bookkeeping
+	created_at: timestamp("created_at").defaultNow().notNull(),
+	updated_at: timestamp("updated_at")
+		.defaultNow()
+		.$onUpdate(() => new Date())
+		.notNull(),
+
+	// customer info
+	customer_name: text("customer_name"),
+	customer_email: text("customer_email"),
+
+	// status lifecycle
+	status: AppointmentStatus("status").default("PENDING").notNull(),
+
+	// Payment intent ...
+	transfer_group: text(),
+	// scheduling
+	start_time: timestamp("start_time", { withTimezone: true }),
+	end_time: timestamp("end_time", { withTimezone: true }),
+	token: integer("token").notNull(),
+
+	slot_date: date("slot_date").notNull(),
+	booked:boolean().default(false)
+});
+
+export type Appointment = InferSelectModel<typeof appointment>;
+
+
+```
+also check this appointments type , note that i have removed the "Confirmed" type from it 
+```typescript
+import { pgEnum } from "drizzle-orm/pg-core";
+
+export const AppointmentStatus = pgEnum("appointment_status", [
+	"PENDING",
+	"COMPLETED",
+	"CANCELLED",
+]);
+
+/*
+pending -----  > appointment booked and slot alloted 
+completed  ---- > userattended the appointment 
+cancelled ------> provider has cancelled the appointment .
+*/
+
+```

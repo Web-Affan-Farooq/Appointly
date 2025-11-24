@@ -1,15 +1,14 @@
 "use client";
 import React, { useMemo } from "react";
-import { IconCircleCheck, IconArrowNarrowRight } from "@tabler/icons-react";
+import { IconCircleCheck, IconClock } from "@tabler/icons-react";
 import { useService } from "@/stores/service";
 import { useParams } from "next/navigation";
-// import { Loader } from "lucide-react";
-import { Button, Loader } from "@/components/common";
-import Link from "next/link";
+import { Loader } from "@/components/common";
+import { BookingCalender } from "@/components/pages/ServiceDetails";
 
 const ServiceDetailsPage = () => {
   const { id } = useParams();
-  const { services, loading, setSelectedService } = useService();
+  const { services, loading } = useService();
 
   const requiredService = useMemo(() => {
     return services.find((s) => s.id === id);
@@ -43,56 +42,78 @@ const ServiceDetailsPage = () => {
   }
 
   return (
-    <main>
-      <article>
-        <section>
-          <div className="min-h-screen bg-gray-50 font-sans max-sm:px-3 max-sm:py-23 sm:px-7 sm:py-23 md:p-25">
-            <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
-              {/* Service Content */}
-              <div className="p-6 sm:p-8">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-1">
-                      {requiredService.name}
-                    </h1>
-                    <p className="text-lg text-gray-600 font-medium">
-                      {requiredService.provider_name}
-                    </p>
-                  </div>
-                  <span className="bg-gray-200 text-indigo text-sm font-semibold px-4 py-1 rounded-full">
-                    <span className="text-green-500">$</span>
+    <main className="bg-gray-50 min-h-screen pt-[130px] pb-10">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <article className="bg-white rounded-2xl shadow-2xl overflow-hidden transform transition duration-500 hover:shadow-xl">
+          <div className="p-6 sm:p-10 lg:gap-10">
+            {/* --- Section 1: Service Information (Col 1 & 2) --- */}
+            <div className="lg:col-span-2">
+              {/* Header/Pricing */}
+              <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 pb-4 border-b border-gray-200">
+                <div>
+                  <h1 className="text-4xl lg:text-5xl font-extrabold text-gray-900 leading-tight">
+                    {requiredService.name}
+                  </h1>
+                </div>
+
+                <div className="bg-indigo-100  text-sm font-medium px-3 py-1 rounded-full">
+                  <span className="text-green-500">
+                    {requiredService.currency} &nbsp;
+                  </span>
+                  <span className="text-indigo-800">
                     {requiredService.price}
                   </span>
                 </div>
+              </header>
 
-                <hr className="my-6 border-gray-200" />
+              {/* Description */}
+              <section className="mb-8">
+                <h2 className="text-2xl font-bold text-gray-800 mb-3 border-l-4 border-pink pl-3">
+                  About This Service
+                </h2>
+                <p className="text-gray-700 text-wrap">
+                  {requiredService.description}
+                </p>
+              </section>
 
-                {/* Description and Details */}
-                <div className="mb-8">
-                  <h2 className="text-2xl font-semibold text-gray-800 mb-3">
-                    Service Description
-                  </h2>
-                  <p className="text-gray-600 leading-relaxed mb-4 text-sm">
-                    {requiredService.description}
-                  </p>
-                  <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                    What's Included:
-                  </h3>
-                  <ul className="list-inside text-gray-600 space-y-1">
-                    {requiredService.details.map((detail, index) => (
-                      <li key={index} className="flex items-center">
-                        <IconCircleCheck
-                          className="stroke-green-400"
-                          size={15}
-                        />
-                        &nbsp;
-                        <span className="text-sm">{detail}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+              {/* Details/Inclusions */}
+              <section className="mb-8 p-6 bg-gray-50 rounded-lg shadow-inner">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                  <IconCircleCheck className="w-6 h-6 text-green-500 mr-2" />
+                  What's Included
+                </h2>
+                <ul className="list-none space-y-3">
+                  {requiredService.details.map((detail, index) => (
+                    <li key={index} className="flex items-start text-gray-700">
+                      <IconCircleCheck className="flex-shrink-0 w-4 h-4 text-green-500 mt-1 mr-3" />
+                      <span className="text-base">{detail}</span>
+                    </li>
+                  ))}
+                </ul>
+                {requiredService.duration && (
+                  <div className="mt-4 pt-4 border-t border-gray-200 flex items-center text-sm text-gray-500">
+                    <IconClock className="w-4 h-4 mr-2" />
+                    Estimated Duration:{" "}
+                    <span className="font-medium ml-1 text-gray-700">
+                      {requiredService.duration}
+                    </span>
+                  </div>
+                )}
+              </section>
+            </div>
 
-                {/* Booking Button */}
+            {/* --- Section 2: Booking/Calendar (Col 3) --- */}
+            <BookingCalender service={requiredService} />
+          </div>
+        </article>
+      </div>
+    </main>
+  );
+};
+
+export default ServiceDetailsPage;
+
+/*
                 <Link
                   href={"/book-appointment"}
                   onClick={() => setSelectedService(requiredService)}
@@ -102,13 +123,4 @@ const ServiceDetailsPage = () => {
                     <IconArrowNarrowRight />
                   </Button>
                 </Link>
-              </div>
-            </div>
-          </div>
-        </section>
-      </article>
-    </main>
-  );
-};
-
-export default ServiceDetailsPage;
+*/

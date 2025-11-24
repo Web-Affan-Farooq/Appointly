@@ -1,4 +1,4 @@
-export * from "./relations/index"
+export * from "./relations/index";
 export * from "./tables/index";
 
 /* application has these core entities :

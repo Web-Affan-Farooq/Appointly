@@ -1,78 +1,78 @@
 :root {
-  --pink: #e189fa;
-  --black: #000000;
-  --yellow: #dbc81d;
+	--pink: #e189fa;
+	--black: #000000;
+	--yellow: #dbc81d;
 }
 
 /* Container */
 .calendar-container {
-  background-color: var(--black);
-  padding: 1rem;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+	background-color: var(--black);
+	padding: 1rem;
+	border-radius: 16px;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 /* Toolbar */
 .rbc-toolbar {
-  background: var(--yellow);
-  color: var(--black);
-  border: none;
-  border-radius: 12px;
-  padding: 0.5rem;
-  margin-bottom: 1rem;
-  font-weight: 600;
+	background: var(--yellow);
+	color: var(--black);
+	border: none;
+	border-radius: 12px;
+	padding: 0.5rem;
+	margin-bottom: 1rem;
+	font-weight: 600;
 }
 
 .rbc-toolbar button {
-  background: var(--black);
-  color: var(--yellow);
-  border: none;
-  border-radius: 8px;
-  padding: 6px 12px;
-  margin: 0 4px;
-  transition: 0.2s ease;
-  cursor: pointer;
+	background: var(--black);
+	color: var(--yellow);
+	border: none;
+	border-radius: 8px;
+	padding: 6px 12px;
+	margin: 0 4px;
+	transition: 0.2s ease;
+	cursor: pointer;
 }
 
 .rbc-toolbar button:hover {
-  background: var(--pink);
-  color: var(--black);
+	background: var(--pink);
+	color: var(--black);
 }
 
 /* Calendar grid */
 .rbc-month-view,
 .rbc-time-view {
-  background: var(--pink);
-  border-radius: 12px;
-  color:black
+	background: var(--pink);
+	border-radius: 12px;
+	color: black;
 }
 
 /* Today's cell */
 .rbc-today {
-  background-color: rgba(219, 200, 29, 0.2);
-  border:2px solid var(--pink)
+	background-color: rgba(219, 200, 29, 0.2);
+	border: 2px solid var(--pink);
 }
 
 /* Event cards */
 .rbc-event {
-  background-color: var(--pink) !important;
-  border-radius: 10px !important;
-  color: var(--black) !important;
-  padding: 4px 6px !important;
-  font-weight: 600;
-  transition: transform 0.15s ease;
+	background-color: var(--pink) !important;
+	border-radius: 10px !important;
+	color: var(--black) !important;
+	padding: 4px 6px !important;
+	font-weight: 600;
+	transition: transform 0.15s ease;
 }
 
 .rbc-event:hover {
-  transform: scale(1.05);
-  background-color: var(--yellow) !important;
+	transform: scale(1.05);
+	background-color: var(--yellow) !important;
 }
 
 /* Headers */
 .rbc-header {
-  background-color: var(--black);
-  color: var(--yellow);
-  font-weight: bold;
-  padding: 0.5rem;
-  border: none;
+	background-color: var(--black);
+	color: var(--yellow);
+	font-weight: bold;
+	padding: 0.5rem;
+	border: none;
 }
