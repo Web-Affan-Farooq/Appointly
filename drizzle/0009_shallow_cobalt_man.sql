@@ -1,1 +1,0 @@
--- ALTER TABLE "appointments" ADD COLUMN "slot_date" date NOT NULL;

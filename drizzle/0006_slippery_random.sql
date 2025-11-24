@@ -1,1 +1,0 @@
-ALTER TABLE "appointments" ALTER COLUMN "transfer_group" DROP NOT NULL;
