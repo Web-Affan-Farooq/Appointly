@@ -1,4 +1,4 @@
-import { AppSidebar } from "@/components/pages/Dashboard/app-sidebar";
+import { AppSidebar } from "@/components/pages/Dashboard/";
 // import { ChartAreaInteractive } from "@/components/pages/Dashboard/chart-area-interactive";
 // import DashboardCard from "@/components/pages/Dashboard/DashboardCard";
 // import { IconPlus } from "@tabler/icons-react";

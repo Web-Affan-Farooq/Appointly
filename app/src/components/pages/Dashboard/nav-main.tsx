@@ -17,7 +17,7 @@ import {
 import Link from "next/link";
 import { useDashboard } from "@/stores/dashboard";
 
-export function NavMain({
+const NavMain = ({
   items,
 }: {
   items: {
@@ -25,7 +25,7 @@ export function NavMain({
     url: string;
     icon?: Icon;
   }[];
-}) {
+}) => {
   const { services, selectService } = useDashboard();
   return (
     <SidebarGroup>
@@ -79,4 +79,5 @@ export function NavMain({
       </SidebarGroupContent>
     </SidebarGroup>
   );
-}
+};
+export default NavMain;

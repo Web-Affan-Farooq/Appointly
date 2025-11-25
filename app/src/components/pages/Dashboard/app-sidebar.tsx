@@ -13,9 +13,7 @@ import {
   IconCalendarTime,
 } from "@tabler/icons-react";
 
-import { NavMain } from "@/components/pages/Dashboard/nav-main";
-import { NavSecondary } from "@/components/pages/Dashboard/nav-secondary";
-import { NavUser } from "@/components/pages/Dashboard/nav-user";
+import { NavMain, NavSecondary, NavUser } from "@/components/pages/Dashboard";
 import {
   Sidebar,
   SidebarContent,
@@ -25,6 +23,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { useDashboard } from "@/stores/dashboard";
 
 const data = {
   user: {
@@ -111,7 +110,8 @@ const data = {
   ],
 };
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
+  const { services } = useDashboard();
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -130,12 +130,20 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
+        {services.length <= 0 ? (
+          <></>
+        ) : (
+          <>
+            <NavMain items={data.navMain} />
+            <NavSecondary items={data.navSecondary} className="mt-auto" />
+          </>
+        )}
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />
       </SidebarFooter>
     </Sidebar>
   );
-}
+};
+
+export default AppSidebar;

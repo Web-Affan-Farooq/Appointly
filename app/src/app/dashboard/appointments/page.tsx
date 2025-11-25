@@ -1,4 +1,5 @@
-import { AppSidebar } from "@/components/pages/Dashboard/app-sidebar";
+"use client";
+import { AppSidebar, NoServiceFallback } from "@/components/pages/Dashboard/";
 // import { ChartAreaInteractive } from "@/components/pages/Dashboard/chart-area-interactive";
 // import DashboardCard from "@/components/pages/Dashboard/DashboardCard";
 // import { IconPlus } from "@tabler/icons-react";
@@ -8,6 +9,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
 import { DataTable } from "@/components/pages/Appointments";
+import { useDashboard } from "@/stores/dashboard";
 
 const SiteHeader = () => {
   return (
@@ -27,6 +29,7 @@ const SiteHeader = () => {
 };
 
 export default function Page() {
+  const { services } = useDashboard();
   return (
     <SidebarProvider
       style={
@@ -39,17 +42,19 @@ export default function Page() {
       <AppSidebar variant="inset" />
       <SidebarInset>
         <SiteHeader />
-        <div className="flex flex-1 flex-col selection:text-black selection:bg-pink">
-          <div className="@container/main flex flex-1 flex-col gap-2">
-            <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-              {/* <DashboardCard /> */}
-              <div className="px-4 lg:px-6">
-                <DataTable />
+        {services.length <= 0 ? (
+          <NoServiceFallback />
+        ) : (
+          <div className="flex flex-1 flex-col selection:text-black selection:bg-pink">
+            <div className="@container/main flex flex-1 flex-col gap-2">
+              <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
+                <div className="px-4 lg:px-6">
+                  <DataTable />
+                </div>
               </div>
-              {/** data table */}
             </div>
           </div>
-        </div>
+        )}
       </SidebarInset>
     </SidebarProvider>
   );
