@@ -12,119 +12,144 @@ import { AddServiceAPIRequest } from "@/validations/AddServiceAPISchema";
 import CancelAppointmentAction from "@/actions/AppointmentCancelAction";
 import { addServiceAction } from "@/components/pages/AddService/action";
 
+type Profile = {
+  id: string;
+  email: string;
+  name: string;
+  image?: string | null | undefined;
+};
+
 interface DashboardState {
-	services: ServiceData[];
-	addService: (serviceData: z.infer<typeof AddServiceAPIRequest>) => void;
-	selectedService: ServiceData;
-	setServices: (list: ServiceData[]) => void;
-	selectService: (service: ServiceData) => void;
-	cancelAppointment: (ids: string[]) => void;
-	// scheduleAppointment: (ids: string[]) => void;
+  user: undefined | Profile;
+  setUser: (user: Profile) => void;
+
+  loading: boolean;
+  setLoading: (state: boolean) => void;
+
+  services: ServiceData[];
+  addService: (serviceData: z.infer<typeof AddServiceAPIRequest>) => void;
+  selectedService: ServiceData;
+  setServices: (list: ServiceData[]) => void;
+  selectService: (service: ServiceData) => void;
+  cancelAppointment: (ids: string[]) => void;
+  // scheduleAppointment: (ids: string[]) => void;
 }
 
 export const useDashboard = create<DashboardState>()(
-	persist(
-		(set, get) => ({
-			services: [],
+  persist(
+    (set, get) => ({
+      user: undefined,
+      setUser: (user) =>
+        set({
+          user: user,
+        }),
 
-			// ____Function for adding service and updating state ...
-			addService: async (serviceData) => {
-				// ___ 1. Call the server action ...
-				const { message, success, service } =
-					await addServiceAction(serviceData);
+      loading: false,
+      setLoading: (loading) =>
+        set({
+          loading: loading,
+        }),
 
-				// ___ 2. If it returns service , update the state ...
-				if (service && success) {
-					toast.success(message);
+      services: [],
 
-					return set((state) => ({
-						services: [...state.services, service],
-					}));
-				}
-			},
+      // ____Function for adding service and updating state ...
+      addService: async (serviceData) => {
+        // ___ 1. Call the server action ...
+        const { message, success, service } =
+          await addServiceAction(serviceData);
 
-			// _____Initialize the selected service state ...
-			selectedService: {
-				name: "",
-				description: "",
-				category: "",
-				currency: "",
-				ratings: [],
-				appointmentsCount: 0,
-				max_appointments_per_day: 0,
-				details: [],
-				provider_name: "",
-				start_time: "",
-				end_time: "",
-				duration: 0,
-				id: "",
-				created_at: new Date(),
-				user_id: "",
-				working_days: [],
-				price: 0,
-				lastCountReset: new Date(),
-				is_active: false,
-				maxCapacity: 0,
-				appointments: [],
-			},
+        // ___ 2. If it returns service , update the state ...
+        if (service && success) {
+          toast.success(message);
 
-			// ____ Setter function for updating the services list ...
-			setServices: (list) => set(() => ({ services: list })),
+          return set((state) => ({
+            services: [...state.services, service],
+          }));
+        }
+      },
 
-			// ____ For selecting service ...
-			selectService: (service) =>
-				set(() => ({
-					selectedService: service,
-				})),
+      // _____Initialize the selected service state ...
+      selectedService: {
+        name: "",
+        description: "",
+        category: "",
+        currency: "",
+        ratings: [],
+        appointmentsCount: 0,
+        max_appointments_per_day: 0,
+        details: [],
+        provider_name: "",
+        start_time: "",
+        end_time: "",
+        duration: 0,
+        id: "",
+        created_at: new Date(),
+        user_id: "",
+        working_days: [],
+        price: 0,
+        lastCountReset: new Date(),
+        is_active: false,
+        maxCapacity: 0,
+        appointments: [],
+      },
 
-			// ____ For appointments cancellation...
-			cancelAppointment: async (ids) => {
-				// _____ Updae in database ...
-				const { message, success } = await CancelAppointmentAction(ids);
-				if (!success) {
-					toast.error(message);
-				}
+      // ____ Setter function for updating the services list ...
+      setServices: (list) => set(() => ({ services: list })),
 
-				// _____ Update state...
-				const { selectedService } = get();
-				const updatedAppointments = selectedService.appointments.map((app) => {
-					if (ids.includes(app.id)) {
-						return { ...app, status: "CANCELLED" };
-					} else return app;
-				});
+      // ____ For selecting service ...
+      selectService: (service) =>
+        set(() => ({
+          selectedService: service,
+        })),
 
-				toast.success(message);
+      // ____ For appointments cancellation...
+      cancelAppointment: async (ids) => {
+        // _____ Updae in database ...
+        const { message, success } = await CancelAppointmentAction(ids);
+        if (!success) {
+          toast.error(message);
+        }
 
-				return set((state) => ({
-					selectedService: { ...state.selectedService, updatedAppointments },
-				}));
-			},
+        // _____ Update state...
+        const { selectedService } = get();
+        const updatedAppointments = selectedService.appointments.map((app) => {
+          if (ids.includes(app.id)) {
+            return { ...app, status: "CANCELLED" };
+          } else return app;
+        });
 
-			// scheduleAppointment: async (ids) => {
-			// 	// _____ Update in database ...
-			// 	const { message, success } = await ScheduleAppointmentAction(ids);
-			// 	if (!success) {
-			// 		toast.error(message);
-			// 	}
+        toast.success(message);
 
-			// 	// _____ Update state...
-			// 	const { selectedService } = get();
-			// 	const updatedAppointments = selectedService.appointments.map((app) => {
-			// 		if (ids.includes(app.id)) {
-			// 			return { ...app, status: "CONFIRMED" };
-			// 		} else return app;
-			// 	});
+        return set((state) => ({
+          selectedService: { ...state.selectedService, updatedAppointments },
+        }));
+      },
 
-			// 	toast.success(message);
+      // scheduleAppointment: async (ids) => {
+      // 	// _____ Update in database ...
+      // 	const { message, success } = await ScheduleAppointmentAction(ids);
+      // 	if (!success) {
+      // 		toast.error(message);
+      // 	}
 
-			// 	return set((state) => ({
-			// 		selectedService: { ...state.selectedService, updatedAppointments },
-			// 	}));
-			// },
-		}),
-		{
-			name: "dashboard-data",
-			storage: createJSONStorage(() => sessionStorage),
-		},
-	),
+      // 	// _____ Update state...
+      // 	const { selectedService } = get();
+      // 	const updatedAppointments = selectedService.appointments.map((app) => {
+      // 		if (ids.includes(app.id)) {
+      // 			return { ...app, status: "CONFIRMED" };
+      // 		} else return app;
+      // 	});
+
+      // 	toast.success(message);
+
+      // 	return set((state) => ({
+      // 		selectedService: { ...state.selectedService, updatedAppointments },
+      // 	}));
+      // },
+    }),
+    {
+      name: "dashboard-data",
+      storage: createJSONStorage(() => sessionStorage),
+    }
+  )
 );

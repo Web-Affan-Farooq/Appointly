@@ -1,14 +1,6 @@
-## Project comforty :
-
-- cloudinary 
-### Problem statement :
-Many other platforms out thier could not have targeted this niche . There are absolutely some pain points which exists in the buy , sell and specially renting of furniture .
-- Olx targets a wide variety of products , same sell and purchase model .
-- zameen.com uses same business model and targeting niche of real estate .
-
 ### Audience :
 The users would probably be able to 
-- purchase furnitures and browse variety  of it .
+- purchase furnitures and browse variety of it .
 - Providers can be able to sold out furnitures , or rent it out for a specific perioud of time .
 All operations have to be done with same account . Create one account then sell or purchase or rent out furnitures .
 

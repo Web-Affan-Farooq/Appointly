@@ -26,11 +26,6 @@ import {
 import { useDashboard } from "@/stores/dashboard";
 
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/images/user.jpg",
-  },
   navMain: [
     {
       title: "Activity",
@@ -140,7 +135,7 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
         )}
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser />
       </SidebarFooter>
     </Sidebar>
   );

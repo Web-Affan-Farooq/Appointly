@@ -73,10 +73,9 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 const getCountry = async (
   userId: string
 ): Promise<{
-  success: boolean;
+  status:200 | 404 | 403 | 500;
   message: string;
   country?: string;
-  redirect?: string;
 }> => {
   console.log("Running getCountry() server action  ...");
   try {
@@ -84,33 +83,39 @@ const getCountry = async (
       .select()
       .from(user)
       .where(eq(user.id, userId));
-    if (!requiredUser) {
+    
+          // ______ If user not found return error ...
+      if (!requiredUser) {
       return {
-        success: false,
-        message: "Unauthorized",
+        status:404,
+        message: "User not found",
       };
     }
+
+    // ____ missing stripe_account_id means user have'nt completed the onboarding , return error ...
     if (!requiredUser.stripe_account_id) {
       return {
-        success: false,
-        redirect: "/dashboard",
+        status:403,
         message:
           "Please complete stripe onboarding before creating any service",
       };
     }
+
+    // ____ Successfully return country...
+
     const { country } = await stripe.accounts.retrieve(
       requiredUser.stripe_account_id
     );
 
     return {
-      success: true,
+      status:200,
       country: country,
-      message: "Got info successfully",
+      message: "Success",
     };
   } catch (err) {
     console.log(err);
     return {
-      success: false,
+      status:500,
       message: "An error occured",
     };
   }

@@ -1,8 +1,16 @@
-Based on my analysis of your appointment management system project, I can see you've built a solid foundation with authentication, service creation, booking, and basic Stripe integration. However, there are several critical gaps and improvements needed to make this viable for real users, especially around payment processing, appointment lifecycle management, and user experience. As a beginner, I'll focus on actionable, step-by-step enhancements that address real-world needs like trust, reliability, and scalability.
+- [] Create server action for verifying if user has completed oinboarding or not . Create a new field in 
+`useDashboard` and update it in `FetchDashboardData` component
+
+---
+
+- [] Remove unnessessary options from side bar and take only one option for profile , which led user to /dashboard/settings page ,
+
+---
+
+- [] Create profile card for showing user profile .
 
 ### Key Issues Identified
 1. **Incomplete Payment Flow**: Payments are collected via Stripe Checkout, but there's no webhook handling to confirm successful payments or update appointment statuses. Funds are held on your platform account, but transfers to providers aren't implemented.
-2. **Appointment Lifecycle Gaps**: Appointments can be booked, confirmed, or canceled, but there's no "completed" status or way for providers to mark appointments as done, which is required for transfers.
 3. **Provider Payouts**: No logic to transfer 98% of the payment to providers after completion.
 4. **User Experience**: Basic success/failure pages, no notifications, no analytics, and limited error handling.
 6. **Scalability**: No background jobs, caching, or performance optimizations for growing user bases.
@@ -104,5 +112,3 @@ Real users abandon apps with poor UX or lack of communication.
 - **Resources**: Read Stripe docs on Connect and Webhooks. Join communities like Indie Hackers for feedback.
 - **Monetization**: Consider platform fees (2%) or premium features.
 - **Launch Checklist**: GDPR compliance, terms of service, demo video.
-
-If you'd like me to implement any of these (e.g., start with the webhook), provide more details or confirm a plan! What part should we tackle first?
