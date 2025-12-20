@@ -8,7 +8,6 @@ import {
 	integer,
 } from "drizzle-orm/pg-core";
 import { service } from "./services";
-import { AppointmentStatus } from "./appointment-type";
 import { InferSelectModel } from "drizzle-orm";
 
 export const appointment = pgTable("appointments", {
@@ -29,7 +28,7 @@ export const appointment = pgTable("appointments", {
 	customer_email: text("customer_email"),
 
 	// status lifecycle
-	status: AppointmentStatus("status").default("PENDING").notNull(),
+	status: text("status").default("PENDING").notNull(),
 
 	// Payment intent ...
 	transfer_group: text(),
@@ -42,8 +41,20 @@ export const appointment = pgTable("appointments", {
 	booked:boolean().default(false).notNull()
 });
 
-export type Appointment = InferSelectModel<typeof appointment>;
+export type Appointment = InferSelectModel<typeof appointment> & {
+	status:"PENDING" | "COMPLETED" | "CANCELLED" |"REQUESTED-RESCHEDULE"
+};
 
 /*
 slot_date: indicates the slot 
 */
+
+/**
+ ** `PENDING` ----> user booked an appointment .
+
+ **`REQUESTED-RESCHEDULE` ----> user wants to change its slot .
+
+ **`COMPLETED` ----> user successfully completed the appointment .
+ 
+ **`CANCELLED` ----> user / provider had cancelled the appointment .
+ */

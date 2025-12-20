@@ -36,4 +36,4 @@ export const service = pgTable("services", {
 	lastCountReset: timestamp("last_count_reset").defaultNow().notNull(),
 });
 
-export type Service = InferSelectModel<typeof service>;
+export type Service = InferSelectModel<typeof service>

@@ -1,10 +1,13 @@
 "use client";
+// _____ Hooks ...
 import React, { useMemo } from "react";
-import { IconCircleCheck, IconClock } from "@tabler/icons-react";
-import { useService } from "@/stores/service";
+import { useService } from "@/app/services/_hooks/service";
 import { useParams } from "next/navigation";
+
+// _____ Components  ...
+import { IconCircleCheck, IconClock } from "@tabler/icons-react";
 import { Loader } from "@/components/common";
-import { BookingCalender } from "@/components/pages/ServiceDetails";
+import BookingCalender from "./_components/booking-calender";
 
 const ServiceDetailsPage = () => {
   const { id } = useParams();

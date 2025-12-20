@@ -1,6 +1,5 @@
-import { pgTable, text, timestamp, boolean, pgEnum } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, boolean } from "drizzle-orm/pg-core";
 
-export const RoleEnum = pgEnum("role", ["USER", "PROVIDER", "ADMIN"]);
 
 // Better auth related schema  ...
 export const user = pgTable("user", {
@@ -9,7 +8,7 @@ export const user = pgTable("user", {
 	email: text("email").notNull().unique(),
 	emailVerified: boolean("email_verified").default(false).notNull(),
 	image: text("image"),
-	role: RoleEnum().default("PROVIDER").notNull(),
+	role: text("role").default("PROVIDER").notNull(),
 	createdAt: timestamp("created_at").defaultNow().notNull(),
 	updatedAt: timestamp("updated_at")
 		.defaultNow()

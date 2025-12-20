@@ -1,4 +1,4 @@
-import { SignupAPIRequestSchema } from "@/validations/SignupFormSchema";
+import { SignupAPIRequestSchema } from "@/app/(Auth-provider)/create-account/_validations/provider-signup";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { z } from "zod";

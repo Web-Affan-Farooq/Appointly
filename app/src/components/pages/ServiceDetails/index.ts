@@ -1,1 +1,0 @@
-export {default as BookingCalender} from "./BookingCalender"

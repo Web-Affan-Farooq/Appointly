@@ -1,14 +1,3 @@
-- [] Create server action for verifying if user has completed oinboarding or not . Create a new field in 
-`useDashboard` and update it in `FetchDashboardData` component
-
----
-
-- [] Remove unnessessary options from side bar and take only one option for profile , which led user to /dashboard/settings page ,
-
----
-
-- [] Create profile card for showing user profile .
-
 ### Key Issues Identified
 1. **Incomplete Payment Flow**: Payments are collected via Stripe Checkout, but there's no webhook handling to confirm successful payments or update appointment statuses. Funds are held on your platform account, but transfers to providers aren't implemented.
 3. **Provider Payouts**: No logic to transfer 98% of the payment to providers after completion.

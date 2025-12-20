@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ServicesAPISchema } from "@/validations/ServicesAPISchema";
+import { ServicesAPISchema } from "@/app/services/_validations/services-api-schema";
 import type { Service } from "@/db/schemas";
 import type { Appointment } from "@/db/schemas";
 
@@ -24,3 +24,4 @@ export type {
 	DashboardAPIRequest,
 	AppointmentObjectSecured,
 };
+

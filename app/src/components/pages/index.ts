@@ -1,8 +1,0 @@
-export { default as AddServiceForm } from "./AddService/Main";
-export { default as CreateAccountForm } from "./CreateAccount/Main";
-export { default as LoginForm } from "./Login/Main";
-export { default as Banner } from "./Home/Banner";
-export { default as Features } from "./Home/Features";
-export { default as Working } from "./Home/Working";
-export { default as Testimonials } from "./Home/Testimonials";
-export { default as CTA } from "./Home/CTA";

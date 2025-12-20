@@ -23,6 +23,6 @@
 			"@/*": ["./src/*"]
 		}
 	},
-	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "../ScheduleAppointmentAction.ts"],
+	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "../ScheduleAppointmentAction.ts", "src/app/services/[id]/_hooks/use-slots.ts"],
 	"exclude": ["node_modules"]
 }
