@@ -12,6 +12,15 @@
 - [] Create Separate login approaches for providers and user login
 - [] Implement polling on account page .
 
+## Check the test flow :
+- book an appointment and check the flow .
+- go to `/test` to check if its getting appointments .
+- attach the correct selecting code to action , fetch and manipulate the global account profile state .
+- render all appointments . show app  in correct tabs 
+- create a popup to display calender to select a new slot when creating reschedule request .
+- send the selected slot to server action which insert a new row in reschedulke sessions and push a notification to admin that a new reschedule is requested .
+- implement server action to accept the reschedule request on dashboard .
+  
 ## Optional :
 - [] Create server action for verifying if user has completed onboarding or not . Create a new field in 
 `useDashboard` and update it in `FetchDashboardData` component

@@ -46,7 +46,7 @@
 		"drizzle-orm": "^0.44.5",
 		"drizzle-setup": "^0.0.9",
 		"lucide-react": "^0.542.0",
-		"next": "15.5.2",
+		"next": "16.1.0",
 		"next-themes": "^0.4.6",
 		"nodemailer": "^7.0.10",
 		"postgres": "^3.4.7",

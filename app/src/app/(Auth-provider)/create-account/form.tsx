@@ -19,25 +19,21 @@ import {
 } from "./_validations/provider-signup";
 // _____ Hooks ...
 import { useForm } from "react-hook-form";
-// _____ actions ...
-import { useState } from "react";
 
 // ____ Constant data ...
 import CountriesData from "@/data/countries.json";
 
 export function SignupForm() {
-  const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors , isSubmitting },
   } = useForm({
     resolver: zodResolver(SignupAPIRequestSchema),
     mode: "onChange",
   });
 
   const signup = async (formData: z.infer<typeof SignupAPIRequestSchema>) => {
-    setLoading(true);
     try {
       const response = await axios.post("/api/accounts/create", formData);
       const { data }: { data: z.infer<typeof SignupAPIResponseSchema> } =
@@ -47,7 +43,6 @@ export function SignupForm() {
       console.log(err);
       alert("An error occured while creating account");
     }
-    setLoading(false);
   };
 
   return (
@@ -118,10 +113,10 @@ export function SignupForm() {
 
         <Button
           type="submit"
-          disabled={loading}
-          className={`${loading ? "bg-pink/50 cursor-not-allowed" : ""}`}
+          disabled={isSubmitting}
+          className={`${isSubmitting ? "bg-pink/50 cursor-not-allowed" : ""}`}
         >
-          {loading ? (
+          {isSubmitting ? (
             <>
               <span>Please wait</span> <Loader />
             </>

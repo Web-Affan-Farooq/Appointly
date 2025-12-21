@@ -32,7 +32,7 @@ const signupWithEmail = async (formData:z.infer<typeof UserSignupFormSchema >):P
 }
 > => {
   try {
-    const data = await auth.api.signUpEmail({
+       const data = await auth.api.signUpEmail({
       body: {
         ...formData,
         callbackURL: process.env.BETTER_AUTH_URL + "/account",
