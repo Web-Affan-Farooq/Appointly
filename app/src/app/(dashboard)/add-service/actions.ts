@@ -9,8 +9,7 @@ import { eq } from "drizzle-orm";
 
 // _____ Types and schemas ...
 import { AddServiceAPISchema } from "./_validations/add-service-api-schema";
-import { ServiceData } from "@/@types/types";
-
+import { ServiceDashboard } from "../dashboard/types";
 // ____ Utils ...
 import CreateSlots from "./_utils/create-slots";
 
@@ -19,7 +18,7 @@ const addServiceAction = async (
 ): Promise<{
   message: string;
   success: boolean;
-  service?: ServiceData;
+  service?: ServiceDashboard;
 }> => {
   console.log(
     "--------------------- Running addServiceAction () ... -------------------------"

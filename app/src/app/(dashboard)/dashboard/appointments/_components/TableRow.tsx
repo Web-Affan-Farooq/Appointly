@@ -9,14 +9,14 @@ import {
 } from "@/components/ui/sheet";
 import { Badge } from "./Badge";
 
-import { AppointmentObjectSecured } from "@/@types/types";
+import { AppointmentDashboard } from "../../types";
 
 import { useAppointments } from "../../_hooks/use-appointments";
 
 const TableRow = ({
   appointment,
 }: {
-  appointment: AppointmentObjectSecured;
+  appointment: AppointmentDashboard;
 }) => {
   const { selectedAppointments, setSelectedAppointments } = useAppointments();
   return (
@@ -52,7 +52,7 @@ const TableRow = ({
           </div>
           <div className="text-sm text-gray-400 flex flex-row gap-[5px] items-center">
             <IconCalendarEvent size={15} />
-            <span>{new Date(appointment.created_at).toLocaleString()}</span>
+            <span>{new Date(appointment.updated_at).toLocaleString()}</span>
           </div>
         </div>
       </SheetTrigger>
@@ -85,7 +85,7 @@ const TableRow = ({
             <div>
               <p className="text-sm text-gray-500">Requested on</p>
               <p className="ml-5 text-sm">
-                {new Date(appointment.created_at).toLocaleString()}
+                {new Date(appointment.updated_at).toLocaleString()}
               </p>
             </div>
           </div>

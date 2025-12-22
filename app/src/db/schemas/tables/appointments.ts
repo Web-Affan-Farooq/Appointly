@@ -28,7 +28,7 @@ export const appointment = pgTable("appointments", {
 	customer_email: text("customer_email"),
 
 	// status lifecycle
-	status: text("status").default("PENDING").notNull(),
+status: text("status").default("PENDING").notNull(),
 
 	// Payment intent ...
 	transfer_group: text(),

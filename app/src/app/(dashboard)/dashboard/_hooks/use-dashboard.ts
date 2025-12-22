@@ -4,7 +4,7 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import { toast } from "sonner";
 
 // _____ Types and schemas  ...
-import { ServiceData } from "@/@types/types";
+import { ServiceDashboard } from "../types";
 
 // _____ Server actions ...
 import CancelAppointmentAction from "../_actions/cancel-appointment";
@@ -22,11 +22,11 @@ interface DashboardState {
   loading: boolean;
   setLoading: (state: boolean) => void;
 
-  services: ServiceData[];
-  addService: (serviceData: ServiceData) => void;
-  selectedService: ServiceData;
-  setServices: (list: ServiceData[]) => void;
-  selectService: (service: ServiceData) => void;
+  services: ServiceDashboard[];
+  addService: (serviceDashboard: ServiceDashboard) => void;
+  selectedService: ServiceDashboard;
+  setServices: (list: ServiceDashboard[]) => void;
+  selectService: (service: ServiceDashboard) => void;
   cancelAppointment: (ids: string[]) => void;
 }
 
@@ -48,9 +48,9 @@ export const useDashboard = create<DashboardState>()(
       services: [],
 
       // ____Function for adding service and updating state ...
-      addService: async (serviceData) => {
+      addService: async (serviceDashboard) => {
           return set((state) => ({
-            services: [...state.services, serviceData],
+            services: [...state.services, serviceDashboard],
           }));
       },
 

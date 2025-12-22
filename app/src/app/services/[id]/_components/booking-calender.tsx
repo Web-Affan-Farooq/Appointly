@@ -1,8 +1,6 @@
 "use client";
 // _____ Hooks ....
-
 import React, { useEffect, useMemo, useState } from "react";
-import { useSlot } from "../_hooks/use-slots";
 
 // _____ Slots ....
 import GetSlots  from "../_actions/get-slots";
@@ -12,39 +10,13 @@ import dayjs from "dayjs";
 import z from "zod";
 
 // _____ Types and schemas ....
-import { AppointmentObjectSecured } from "@/@types/types";
+import { AppointmentClient,  } from "@/@types/types";
 import { ServicesAPISchema } from "../../_validations/services-api-schema";
-import { Appointment } from "@/db/schemas";
 
 // _____ Components ....
 import Link from "next/link";
 import { Calendar } from "@/components/ui/calendar";
-import BookingForm from "./booking-form";
-
-const ChoosedSlot = ({
-  appointment,
-}: {
-  appointment?: AppointmentObjectSecured;
-}) => {
-  const start_time = useMemo(() => {
-    return appointment && dayjs(appointment.start_time).format("HH:mm:ss");
-  }, [appointment]);
-
-  const end_time = useMemo(() => {
-    return appointment && dayjs(appointment.end_time).format("HH:mm:ss");
-  }, [appointment]);
-
-  if (!appointment) return <></>;
-
-  return (
-    <div>
-      <h1 className="font-bold">
-        From {start_time} to {end_time}
-      </h1>
-      <p className="text-sm">Date : {appointment.slot_date}</p>
-    </div>
-  );
-};
+import BookingConfirmation from "./booking-confirmation";
 
 const BookingCalender = ({
   service,
@@ -52,8 +24,7 @@ const BookingCalender = ({
   service: z.infer<typeof ServicesAPISchema>;
 }) => {
   const [date, setDate] = useState(new Date());
-  const [slots, setSlots] = useState<Appointment[]>([]);
-  const { selectedSlot, setSelectedSlot } = useSlot();
+  const [slots, setSlots] = useState<AppointmentClient[]>([]);
 
   useEffect(() => {
     const getSlots = async () => {
@@ -63,9 +34,16 @@ const BookingCalender = ({
     getSlots();
   }, [service.id]);
 
+  const [selectedSlot , setSelectedSlot] = useState<AppointmentClient | null>(null);
   const filteredSlots = useMemo(() => {
-    return slots.filter((slot) => dayjs(slot.slot_date).isSame(date, "day"));
-  }, [date, slots]);
+        const newList =  slots.filter((slot) => dayjs(slot.slot_date).isSame(date, "day"));
+        setSelectedSlot(newList[0])
+        return newList
+      }, [date, slots]);
+
+  const updateSelectedSlotWithKeyboard = (e:React.KeyboardEvent<HTMLDivElement>) => {
+    console.log(e.target)
+  }
 
   return (
     <aside className="lg:col-span-1 lg:border-l lg:pl-10 border-gray-200 mt-8 lg:mt-0 sticky top-20 self-start">
@@ -82,41 +60,21 @@ const BookingCalender = ({
           captionLayout="dropdown"
           required
         />
-        <div className="w-full flex flex-col gap-[10px]">
-          {filteredSlots.length <= 0 ? (
-            <p className="p-2">No slots available ...</p>
-          ) : (
-            <select
-              name="slots"
-              id="slots"
-              className="w-[200px] px-4 py-2 my-2 rounded-lg border border-black"
-              value={selectedSlot?.id ?? ""}
-              onChange={(e) => {
-                const found = filteredSlots.find(
-                  (slot) => slot.id === e.target.value
-                );
-                if (found) {
-                  setSelectedSlot(found);
-                }
-              }}
-            >
-              <option value="" disabled>
-                Select a slot
-              </option>
-              {filteredSlots.map((slot: AppointmentObjectSecured) => {
+        <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-start items-center" onKeyDown={updateSelectedSlotWithKeyboard}>
+                      {filteredSlots.map((slot: AppointmentClient) => {
                 const start_time = dayjs(slot.start_time).format("HH:mm");
                 const end_time = dayjs(slot.end_time).format("HH:mm");
                 return (
-                  <option value={slot.id} key={slot.id}>
-                    {start_time} - {end_time}
-                  </option>
+                  <div onClick={() => setSelectedSlot(slot)} key={slot.id} className={`p-[10px] cursor-pointer rounded-lg flex flex-row gap-[5px] flex-nowrap justify-start items-center ${selectedSlot && slot.id === selectedSlot.id ? "border-3 border-gray-300" : ""}`}>
+                    <div className="w-2 h-[40px] bg-yellow rounded-2xl"></div>
+                    <span className="font-bold"> From </span> {start_time} <span className="font-bold"> to</span>{end_time}
+                  </div>
                 );
               })}
-            </select>
-          )}
-          <ChoosedSlot appointment={selectedSlot} />
-          <BookingForm service={service} />
         </div>
+        
+         {selectedSlot ?  <BookingConfirmation slot={selectedSlot} price={service.price} currency={service.currency} duration={service.duration} /> : <></>}
+       
       </div>
 
       <div className="mt-4 text-center">

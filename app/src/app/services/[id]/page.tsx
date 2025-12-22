@@ -115,15 +115,3 @@ const ServiceDetailsPage = () => {
 };
 
 export default ServiceDetailsPage;
-
-/*
-                <Link
-                  href={"/book-appointment"}
-                  onClick={() => setSelectedService(requiredService)}
-                >
-                  <Button className="bg-pink hover:bg-pink/50 text-black cursor-pointer hover:bg-pink/90 py-1 px-3 rounded-md font-semibold text-md transition-colors duration-300 shadow-lg hover:shadow-xl flex flex-row flex-nowrap justify-center items-center gap-[10px]">
-                    <span>Book this service</span>
-                    <IconArrowNarrowRight />
-                  </Button>
-                </Link>
-*/

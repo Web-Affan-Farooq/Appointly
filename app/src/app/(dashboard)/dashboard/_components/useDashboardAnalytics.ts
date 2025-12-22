@@ -16,13 +16,13 @@ const useDashboardAnalytics = () => {
 	const completedAppointments = selectedService.appointments.filter(
 		(appointment) =>
 			appointment.status === "COMPLETED" &&
-			new Date(appointment.created_at) > sevenDaysAgoDate,
+			new Date(appointment.updated_at) > sevenDaysAgoDate,
 	);
 
 	const totalAppointments = selectedService.appointments.filter(
 		(appointment) =>
 			appointment.status === "PENDING" &&
-			new Date(appointment.created_at) > sevenDaysAgoDate,
+			new Date(appointment.updated_at) > sevenDaysAgoDate,
 	);
 
 	return {

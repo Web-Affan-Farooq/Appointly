@@ -3,14 +3,20 @@ import { ServicesAPISchema } from "@/app/services/_validations/services-api-sche
 import type { Service } from "@/db/schemas";
 import type { Appointment } from "@/db/schemas";
 
-type AppointmentObjectSecured = Omit<Appointment, "transfer_group">;
-type ServiceData = Service & {
-	appointments: AppointmentObjectSecured[];
+type AppointmentClient = Omit<Appointment, "transfer_group" | 
+"customer_email" |
+"customer_name" |
+"status" |
+"booked" |
+"created_at" |
+"updated_at"> & {
+	status:"PENDING" | "COMPLETED" | "CANCELLED" | "REQUESTED-RESCHEDULE"
 };
 
-type DashboardAPIResponse = {
-	services: ServiceData[];
+type ServiceData = Service & {
+	appointments: AppointmentClient[];
 };
+
 type DashboardAPIRequest = {
 	userId: string;
 };
@@ -20,8 +26,7 @@ type ClientService = z.infer<typeof ServicesAPISchema>
 export type {
 	ClientService,
 	ServiceData,
-	DashboardAPIResponse,
 	DashboardAPIRequest,
-	AppointmentObjectSecured,
+	AppointmentClient,
 };
 

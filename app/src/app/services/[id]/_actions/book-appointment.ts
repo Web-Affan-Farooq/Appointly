@@ -2,10 +2,9 @@
 import Stripe from "stripe";
 import db from "@/db";
 import { appointment, service } from "@/db/schemas";
-import { z } from "zod";
 import { v4 } from "uuid";
 import { eq } from "drizzle-orm";
-import { BookingFormAPIRequest } from "@/app/services/[id]/_validations/book-appointment-schema";
+import { AppointmentClient } from "@/@types/types";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
@@ -15,21 +14,39 @@ const urls = {
 };
 
 // ____ Function for getting service name ...
-const findService = async (service_id: string) => {
+const GetServiceDetails = async (service_id: string) => {
   const [requiredService] = await db
-    .select({ name: service.name })
+    .select({
+      id:service.id,
+      name:service.name,
+      currency:service.currency,
+      price:service.price
+    })
     .from(service)
     .where(eq(service.id, service_id));
-  return requiredService.name;
+  return {
+    service_name:requiredService.name,
+    service_id:requiredService.id,
+    service_currency:requiredService.currency,
+    service_price:requiredService.price
+  };
 };
 
 interface PivotObject {
   transfer_group: string;
-  service_name: string;
+    service_name:string
+    service_id:string
+    service_currency:string
+    service_price:number
+}
+
+type FormData = AppointmentClient & {
+  customer_name:string;
+  customer_email:string;
 }
 
 const BookAppointmentAction = async (
-  formData: z.infer<typeof BookingFormAPIRequest>
+  formData:FormData
 ): Promise<{
   message: string;
   success: boolean;
@@ -38,16 +55,18 @@ const BookAppointmentAction = async (
   /*
   Attached multiple trycatch blocks for effective error handling ...
   */
-  console.log("-------------- Get formData -------------- : ", formData);
+  console.log("-------------- Get formData -------------- : ", );
   console.log(formData);
   // ____ For storing data from different blocks ...
   const pivot: PivotObject = {
     service_name: "",
     transfer_group: "",
+    service_currency:"",
+    service_id:"",
+    service_price:0
   };
   console.log("-------------- Iniatlized pivot -------------- : ");
   console.log(pivot);
-  // ____ Insert appointment in db and make sure to make it globally available ...
   try {
     console.log("-------------- allocating slot -------------- : ");
     const [requiredSlot] = await db.update(appointment).set({
@@ -55,18 +74,21 @@ const BookAppointmentAction = async (
       customer_name:formData.customer_name,
       customer_email:formData.customer_email,
       transfer_group: `appointment_${v4()}`,
-    }).where(eq(appointment.id , formData.appointment_id)).returning()
+    }).where(eq(appointment.id , formData.id)).returning()
 
     console.log("-------------- Allocated successfully -------------- : ");
     console.log(requiredSlot);
 
     console.log("-------------- Fetching service name -------------- : ");
-    const serviceName = await findService(formData.service_id);
-    console.log("-------------- service name -------------- : ");
-    console.log(serviceName);
+    const serviceDetails  = await GetServiceDetails(formData.service_id);
+    console.log("-------------- service details -------------- : ");
+    console.log(serviceDetails);
     // ____ Manipulate globally ...
     pivot.transfer_group = requiredSlot.transfer_group!;
-    pivot.service_name = serviceName;
+    pivot.service_name = serviceDetails.service_name;
+    pivot.service_currency = serviceDetails.service_currency;
+    pivot.service_price = serviceDetails.service_price;
+    pivot.service_id = serviceDetails.service_id;
     console.log("-------------- Updated pivot -------------- : ");
     console.log(pivot);
   } catch (err) {
@@ -90,11 +112,11 @@ const BookAppointmentAction = async (
       line_items: [
         {
           price_data: {
-            currency: formData.currency.toLowerCase(),
+            currency: pivot.service_currency.toLowerCase(),
             product_data: {
               name: `Appointment for ${pivot.service_name}`,
             },
-            unit_amount: formData.price * 100,
+            unit_amount: pivot.service_price * 100,
           },
           quantity: 1,
         },
@@ -102,7 +124,7 @@ const BookAppointmentAction = async (
       success_url: urls.success,
       cancel_url: urls.failure,
       metadata: {
-        appointment_id: formData.appointment_id,
+        appointment_id: formData.id,
         transfer_group: pivot.transfer_group,
       },
     });
