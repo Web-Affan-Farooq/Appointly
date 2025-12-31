@@ -1,4 +1,9 @@
 "use client";
+// ____ Hooks and utils   ...
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+
 // ____ Components ...
 import { Button, Loader } from "@/components/common";
 import {
@@ -19,9 +24,6 @@ import { AppointmentClient } from "@/@types/types";
 
 // ____ Actions ...
 import BookAppointmentAction from "../_actions/book-appointment";
-import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 
 const BookingConfirmation = ({ slot , price , duration , currency }: { slot: AppointmentClient  , price :number , duration : number , currency : string}) => {
   const [loading , setLoading] = useState(false);

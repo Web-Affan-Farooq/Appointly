@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import AppointmentsList from "./_components/appointments-list";
 
 
 export default function AccountPage() {
@@ -23,7 +24,8 @@ export default function AccountPage() {
           ))}
         </div>
 
-        <div className="flex"></div>
+        {/* <div className="flex"></div> */}
+        <AppointmentsList/>
       </div>
     </main>
   );

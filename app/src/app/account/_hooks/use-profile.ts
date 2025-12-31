@@ -1,11 +1,12 @@
 import { create } from "zustand";
+import { AppointmentProfile } from "../_types";
 
 interface ProfileState {
   name: string;
   email: string;
   setInfo: (info: { name: string; email: string }) => void;
-  appointments: [];
-  setAppointments: (list: []) => void;
+  appointments: AppointmentProfile[];
+  setAppointments: (list: AppointmentProfile[]) => void;
 }
 
 export const useProfile = create<ProfileState>()((set) => ({

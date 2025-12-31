@@ -1,5 +1,3 @@
-import { z } from "zod";
-import { ServicesAPISchema } from "@/app/services/_validations/services-api-schema";
 import type { Service } from "@/db/schemas";
 import type { Appointment } from "@/db/schemas";
 
@@ -21,7 +19,7 @@ type DashboardAPIRequest = {
 	userId: string;
 };
 
-type ClientService = z.infer<typeof ServicesAPISchema>
+type ClientService = Omit<Service , "is_active">
 
 export type {
 	ClientService,

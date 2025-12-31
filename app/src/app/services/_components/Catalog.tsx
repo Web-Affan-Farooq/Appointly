@@ -1,13 +1,12 @@
-import { z } from "zod";
-import { ServicesAPISchema } from "../_validations/services-api-schema";
-import Card from "./Card";
+import Card from "./card";
 import { Loader } from "@/components/common";
+import { ClientService } from "@/@types/types";
 
 const Catalog = ({
   filteredServices,
   loading,
 }: {
-  filteredServices: z.infer<typeof ServicesAPISchema>[];
+  filteredServices: ClientService[];
   loading: boolean;
 }) => {
   if (loading && filteredServices.length === 0) {

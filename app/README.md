@@ -1,6 +1,8 @@
 ## Tasks :
 - [X] Complete the fix of slot allocation .
+- [X] Complete the slot regeneration .
 - [X] Implement functionality to send otp for login of service provider .
+- [] Implement feature of state saving .
 - [] Create an accounts page from where the user check his booked appointment 
 - [] Create appointment rescheduling functionality
 - [] Create appointment booking tool for Ai agent .
@@ -11,12 +13,12 @@
 - [] No-shows, cancellations, revenue earned. 
 - [] Create Separate login approaches for providers and user login
 - [] Implement polling on account page .
+- [] Add a refund logic for cancelled appointments [see more details in this document] (./IMPROVEMENTS.md)
+- [] Improve success and failure pages .
 
-## Check the test flow :
-- attach the correct selecting code to action , fetch and manipulate the global account profile state .
-- render all appointments . show appointments in correct tabs 
+## Check the test flow : 
 - create a popup to display calender to select a new slot when creating reschedule request .
-- send the selected slot to server action which insert a new row in reschedulke sessions and push a notification to admin that a new reschedule is requested .
+- send the selected slot to server action which insert a new row in reschedule sessions and push a notification to admin that a new reschedule is requested .
 - implement server action to accept the reschedule request on dashboard .
   
 ## Optional :
@@ -24,15 +26,13 @@
 `useDashboard` and update it in `FetchDashboardData` component
 
 ## Features implementation :
-- [] Add a refund logic for cancelled appointments [see more details in this document] (./IMPROVEMENTS.md)
-- [] Improve success and failure pages .
 
-## Appintment cancellation :
+### Appintment cancellation :
 - Provider can be able to select multiple appointments and mark them `CANCELLED` .
 - Create a server action which takes array of appointment ids and mark them `CANCELLED` .
 - Server then calls another function to push message on whatsapp that your appointment hasbeen cancelled . OR Push a notification . 
 
-## OTP sending :
+### OTP sending :
 - Create a new table in database called `otp-session` which have only two properties .
    - **id** for otp session recognition
    - **otp** as generated code .
@@ -49,7 +49,7 @@
 - if matched send user response 200 and it will redirected to `/dashboard` page .
 - else repeat again and again until user enters correct code within 5 minutes 
  
-## Appointment rescheduling :
+### Appointment rescheduling :
 - user clicks on an appointment which is `PENDING`. An option will appear for rescheduling .
 - on clicking the option , the calender with remaining slots is shown .
 - user selectes the appointment . then request reschedule using the route which contain previous slot id and new desired slot id , 
@@ -76,22 +76,6 @@
 
 - If you store slot_date, this becomes a simple date range query.
 
-#### Booking flow
-
-- When a user books, update that slot’s booked → true and attach their details.
-
-- Stripe session logic stays the same — you just associate the payment with that slot ID.
-
 ```bash
 docker exec -i appointly-postgres psql -U affan -d mydb < services_rows.sql
-```
-
-I've identified some issues in the slot creation .
-- I've selected the days MONDAY, TUESDAY and WEDNESDAY but slots are generated for thursday also .
-- I've entered start time as 9 am to 9 pm and its inserted in data base as 09:00:00 and end time as 21:00:00 . but the slots are generated  
-
-Checkout the code which is generating the slots  , these slots were generated when a new service is created .
-
-```typescript
-
 ```

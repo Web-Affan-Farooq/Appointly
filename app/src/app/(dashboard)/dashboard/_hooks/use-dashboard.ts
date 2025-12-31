@@ -72,7 +72,7 @@ export const useDashboard = create<DashboardState>()(
         user_id: "",
         working_days: [],
         price: 0,
-        lastCountReset: new Date(),
+        last_generated: new Date(),
         is_active: false,
         maxCapacity: 0,
         appointments: [],

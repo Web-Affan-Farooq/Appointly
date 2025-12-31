@@ -3,36 +3,33 @@
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-// import { GetAppointments } from "../_actions/get-appointments";
-// import { toast } from "sonner";
+import { GetAppointments } from "../_actions/get-appointments";
+import { toast } from "sonner";
 import { useProfile } from "../_hooks/use-profile";
 
 const FetchUserProfileData = ({ children }: { children: React.ReactNode }) => {
-  // eslint-disable-next-line    @typescript-eslint/no-unused-vars
-  const {setAppointments} = useProfile()
+  const { setAppointments } = useProfile();
   const router = useRouter();
-  useEffect(() => {
+  const data = authClient.useSession();
 
-  // eslint-disable-next-line    @typescript-eslint/no-unused-vars 
+  useEffect(() => {
     const getData = async () => {
-      const data = authClient.useSession().data;
-      if (data) {
-  // eslint-disable-next-line   @typescript-eslint/no-unused-vars
-        const userEmail = data.user.email;
-        // const {message , success ,appointments} =await  GetAppointments(userEmail);
-        // if(!success) {
-        //     toast.error(message)
-        // }
-        // else if (appointments) {
-            
-        // }
-      } 
-      else {
-        router.push("/login-user");
+      const userData = data.data
+      if (userData) {
+        const userEmail = userData.user.email;
+        const { message, statusCode, appointments } =
+          await GetAppointments(userEmail);
+        if (appointments) {
+          setAppointments(appointments);
+        } else if (statusCode === 500) {
+          toast.error(message);
+        }
       }
     };
-  }, [router]);
+
+    getData();
+  }, [router,data, setAppointments]);
   return <>{children}</>;
 };
 
-export default FetchUserProfileData
+export default FetchUserProfileData;

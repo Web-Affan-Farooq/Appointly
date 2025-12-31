@@ -1,6 +1,6 @@
 "use client";
 // _____ Hooks ...
-import React, { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useService } from "@/app/services/_hooks/service";
 import { useParams } from "next/navigation";
 
@@ -16,6 +16,10 @@ const ServiceDetailsPage = () => {
   const requiredService = useMemo(() => {
     return services.find((s) => s.id === id);
   }, [services, id]);
+  
+  useEffect(() => {
+    // if(requiredService.)
+  },[requiredService])
 
   if (!requiredService) {
     return (

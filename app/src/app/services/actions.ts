@@ -1,14 +1,11 @@
 "use server";
 import db from "@/db";
 import { appointment, service } from "@/db/schemas";
-import { eq, sql } from "drizzle-orm";
-import { z } from "zod";
-import { ServicesAPISchema } from "@/app/services/_validations/services-api-schema";
+import { eq } from "drizzle-orm";
+import {ClientService} from "@/@types/types"
 
-type Data = z.infer<typeof ServicesAPISchema>[];
-
-const getServices = async (): Promise<Data> => {
-	const servicesData = await db
+export const getServices = async (): Promise<ClientService[]> => {
+	const services = await db
 		.select({
 			id: service.id,
 			created_at: service.created_at,
@@ -26,22 +23,13 @@ const getServices = async (): Promise<Data> => {
 			max_appointments_per_day: service.max_appointments_per_day,
 			ratings: service.ratings,
 			details: service.details,
-			appointmentsCount:
-				sql<number>`CAST(count(${appointment.id}) AS INTEGER)`.as(
-					"appointments_count",
-				),
+			maxCapacity:service.maxCapacity,
+			last_generated:service.last_generated,
 		})
 		.from(service)
 		.leftJoin(appointment, eq(appointment.service_id, service.id))
 		.where(eq(service.is_active, true))
 		.groupBy(service.id);
 
-	const services = servicesData.map((serviceData) => ({
-		...serviceData,
-		remainingAppointments:
-			serviceData.max_appointments_per_day -
-			Number(serviceData.appointmentsCount), // ------ converted to number
-	}));
-	return services;
+	return services
 };
-export default getServices;

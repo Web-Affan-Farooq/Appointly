@@ -33,7 +33,7 @@ export const service = pgTable("services", {
 	details: text("details").array().default([]).notNull(),
 
 	maxCapacity: integer("max_capacity").default(1).notNull(),
-	lastCountReset: timestamp("last_count_reset").defaultNow().notNull(),
+	last_generated: timestamp("last_count_reset").defaultNow().notNull(),
 });
 
 export type Service = InferSelectModel<typeof service>

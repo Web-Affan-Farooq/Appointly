@@ -2,7 +2,7 @@
 import { IconMenu2, IconX } from "@tabler/icons-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useState } from "react";
+import { useState } from "react";
 import { pagesNotAllowed } from "@/constants";
 
 const links = [
@@ -50,13 +50,13 @@ const Header = () => {
 					</Link>
 				))}
 				<Link
-					href="/login"
+					href="/login-user"
 					className="bg-pink rounded-xl px-[20px] py-[5px] cursor-pointer"
 				>
 					Signin
 				</Link>
 				<Link
-					href="/create-account"
+					href="/signup-user"
 					className="bg-pink rounded-xl px-[20px] py-[5px] cursor-pointer"
 				>
 					Signup
@@ -72,13 +72,13 @@ const Header = () => {
 					</Link>
 				))}
 				<Link
-					href={"/login"}
+					href={"/login-user"}
 					className="bg-pink rounded-xl px-[20px] py-[5px] cursor-pointer"
 				>
 					Signin
 				</Link>
 				<Link
-					href={"/create-account"}
+					href={"/signup-user"}
 					className="bg-pink rounded-xl px-[20px] py-[5px] cursor-pointer"
 				>
 					Signup

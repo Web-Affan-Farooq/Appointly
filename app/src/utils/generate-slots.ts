@@ -1,24 +1,26 @@
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
+import db from "@/db";
+import { Appointment, appointment, service } from "@/db/schemas"
 
 interface SlotInput {
   service_id: string;
   durationMinutes: number;
-  workingDays: string[];  
+  workingDays: string[];
   startTime: string;       // "09:00"
   endTime: string;         // "21:00"
   daysAhead?: number;
 }
 
 interface Slot {
-        service_id:string;
-        start_time: Date,
-        end_time: Date
-        slot_date: string
-        booked: boolean,
-        token: number,
-      }
+  service_id: string;
+  start_time: Date,
+  end_time: Date
+  slot_date: string
+  booked: boolean,
+  token: number,
+}
 
-export default function CreateSlots({
+export default async function GenerateSlots({
   service_id,
   durationMinutes,
   workingDays,
@@ -26,13 +28,13 @@ export default function CreateSlots({
   endTime,
   daysAhead = 30,
 }: SlotInput) {
-  
+
   const slots: Slot[] = [];
   const allowedDays = workingDays.map((d) => d.slice(0, 3).toLowerCase());
   const today = dayjs().startOf("day"); // LOCAL, not UTC
 
   for (let i = 0; i < daysAhead; i++) {
-        const date = today.add(i, "day");
+    const date = today.add(i, "day");
     const weekdayKey = date.format("ddd").toLowerCase();
     if (!allowedDays.includes(weekdayKey)) continue;
 
@@ -75,12 +77,22 @@ export default function CreateSlots({
     slots.push(...daySlots);
   }
 
+  let slotData:Appointment[] = []
+  
+  await db.transaction(async (tx) => {
+    slotData = await tx.insert(appointment).values(slots).returning() as Appointment[];
+
+    await db.update(service).set({
+      last_generated: new Dayjs().toDate()
+    })
+  })
+  
   // sort properly
-  slots.sort((a, b) => {
+  slotData.sort((a, b) => {
     const d = dayjs(a.slot_date).valueOf() - dayjs(b.slot_date).valueOf();
     if (d !== 0) return d;
     return dayjs(a.start_time).valueOf() - dayjs(b.start_time).valueOf();
   });
 
-  return slots;
+  return slotData
 }

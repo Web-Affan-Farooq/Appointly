@@ -2,7 +2,7 @@
 
 import { useService } from "../_hooks/service";
 import { useEffect } from "react";
-import FetchServicesAction from "../actions";
+import {getServices} from "../actions";
 import { toast } from "sonner";
 
 const FetchServices = ({ children }: { children: React.ReactNode }) => {
@@ -14,7 +14,7 @@ const FetchServices = ({ children }: { children: React.ReactNode }) => {
 
       console.log("______ Running data fetches ...");
       try {
-        const servicesData = await FetchServicesAction();
+        const servicesData = await getServices();
         setService(servicesData);
       } catch (err) {
         console.log(err);

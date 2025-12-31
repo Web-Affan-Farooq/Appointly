@@ -1,6 +1,6 @@
 "use server";
 import db from "@/db";
-import { service, appointment, user } from "@/db/schemas";
+import { service, user } from "@/db/schemas";
 
 // _____ Libraries ...
 import { z } from "zod";
@@ -11,7 +11,7 @@ import { eq } from "drizzle-orm";
 import { AddServiceAPISchema } from "./_validations/add-service-api-schema";
 import { ServiceDashboard } from "../dashboard/types";
 // ____ Utils ...
-import CreateSlots from "./_utils/create-slots";
+import GenerateSlots from "@/utils/generate-slots";
 
 const addServiceAction = async (
   formData: z.infer<typeof AddServiceAPISchema>
@@ -35,7 +35,7 @@ const addServiceAction = async (
 
     console.log("Inserted a new service  : ", newService);
     console.log("Generating slots  : ", "-------------");
-    const slots = CreateSlots({
+    const slots = GenerateSlots({
       service_id: newService.id,
       durationMinutes: newService.duration,
       workingDays: newService.working_days,
@@ -43,7 +43,6 @@ const addServiceAction = async (
       endTime: newService.end_time,
     });
 
-    await db.insert(appointment).values(slots);
     console.log("Generated slots  : ", slots);
 
     console.log(

@@ -1,31 +1,34 @@
-interface Data {
-  id: string;
-  title: string;
-  date: string;
-  time: string;
-  status: string;
-}
+import { useMemo } from "react";
+import { AppointmentProfile } from "../_types";
+import dayjs from "dayjs";
 
-interface Props {
-  data: Data;
-}
+export default function AppointmentCard({
+  appointment,
+}: {
+  appointment: AppointmentProfile;
+}) {
+  const start_time = useMemo(() => {
+    return dayjs(appointment.start_time).format("HH:mm:ss");
+  }, [appointment]);
 
-export default function AppointmentCard({ data }: Props) {
+  const end_time = useMemo(() => {
+   return dayjs(appointment.end_time).format("HH:mm:ss");  }, [appointment]);
+
   return (
     <div className="p-4 shadow-sm shadow-gray-500 rounded-xl flex justify-between items-center">
       <div>
-        <h3 className="font-medium text-lg">{data.title}</h3>
+        <h3 className="font-medium text-lg">{appointment.service.name}</h3>
         <p className="text-gray-400 text-sm mt-1">
-          {data.date} — {data.time}
+          {start_time} — {end_time}
         </p>
-        <p className="text-xs mt-2 text-blue-400 capitalize">{data.status}</p>
+        <p className="text-xs mt-2 text-blue-400 capitalize">
+          {appointment.status}
+        </p>
       </div>
 
       <div className="flex flex-col gap-2">
-        {data.status === "upcoming" && (
-          <button
-            className="px-3 py-1 bg-pink text-black rounded-md text-sm"
-          >
+        {appointment.status === "PENDING" && (
+          <button className="px-3 py-1 bg-pink text-black rounded-md text-sm">
             Reschedule
           </button>
         )}

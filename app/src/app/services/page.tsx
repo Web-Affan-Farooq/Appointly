@@ -1,12 +1,12 @@
 "use client";
 // ____ Hooks ...
-import React, { useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { useService } from "@/app/services/_hooks/service";
 
 // ____ Components and constants ...
 import { serviceCategories } from "@/constants";
 import { Input } from "@/components/common";
-import Catalog from "./_components/Catalog";
+import Catalog from "./_components/catalog";
 
 const ServicesPage = () => {
 	const { services, loading } = useService();

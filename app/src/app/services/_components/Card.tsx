@@ -1,9 +1,8 @@
 import { Button } from "@/components/common";
-import { ServicesAPISchema } from "../_validations/services-api-schema";
-import { z } from "zod";
 import Link from "next/link";
+import { ClientService } from "@/@types/types";
 
-const Card = ({ service }: { service: z.infer<typeof ServicesAPISchema> }) => {
+const Card = ({ service }: { service: ClientService }) => {
   return (
     <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl shadow-gray-400 duration-300 overflow-hidden">
       <div className="p-6">
