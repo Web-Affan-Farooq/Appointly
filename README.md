@@ -1,11 +1,64 @@
+## Milestone 1 — Core Setup & Auth
+✅ **Deliverable**:
+- **User must be able to login either using email and password or social account (google login required)**
+- **User must be able to signup either using email and password or social account (google signup required)**
+- **User must be able to logout from dashboard**
+- Create an appropriate landing page.
 
-  # Landing Page Design
+## Milestone 2 — Provider Onboarding (Completed)
 
-  This is a code bundle for Landing Page Design. The original project is available at https://www.figma.com/design/AGeQxZD1RuQEb8EBUdiYKQ/Landing-Page-Design.
+- **Create `user facing form page` for `provider account creation`**.
+- **Create connect account of users**
+- **Create form on `/add-service` for adding a  new service**
+- **Create backend route for adding service**
+- **After completing the onboarding redirect user to the /dashboard route**
 
-  ## Running the code
+## Milestone 3 — Client Booking Flow
 
-  Run `npm i` to install the dependencies.
+- **Create use facing services page with search bar** 
+- **Create a dynamic route page for service details**
+- **Create a appointment booking form .**
+- **on the details page the user should be navigated to the booking page**
+- **Create backend of book appointment**
+- **Book appointment (status: PENDING).**
 
-  Run `npm run dev` to start the development server.
-  
+## Milestone 4 — Provider Dashboard Actionstask
+
+- Provider can confirm/reject/.
+- Update appointment status accordingly.
+- Show today’s schedule in dashboard.
+
+## Milestone 5 — Notifications & Reminders
+
+Email confirmations via Resend/Nodemailer.
+
+Optional: SMS reminders (Twilio or another API).
+
+Reminder system for upcoming appointments.
+✅ Deliverable: User + provider both receive reminders.
+
+## Milestone 6 — Analytics & Reporting
+- on dashboards Create cards for total earnings this month , a side div for any popup
+- Number of appointments per week/month.
+- No-shows, cancellations, revenue earned.
+
+## Milestone 7 — Polish & Launch
+Prepare landing page + README + demo video.
+
+- attach token system
+
+#### Updating services :
+
+- When `max_appointments_per_day` changes, don’t delete everything.
+
+- Fetch all future unbooked slots and delete them.
+
+- Then regenerate new slots for the upcoming period with the new limit.
+
+- Keep past and booked slots untouched.
+
+- If you store slot_date, this becomes a simple date range query.
+
+```bash
+docker exec -i appointly-postgres psql -U affan -d mydb < services_rows.sql
+```
