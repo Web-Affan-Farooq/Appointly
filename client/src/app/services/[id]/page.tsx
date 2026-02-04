@@ -1,20 +1,32 @@
 "use client";
 // _____ Hooks ...
-import {useMemo } from "react";
+import { useMemo } from "react";
 import { useService } from "@/app/services/_hooks/use-service";
 import { useParams } from "next/navigation";
 
 // _____ Components  ...
 import { IconCircleCheck, IconClock } from "@tabler/icons-react";
 import { Loader } from "@/components/common";
-import {BookingCalender} from "./_components/BookingCalender";
+import { BookingCalender } from "./_components/BookingCalender";
+import { formatDate } from "@/shared/utils/format-date";
+import dayjs from "@/lib/dayjs";
 
 const ServiceDetailsPage = () => {
   const { id } = useParams();
   const { services, loading } = useService();
 
   const requiredService = useMemo(() => {
-    return services.find((s) => s.id === id);
+    return services.find((s) => {
+      if (s.id === id) {
+        const string_1 = `${dayjs().format("YYYY-MM-DD")} ${s.start_time}`;
+        const string_2 = `${dayjs().format("YYYY-MM-DD")} ${s.end_time}`;
+
+        const start_time = formatDate(dayjs(string_1).toDate(), "hh:mm A");
+        const end_time = formatDate(dayjs(string_2).toDate(), "hh:mm A");
+
+        return { ...s, start_time, end_time };
+      }
+    });
   }, [services, id]);
 
   if (!requiredService) {
@@ -93,15 +105,17 @@ const ServiceDetailsPage = () => {
                     </li>
                   ))}
                 </ul>
-                {requiredService.duration && (
-                  <div className="mt-4 pt-4 border-t border-gray-200 flex items-center text-sm text-gray-500">
-                    <IconClock className="w-4 h-4 mr-2" />
-                    Estimated Duration:{" "}
-                    <span className="font-medium ml-1 text-gray-700">
-                      {requiredService.duration}
+                <div className="mt-4 pt-4 border-t border-gray-200 flex items-center text-sm text-gray-500">
+                  <IconClock className="w-4 h-4 mr-2" />
+                  Estimated Apointment Duration:{" "}
+                  <span className="font-medium ml-1 text-gray-700">
+                    {requiredService.duration} (
+                    <span>
+                      {requiredService.start_time} - {requiredService.end_time}
                     </span>
-                  </div>
-                )}
+                    )
+                  </span>
+                </div>
               </section>
             </div>
 

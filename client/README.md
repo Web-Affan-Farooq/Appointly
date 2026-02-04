@@ -1,35 +1,56 @@
-## Tasks :
-- [X] Complete the fix of slot allocation .
-- [X] Complete the slot regeneration .
-- [] Implement functionality to send otp for login of service provider .
-- [] Implement feature of state saving .
-- [] Create an accounts page from where the user check his booked appointment 
-- [] Create appointment rescheduling functionality
-- [] Create appointment booking tool for Ai agent .
+### Completed :
 - [X] Show today’s schedule in calender in dashboard.
-- [] SMS reminders (Twilio API).
-- [] on dashboards Create cards for total earnings this month , a side div for any popup
-- [] Number of appointments per week/month.
-- [] No-shows, cancellations, revenue earned. 
-- [] Create Separate login approaches for providers and user login
-- [] Implement polling on account page .
-- [] Add a refund logic for cancelled appointments [see more details in this document] (./IMPROVEMENTS.md)
-- [] Improve success and failure pages .
+- [X] Complete the slot regeneration .
+- [X] Complete the fix of slot allocation .
+- [X] Create an accounts page from where the user check his booked appointment .
+- [X] Appointment rescheduling route .
 
-## Check the test flow : 
-- create a popup to display calender to select a new slot when creating reschedule request .
-- send the selected slot to server action which insert a new row in reschedule sessions and push a notification to admin that a new reschedule is requested .
-- implement server action to accept the reschedule request on dashboard .
-  
+### Basic :
+- Create a utility that returns the user's credentials from `authClient()`.
+- Update the service details page to show all the metadata about service .
+- Update the cards component in account page to show meaningful data .
+- Implement functionality to send otp for login of service provider .
+
+- on dashboards Create cards for total earnings this month , a side div for any popup
+- Number of appointments per week/month.
+- No-shows, cancellations, revenue earned. 
+- Create Separate login approaches for providers and user login
+- Add a refund logic for cancelled appointments [see more details in this document] (./IMPROVEMENTS.md)
+- Implement appointment cancellation . `[MENTIONED]`
+- Notification push . `[MENTIONED]`
+### Intermediate :
+- Improve success and failure pages .
+- Implement feature of state saving .
+
+### Advanced :
+- Add proper testing for the cases .
+- Implement open telemetry for logging and span collection .
+- Create appointment booking tool for Ai agent .
+ 
 ## Optional :
-- [] Create server action for verifying if user has completed onboarding or not . Create a new field in 
+-  Create server action for verifying if user has completed onboarding or not . Create a new field in 
 `useDashboard` and update it in `FetchDashboardData` component
 
 ## Features implementation :
 
-### Appintment cancellation :
+### Acknowledgement feature through QR code :
+- Service providers have thier own QR code provided by platform .
+- This qr code contain the link `http://localhost:3000/mark?id=exampleid&`
+
+### Implement a task queue :
+- Create a new table in postgres for task queue implementation with row level locking .
+### Notification push :
+- Integrate Twilio API for integration of notification and reminders .
+**Push notification :**
+- When the provider accepts the reschedule request from dashboard .
+- When the provider cancel appointments .
+- When the funds are transfered to provider account . 
+- When reschedule is requested from accounts .
+- When appointment is booked .
+
+### Appointment cancellation :
 - Provider can be able to select multiple appointments and mark them `CANCELLED` .
-- Create a server action which takes array of appointment ids and mark them `CANCELLED` .
+- Create a route which takes array of appointment ids and mark them `CANCELLED` .
 - Server then calls another function to push message on whatsapp that your appointment hasbeen cancelled . OR Push a notification . 
 
 ### OTP sending :
@@ -48,16 +69,6 @@
 - If expired , delete this entry and tell user to login again . Redirect user to `/login-provider` and send it email and password .
 - if matched send user response 200 and it will redirected to `/dashboard` page .
 - else repeat again and again until user enters correct code within 5 minutes 
- 
-### Appointment rescheduling :
-- user clicks on an appointment which is `PENDING`. An option will appear for rescheduling .
-- on clicking the option , the calender with remaining slots is shown .
-- user selectes the appointment . then request reschedule using the route which contain previous slot id and new desired slot id , 
-- if request is accepted from dashboard , call a server action which  
-    - fetches the previous slot .
-    - extract its `customer_name` , `customer_email` , `transfer_group` 
-    - update the `booked` status of previous slot to **false**
-    - update and insert the target slot with `customer_name` , `customer_email` , `transfer_group`
 
 #### Slot generation logic :
 - When a service is created, generate slots for (say) 30 days based on max_appointments_per_day and your business hours.
@@ -76,6 +87,7 @@
 
 - If you store slot_date, this becomes a simple date range query.
 
+shakirali@gmail.com (alpHA23@)
 ```bash
-docker exec -i appointly-postgres psql -U affan -d mydb < services_rows.sql
+docker exec -i postgres psql -U affan -d appointly < reschedule_requests.sql
 ```

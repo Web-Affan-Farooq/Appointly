@@ -1,14 +1,15 @@
-import {Card} from "./Card";
-import { Loader } from "@/components/common";
-import { ClientService } from "@/@types/types";
+"use client";
+// ____ Hooks ...
+import { useService } from "../_hooks/use-service";
+import { useServiceFilter } from "../_hooks/use-service-filter";
 
-export const Catalog = ({
-  filteredServices,
-  loading,
-}: {
-  filteredServices: ClientService[];
-  loading: boolean;
-}) => {
+import { Card } from "./Card";
+import { Loader } from "@/components/common";
+
+export const Catalog = () => {
+  const { filteredServices } = useServiceFilter();
+  const { loading } = useService();
+
   if (loading && filteredServices.length === 0) {
     return (
       <div className="flex flex-col justify-center items-center gap-[5px]">

@@ -1,22 +1,23 @@
-"use client"
+"use client";
 import { useMemo } from "react";
-import { AppointmentProfile } from "../_types";
+import type { AppointmentProfile } from "../_types";
 import dayjs from "dayjs";
+import { RescheduleButton } from "./RescheduleButton";
+import { formatDate } from "@/shared/utils/format-date";
 
 export function AppointmentCard({
   appointment,
 }: {
   appointment: AppointmentProfile;
 }) {
-
   //  ______ Replace formats of start time and end time ...
   const start_time = useMemo(() => {
-    return dayjs(appointment.start_time).format("HH:mm:ss");
+    return formatDate(dayjs(appointment.start_time).toDate(), "hh:mm A");
   }, [appointment]);
 
   const end_time = useMemo(() => {
-   return dayjs(appointment.end_time).format("HH:mm:ss");  }, [appointment]);
-   
+    return formatDate(dayjs(appointment.end_time).toDate(), "hh:mm A");
+  }, [appointment]);
   return (
     <div className="p-4 shadow-sm shadow-gray-500 rounded-xl flex justify-between items-center">
       <div>
@@ -31,14 +32,8 @@ export function AppointmentCard({
 
       <div className="flex flex-col gap-2">
         {appointment.status === "PENDING" && (
-          <button className="px-3 py-1 bg-pink text-black rounded-md text-sm">
-            Reschedule
-          </button>
+          <RescheduleButton appointment={appointment} />
         )}
-
-        <button className="px-3 py-1 bg-pink text-red-600 rounded-md text-sm">
-          Cancel
-        </button>
       </div>
     </div>
   );

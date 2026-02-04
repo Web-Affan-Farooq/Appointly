@@ -1,18 +1,20 @@
 "use client";
 
-import * as React from "react";
+import type * as React from "react";
 import {
   IconCamera,
-  IconChartBar,
   IconFileAi,
   IconFileDescription,
   IconHelp,
   IconInnerShadowTop,
   IconSettings,
   IconUsers,
-  IconCalendarTime,
+  IconCircleDot,
+  IconCalendarWeekFilled,
+  IconCalendarClock,
 } from "@tabler/icons-react";
 
+import Link from "next/link";
 import { NavMain, NavSecondary, NavUser } from ".";
 import {
   Sidebar,
@@ -30,7 +32,7 @@ const data = {
     {
       title: "Activity",
       url: "/dashboard",
-      icon: IconChartBar,
+      icon: IconCircleDot,
     },
     {
       title: "Appointments",
@@ -40,7 +42,12 @@ const data = {
     {
       title: "Schedule",
       url: "/dashboard/schedule",
-      icon: IconCalendarTime,
+      icon: IconCalendarWeekFilled,
+    },
+    {
+      title: "Reschedules",
+      url: "/dashboard/reschedules",
+      icon: IconCalendarClock,
     },
   ],
   navClouds: [
@@ -105,7 +112,9 @@ const data = {
   ],
 };
 
-export const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
+export const AppSidebar = ({
+  ...props
+}: React.ComponentProps<typeof Sidebar>) => {
   const { services } = useDashboard();
   return (
     <Sidebar collapsible="offcanvas" {...props}>
@@ -116,18 +125,16 @@ export const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) =
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <a href="#">
+              <Link href={"/"}>
                 <IconInnerShadowTop className="!size-5" />
                 <span className="text-base font-semibold">Appointly</span>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        {services.length <= 0 ? (
-          <></>
-        ) : (
+        {services.length <= 0 ? null : (
           <>
             <NavMain items={data.navMain} />
             <NavSecondary items={data.navSecondary} className="mt-auto" />

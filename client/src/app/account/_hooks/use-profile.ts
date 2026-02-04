@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { AppointmentProfile } from "../_types";
+import type { AppointmentProfile } from "../_types";
 
 interface ProfileState {
   name: string;

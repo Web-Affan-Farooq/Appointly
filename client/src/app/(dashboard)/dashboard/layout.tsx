@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import {FetchDashboardData} from "./_components/layout/FetchDashboardData";
+import { FetchDashboardData } from "./_components/layout/FetchDashboardData";
 
 export const metadata: Metadata = {
   title: "Appointly | Dashboard",

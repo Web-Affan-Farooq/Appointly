@@ -2,7 +2,7 @@
 
 import { useService } from "../_hooks/use-service";
 import { useEffect } from "react";
-import {getServices} from "../_actions";
+import axios from "axios";
 import { toast } from "sonner";
 
 export const FetchServices = ({ children }: { children: React.ReactNode }) => {
@@ -12,16 +12,13 @@ export const FetchServices = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const getData = async () => {
       setLoading(true);
-
       console.log("______ Running data fetches ...");
-      try {
-        const servicesData = await getServices();
-        setService(servicesData);
-      } catch (err) {
-        console.log(err);
-        toast.error("An error occured");
+      const { data, status } = await axios.get("/api/services");
+      const response = data;
+      if (status !== 200) {
+        toast.error(response);
       }
-
+      setService(response);
       setLoading(false);
       console.log("______ Fetch Completed ...");
     };

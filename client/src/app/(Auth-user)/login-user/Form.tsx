@@ -1,45 +1,21 @@
 "use client";
-// _____ Hooks  ...
-import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
 // _____ Components  ...
 import { Input, Label, Button, Loader } from "@/components/common";
 import Image from "next/image";
 import Link from "next/link";
-// _____ Libraries  ....
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+
 // _____ Actions  ....
-import { simpleLogin, loginWithGoogle } from "./_action";
+import { useLoginForm } from "./use-login-form";
+
 // ____ types and validations ...
-import { LoginFormSchema } from "@/validations/login-schema";
 import { PasswordInput } from "@/components/common";
-import { toast } from "sonner";
 
 export function LoginForm() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm({
-    resolver: zodResolver(LoginFormSchema),
-    mode: "onChange",
-  });
+  const { login, loginWithGoogle, errors, isSubmitting, register } =
+    useLoginForm();
 
-  const router = useRouter();
-
-  const login = async (formData: z.infer<typeof LoginFormSchema>) => {
-    const { message, status } = await simpleLogin(formData);
-
-    if (status !== 200) {
-      toast.error(message);
-    }
-
-    toast.success(message);
-    router.push("/account");
-  };
   return (
-    <form className={"flex flex-col gap-6"} onSubmit={handleSubmit(login)}>
+    <form className={"flex flex-col gap-6"} onSubmit={login}>
       <div className="flex flex-col items-center gap-2 text-center">
         <h1 className="text-2xl font-bold">Login to your account</h1>
         <p className="text-muted-foreground text-sm text-balance">

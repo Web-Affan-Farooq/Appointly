@@ -9,43 +9,15 @@ import {
   Button,
 } from "@/components/common";
 import Image from "next/image";
-// _____ Libraries ...
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-// _____ Types ...
-import { UserSignupFormSchema } from "./_schema/user-signup";
+
 // _____ Hooks ...
-import { useForm } from "react-hook-form";
-// _____ actions ...
-import { signUpWithGoogle, signupWithEmail } from "./_actions";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useSignupForm, signupWithGoogle } from "./use-signup-form";
 
 export const SignupForm = () => {
-  const router = useRouter();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm({
-    resolver: zodResolver(UserSignupFormSchema),
-    mode: "onChange",
-  });
-
-  const signup = async (formData: z.infer<typeof UserSignupFormSchema>) => {
-    const { message, statusCode } = await signupWithEmail(formData);
-    if (statusCode === 201) {
-      toast.success(message);
-      router.push("/account");
-    } else if (statusCode === 422) {
-      toast.success("Account already exists");
-    } else if (statusCode === 500) {
-      toast.success("An error occured");
-    }
-  };
+  const { errors, isSubmitting, register, signup } = useSignupForm();
 
   return (
-    <form className="flex flex-col gap-6" onSubmit={handleSubmit(signup)}>
+    <form className="flex flex-col gap-6" onSubmit={signup}>
       <div className="flex flex-col items-center gap-2 text-center">
         <h1 className="text-2xl font-bold">Get started </h1>
         <p className="text-muted-foreground text-sm">
@@ -127,14 +99,16 @@ const icons = [
   {
     name: "Google",
     image: "/icons/google.svg",
-    function: signUpWithGoogle,
+    function: signupWithGoogle,
   },
 ];
 const SocialButtons = () => {
   return (
     <div className="flex flex-row justify-center items-center">
       {icons.map((icon) => (
-        <div
+        <button
+          type="button"
+          role={`signup-with-${icon.name}-button`}
           key={icon.name}
           className="border border-gray-300 p-1 rounded-md"
           onClick={() => icon.function()}
@@ -146,9 +120,8 @@ const SocialButtons = () => {
             height={48}
             className="w-[25px] h-[25px]"
           />
-        </div>
+        </button>
       ))}
     </div>
   );
 };
-

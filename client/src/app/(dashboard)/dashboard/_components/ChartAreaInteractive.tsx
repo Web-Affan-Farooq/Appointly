@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 
-import { useIsMobile } from "@/hooks/use-mobile";
+import { useIsMobile } from "@shared/hooks/use-mobile";
 import {
   Card,
   CardAction,
@@ -13,7 +13,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
-  ChartConfig,
+  type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,

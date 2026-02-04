@@ -14,20 +14,18 @@ import { Label, Button } from "@/components/common";
 import { DaySelect, HighlightsInput, InputWithLabel } from "./Components";
 
 // _____ Libraries...
-import { z } from "zod";
+import type { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { FormProvider } from "react-hook-form";
+import axios from "axios";
 
 // _____ Types and schemas ...
 import { AddServiceAPISchema } from "./_validations/add-service-api-schema";
 
 // _____ Constants ...
-import { serviceCategories } from "@/constants";
-import CountriesData from "@/data/countries.json";
-
-// _____ Actions ...
-import { getCountry, addServiceAction } from "./_actions";
+import { serviceCategories } from "@/shared/constants/constants";
+import CountriesData from "@shared/data/countries.json";
 
 export default function AddServiceForm() {
   // _____ For controlling navigation ...
@@ -66,26 +64,29 @@ export default function AddServiceForm() {
 
         formMethods.setValue("user_id", data.user.id);
 
-        const { country, message, status } = await getCountry(data.user.id);
+        const response = await axios.post(
+          "/api/dashboard/get-country",
+          data.user.id,
+        );
 
-        if (status === 500) {
-          toast.error(message);
+        if (response.status === 500) {
+          toast.error(response.data.message);
           return;
         }
         // _____ if user not found ...
-        else if (status === 404) {
-          toast.error(message);
+        else if (response.status === 404) {
+          toast.error(response.data.message);
           router.push("/login");
         }
 
         // _____ if stripe id not exists ...
-        else if (status === 403) {
-          toast.error(message);
+        else if (response.status === 403) {
+          toast.error(response.data.message);
           router.push("/dashboard");
         }
 
         const requiredCurrency = CountriesData.find(
-          (countryData) => countryData.code === country
+          (countryData) => countryData.code === response.data.country,
         );
 
         if (requiredCurrency) {
@@ -107,16 +108,23 @@ export default function AddServiceForm() {
 
   // _____ Function for adding service ...
   const addNewService = async (
-    formData: z.infer<typeof AddServiceAPISchema>
+    formData: z.infer<typeof AddServiceAPISchema>,
   ) => {
     // ___ 1. Call the server action ...
-    const { message, success, service } = await addServiceAction(formData);
+    const { data, status } = await axios.post(
+      "/api/dashboard/add-service",
+      formData,
+    );
+
+    const { message, service } = await data;
+
+    if (status !== 201) {
+      toast.error(message);
+    }
 
     // ___ 2. If it returns service , update the state ...
-    if (service && success) {
-      toast.success(message);
-      addService(service);
-    }
+    toast.success(message);
+    addService(service);
   };
 
   return (

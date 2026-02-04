@@ -9,15 +9,15 @@ export const auth = betterAuth({
   user: {
     additionalFields: {
       role: {
-        type:"string",
-        required:true,
-        defaultValue:"USER"
+        type: "string",
+        required: true,
+        defaultValue: "USER",
       },
       stripe_account_id: {
-        type:"string",
-        required:false,
-      }
-    }
+        type: "string",
+        required: false,
+      },
+    },
   },
   emailAndPassword: {
     enabled: true,

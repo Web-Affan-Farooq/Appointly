@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import {FetchUserProfileData} from "./_components/FetchProfile";
+import { FetchUserProfileData } from "./_components/FetchProfile";
 
 export const metadata: Metadata = {
   title: "Appointly | Manage Account",

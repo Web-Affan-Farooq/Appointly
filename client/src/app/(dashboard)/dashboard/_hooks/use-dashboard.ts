@@ -2,12 +2,11 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { toast } from "sonner";
+import axios from "axios";
 
 // _____ Types and schemas  ...
-import { ServiceDashboard } from "../_types";
+import type { AppointmentDashboard, ServiceDashboard } from "../_types";
 
-// _____ Server actions ...
-import {cancelAppointmentAction} from "../_actions/cancel-appointment";
 type Profile = {
   id: string;
   email: string;
@@ -49,9 +48,9 @@ export const useDashboard = create<DashboardState>()(
 
       // ____Function for adding service and updating state ...
       addService: async (serviceDashboard) => {
-          return set((state) => ({
-            services: [...state.services, serviceDashboard],
-          }));
+        return set((state) => ({
+          services: [...state.services, serviceDashboard],
+        }));
       },
 
       // _____Initialize the selected service state ...
@@ -89,13 +88,20 @@ export const useDashboard = create<DashboardState>()(
 
       // ____ For appointments cancellation...
       cancelAppointment: async (ids) => {
-        // _____ Updae in database ...
-        const { message, success } = await cancelAppointmentAction(ids);
-        if (!success) {
-          toast.error(message);
+        // _____ Update in database ...
+        const { data, status } = await axios.post(
+          "/api/dashboard/cancel-appointment",
+          {
+            appointments: ids,
+          },
+        );
+
+        const { message } = data;
+        if (status !== 200) {
+          toast.error("An error occured");
         }
 
-        // _____ Update state...
+        // _____ Update state ...
         const { selectedService } = get();
         const updatedAppointments = selectedService.appointments.map((app) => {
           if (ids.includes(app.id)) {
@@ -113,6 +119,25 @@ export const useDashboard = create<DashboardState>()(
     {
       name: "dashboard-data",
       storage: createJSONStorage(() => sessionStorage),
-    }
-  )
+    },
+  ),
 );
+
+type AppointmentState = {
+  appointments: Record<string, AppointmentDashboard[]>;
+  setAppointments: (
+    serviceId: string,
+    appointments: AppointmentDashboard[],
+  ) => void;
+};
+
+export const useServiceAppointments = create<AppointmentState>()((set) => ({
+  appointments: {},
+  setAppointments: (serviceId, appointments) =>
+    set((state) => ({
+      appointments: {
+        ...state.appointments,
+        [serviceId]: appointments,
+      },
+    })),
+}));

@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/sheet";
 import { Badge } from "./Badge";
 
-import { AppointmentDashboard } from "../../_types";
+import type { AppointmentDashboard } from "../../_types";
 
 import { useAppointments } from "../../_hooks/use-appointments";
 

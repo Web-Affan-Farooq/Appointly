@@ -1,7 +1,7 @@
 // ______ Libraries ...
-import React from "react";
+import type React from "react";
 import { Controller, useFormContext, useWatch } from "react-hook-form";
-import { z } from "zod";
+import type { z } from "zod";
 
 // ______ Components ...
 import { Label } from "@/components/common";
@@ -12,11 +12,11 @@ import { IconX, IconPlus } from "@tabler/icons-react";
 import { useState, useCallback } from "react";
 
 // ______ Constants and utils...
-import { days } from "@/constants";
+import { days } from "@/shared/constants/data";
 import { cn } from "@/lib/utils";
 
 // ______ Types and schemas...
-import { AddServiceAPISchema } from "./_validations/add-service-api-schema";
+import type { AddServiceAPISchema } from "./_validations/add-service-api-schema";
 
 type FormFields = z.infer<typeof AddServiceAPISchema>;
 type RegisterName = keyof FormFields;
@@ -42,7 +42,7 @@ export const InputWithLabel = (props: Props) => {
         {...props}
         {...register(
           props.name,
-          props.type === "number" ? { valueAsNumber: true } : {}
+          props.type === "number" ? { valueAsNumber: true } : {},
         )}
       />
 
@@ -76,10 +76,10 @@ export const HighlightsInput = () => {
     (index: number) => {
       setValue(
         "details",
-        getValues().details.filter((_: string, i: number) => i !== index)
+        getValues().details.filter((_: string, i: number) => i !== index),
       );
     },
-    [setValue, getValues]
+    [setValue, getValues],
   );
 
   return (
@@ -97,7 +97,7 @@ export const HighlightsInput = () => {
                 detailValue.trim() !== ""
               ) {
                 addHighlight();
-                document.getElementById("highlights-input")!.focus();
+                document.getElementById("highlights-input")?.focus();
               }
             }}
             aria-label="service-highlights"
@@ -111,7 +111,7 @@ export const HighlightsInput = () => {
         <div className="flex flex-wrap gap-2">
           {details.map((value: string, idx: number) => (
             <span
-              key={idx}
+              key={value.slice(0, 6)}
               className="flex items-center gap-1 bg-pink-100 text-pink-700 text-xs px-3 py-1 rounded-full"
             >
               {value}
@@ -142,21 +142,25 @@ export const DaySelect = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {days.map((day) => (
               <label
+                htmlFor={day}
                 key={day}
                 className={cn(
                   "flex items-center gap-2 border rounded-lg p-2 cursor-pointer transition",
                   field.value.includes(day)
                     ? "bg-indigo-100 border-indigo-500"
-                    : "hover:bg-gray-50"
+                    : "hover:bg-gray-50",
                 )}
               >
                 <Checkbox
+                  id={day}
                   checked={field.value.includes(day)}
-                  onCheckedChange={(checked) =>
+                  onCheckedChange={(
+                    checked: React.ChangeEvent<HTMLInputElement>,
+                  ) =>
                     field.onChange(
                       checked
                         ? [...field.value, day]
-                        : field.value.filter((d: string) => d !== day)
+                        : field.value.filter((d: string) => d !== day),
                     )
                   }
                 />

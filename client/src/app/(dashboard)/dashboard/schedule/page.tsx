@@ -7,7 +7,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 // import { CalenderWrapper } from "@/components/pages/Schedule";
-import {SlotCalender} from "./SlotCalender";
+import { SlotCalender } from "./SlotCalender";
 
 const SiteHeader = () => {
   return (

@@ -1,48 +1,17 @@
 "use client";
-// _____ Hooks  ...
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
 // _____ utils ...
 import { cn } from "@/lib/utils";
 // _____ Components  ...
 import { Input, Label, Button } from "@/components/common";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import Link from "next/link";
-// _____ Libraries  ....
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-// _____ Actions  ....
-import { simpleLogin } from "./action";
-// ____ types and validations ...
-import { LoginFormSchema } from "@/validations/login-schema";
+
 import { PasswordInput } from "@/components/common";
-import { toast } from "sonner";
+import { useLoginForm } from "./use-login-form";
 
 export function LoginForm() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: zodResolver(LoginFormSchema),
-    mode: "onChange",
-  });
+  const { login, isSubmitting, register, errors } = useLoginForm();
 
-  const [loading, setLoading] = useState(false);
-  const router = useRouter();
-
-  const login = async (formData: z.infer<typeof LoginFormSchema>) => {
-    setLoading(true);
-    const { message, status } = await simpleLogin(formData);
-
-    if (status === 404) {
-      toast.error(message);
-    }
-    toast.success(message);
-    router.push("/dashboard");
-    setLoading(false);
-  };
   return (
     <div className="min-h-screen flex justify-center items-center">
       <Card className="w-full max-w-md">
@@ -54,10 +23,7 @@ export function LoginForm() {
           </p>
         </CardHeader>
         <CardContent>
-          <form
-            className={cn("flex flex-col gap-6")}
-            onSubmit={handleSubmit(login)}
-          >
+          <form className={cn("flex flex-col gap-6")} onSubmit={login}>
             <div className="grid gap-6">
               <div className="grid gap-3">
                 <Label htmlFor="email">Email</Label>
@@ -95,7 +61,7 @@ export function LoginForm() {
               </div>
               <Button
                 type="submit"
-                className={`w-full ${loading ? "cursor-not-allowed" : "cursor-pointer"}`}
+                className={`w-full ${isSubmitting ? "cursor-not-allowed" : "cursor-pointer"}`}
               >
                 Login to dashboard
               </Button>

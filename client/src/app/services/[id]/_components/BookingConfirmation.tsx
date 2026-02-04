@@ -14,21 +14,29 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { IconArrowNarrowRight , IconCircleCheck } from "@tabler/icons-react";
+import { IconArrowNarrowRight, IconCircleCheck } from "@tabler/icons-react";
 
 // ____ Libraries ...
 import { toast } from "sonner";
 
 // ____ Schema and types  ...
-import { AppointmentClient } from "@/@types/types";
+import type { AppointmentClient } from "@shared/types";
+import axios from "axios";
 
-// ____ Actions ...
-import BookAppointmentAction from "../_actions/book-appointment";
+type Props = {
+  slot: AppointmentClient;
+  price: number;
+  duration: number;
+  currency: string;
+};
 
-type Props = { slot: AppointmentClient  , price :number , duration : number , currency : string}
-
-export const BookingConfirmation = ({ slot , price , duration , currency }:Props ) => {
-  const [loading , setLoading] = useState(false);
+export const BookingConfirmation = ({
+  slot,
+  price,
+  duration,
+  currency,
+}: Props) => {
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { data } = authClient.useSession();
 
@@ -41,22 +49,25 @@ export const BookingConfirmation = ({ slot , price , duration , currency }:Props
       };
     }
     return null;
-  },[data])
-
+  }, [data]);
 
   const BookAppointment = async () => {
     const session = getUserDetails();
-    if(session) {
-         const { message, success, url } = await BookAppointmentAction({...slot , ...session});
-    if (!success) {
-      toast.error(message);
-      return;
-    }
+    if (session) {
+      const { data, status } = await axios.post(
+        "/api/services/book-appointment",
+        { ...slot, ...session },
+      );
+      const { message, url } = data;
 
-    toast.success(message);
-    if (url) window.location.href = url;
+      if (status !== 200) {
+        toast.error(message);
+        return;
+      }
+      toast.success(message);
+      window.location.href = url;
     }
-    router.push("/login-user")
+    router.push("/login-user");
   };
 
   return (
@@ -77,43 +88,35 @@ export const BookingConfirmation = ({ slot , price , duration , currency }:Props
             Please confirm the appointment booking
           </DialogDescription>
         </DialogHeader>
-                    <div className="flex flex-row justify-start items-center gap-[10px]">
-                       <span className="font-bold">Price : </span> <div className="bg-indigo-100  text-sm font-medium px-3 py-1 rounded-full">
-                  <span className="text-green-500">
-                    {currency} &nbsp;
-                  </span>
-                  <span className="text-indigo-800">
-                    {price}
-                  </span>
-                </div>
-                    </div>
+        <div className="flex flex-row justify-start items-center gap-[10px]">
+          <span className="font-bold">Price : </span>{" "}
+          <div className="bg-indigo-100  text-sm font-medium px-3 py-1 rounded-full">
+            <span className="text-green-500">{currency} &nbsp;</span>
+            <span className="text-indigo-800">{price}</span>
+          </div>
+        </div>
 
-                    <div className="flex flex-row justify-start items-center gap-[10px]">
-                       <span className="font-bold">Duration : </span> <div className="bg-indigo-100  text-sm font-medium px-3 py-1 rounded-full">
-                
-                  <span className="text-indigo-800">
-                    {duration}
-                  </span>
-                    <span className="text-green-500">
-                    &nbsp; Min
-                  </span>
-                </div>
-                    </div>
+        <div className="flex flex-row justify-start items-center gap-[10px]">
+          <span className="font-bold">Duration : </span>{" "}
+          <div className="bg-indigo-100  text-sm font-medium px-3 py-1 rounded-full">
+            <span className="text-indigo-800">{duration}</span>
+            <span className="text-green-500">&nbsp; Min</span>
+          </div>
+        </div>
         {/* Submit Button */}
         <Button
-          onClick={
-            () => {
-              setLoading(true)
-              BookAppointment()
-              setLoading(false)
-            }
-          }
+          onClick={() => {
+            setLoading(true);
+            BookAppointment();
+            setLoading(false);
+          }}
           disabled={loading}
           className={`w-full flex justify-center items-center text-white gap-[5px] ${
             loading ? "bg-pink/70 cursor-not-allowed" : "bg-pink"
           }`}
         >
-          <IconCircleCheck className="w-6 h-6 text-green-500" /> {loading ? <Loader /> : "Confirm"}
+          <IconCircleCheck className="w-6 h-6 text-green-500" />{" "}
+          {loading ? <Loader /> : "Confirm"}
         </Button>
       </DialogContent>
     </Dialog>

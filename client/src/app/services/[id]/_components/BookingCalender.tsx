@@ -1,44 +1,69 @@
 "use client";
 // _____ Hooks and Actions ....
 import { useEffect, useMemo, useState } from "react";
-import { RegenerateSlots } from "../_actions/regenerate_slots";
-
-// _____ Slots ....
-import GetSlots from "../_actions/get-slots";
 
 // _____ Libraries ....
 import dayjs from "dayjs";
 
 // _____ Types and schemas ....
-import { AppointmentClient, ClientService } from "@/@types/types";
+import type { AppointmentClient, ClientService } from "@shared/types";
 
 // _____ Components ....
 import Link from "next/link";
 import { Calendar } from "@/components/ui/calendar";
-import {BookingConfirmation} from "./BookingConfirmation";
+import { BookingConfirmation } from "./BookingConfirmation";
+import axios from "axios";
+import { toast } from "sonner";
+import { create } from "zustand";
+
+// state for manipulating date without any lag ...
+const useCalenderDate = create<{
+  date: Date;
+  setDate: (date: Date) => void;
+}>()((set) => ({
+  date: dayjs().toDate(),
+  setDate: (date) => set({ date: date }),
+}));
 
 export const BookingCalender = ({ service }: { service: ClientService }) => {
-  const [date, setDate] = useState(dayjs().toDate());
+  const { date, setDate } = useCalenderDate();
+
   const [slots, setSlots] = useState<AppointmentClient[]>([]);
 
   /* ___ Fetch slots for selection ... */
   useEffect(() => {
     const getSlots = async () => {
-      const data = await GetSlots(service.id);
-      setSlots(data);
+      console.log("___Fetching slots ...");
+      const { data, status } = await axios.post("/api/services/get-slots", {
+        serviceId: service.id,
+        columns: {
+          transfer_group: false,
+          updated_at: false,
+          customer_name: false,
+          customer_email: false,
+          booked: false,
+          status: false,
+        },
+      });
+      if (status !== 200) {
+        toast.error("An error occured");
+      }
+      const { slots }: { slots: AppointmentClient[] } = data;
+      setSlots(slots);
+      console.log("___Fetched slots ...");
     };
     getSlots();
   }, [service.id]);
 
   /* ___ Stores selected slot ... */
   const [selectedSlot, setSelectedSlot] = useState<AppointmentClient | null>(
-    null
+    null,
   );
 
   /* ___ filter slots for today ... */
   const filteredSlots = useMemo(() => {
     const newList = slots.filter((slot) =>
-      dayjs(slot.slot_date).isSame(date, "day")
+      dayjs(slot.slot_date).isSame(date, "day"),
     );
     setSelectedSlot(newList[0]);
     return newList;
@@ -48,13 +73,16 @@ export const BookingCalender = ({ service }: { service: ClientService }) => {
   useEffect(() => {
     /* _____ Function for getting new slots and updating state ... */
     const regenerate = async () => {
-      const slots = await RegenerateSlots({
-        service_id: service.id,
-        durationMinutes: service.duration,
-        startTime: service.start_time,
-        endTime: service.end_time,
-        workingDays: service.working_days,
-      });
+      const { data, status } = await axios.post(
+        "/api/services/regenerate-slots",
+        {
+          id: service.id,
+        },
+      );
+      if (status !== 200) {
+        toast.error("An error occured");
+      }
+      const { slots } = data;
       setSlots(slots);
     };
 
@@ -92,22 +120,27 @@ export const BookingCalender = ({ service }: { service: ClientService }) => {
           required
         />
         <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-start items-center">
-          {filteredSlots.map((slot: AppointmentClient) => {
-            const start_time = dayjs(slot.start_time).format("HH:mm");
-            const end_time = dayjs(slot.end_time).format("HH:mm");
-            return (
-              <div
-                onClick={() => setSelectedSlot(slot)}
-                key={slot.id}
-                className={`p-[10px] cursor-pointer rounded-lg flex flex-row gap-[5px] flex-nowrap justify-start items-center ${selectedSlot && slot.id === selectedSlot.id ? "border-3 border-gray-300" : ""}`}
-              >
-                <div className="w-2 h-[40px] bg-yellow rounded-2xl"></div>
-                <span className="font-bold"> From </span> {start_time}{" "}
-                <span className="font-bold"> to</span>
-                {end_time}
-              </div>
-            );
-          })}
+          {filteredSlots.length === 0 ? (
+            <p>No slots available ...</p>
+          ) : (
+            filteredSlots.map((slot: AppointmentClient) => {
+              const start_time = dayjs(slot.start_time).format("HH:mm");
+              const end_time = dayjs(slot.end_time).format("HH:mm");
+              return (
+                <div
+                  role="button"
+                  onClick={() => setSelectedSlot(slot)}
+                  key={slot.id}
+                  className={`p-[10px] cursor-pointer rounded-lg flex flex-row gap-[5px] flex-nowrap justify-start items-center ${selectedSlot && slot.id === selectedSlot.id ? "border-3 border-gray-300" : ""}`}
+                >
+                  <div className="w-2 h-[40px] bg-yellow rounded-2xl"></div>
+                  <span className="font-bold"> From </span> {start_time}{" "}
+                  <span className="font-bold"> to</span>
+                  {end_time}
+                </div>
+              );
+            })
+          )}
         </div>
 
         {selectedSlot ? (
@@ -117,9 +150,7 @@ export const BookingCalender = ({ service }: { service: ClientService }) => {
             currency={service.currency}
             duration={service.duration}
           />
-        ) : (
-          <></>
-        )}
+        ) : null}
       </div>
 
       <div className="mt-4 text-center">

@@ -1,6 +1,6 @@
 import { Button } from "@/components/common";
 import Link from "next/link";
-import { ClientService } from "@/@types/types";
+import type { ClientService } from "@shared/types";
 
 export const Card = ({ service }: { service: ClientService }) => {
   return (

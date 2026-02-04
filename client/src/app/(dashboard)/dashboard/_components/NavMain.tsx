@@ -51,13 +51,13 @@ export const NavMain = ({
             className="py-[6px] px-[10px] bg-pink rounded-md"
             onChange={(e) => {
               const selected = services.find(
-                (service) => service.name === e.target.value
+                (service) => service.name === e.target.value,
               );
               if (selected) selectService(selected);
             }}
           >
-            {services.map((service, idx) => (
-              <option key={idx} value={service.name}>
+            {services.map((service) => (
+              <option key={service.id} value={service.name}>
                 {service.name}
               </option>
             ))}
@@ -65,8 +65,8 @@ export const NavMain = ({
         </SidebarMenu>
 
         <SidebarMenu>
-          {items.map((item, idx) => (
-            <Link href={item.url} key={idx}>
+          {items.map((item) => (
+            <Link href={item.url} key={item.url}>
               <SidebarMenuItem>
                 <SidebarMenuButton tooltip={item.title}>
                   {item.icon && <item.icon />}

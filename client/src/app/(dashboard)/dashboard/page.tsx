@@ -9,7 +9,7 @@ import {
 } from "./_components";
 
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import {ServiceDetails} from "./_components/ServiceDetails/ServiceDetails";
+import { ServiceDetails } from "./_components/ServiceDetails/ServiceDetails";
 import { useDashboard } from "./_hooks/use-dashboard";
 // import { Button } from "@/components/ui/button";
 // import Link from "next/link";

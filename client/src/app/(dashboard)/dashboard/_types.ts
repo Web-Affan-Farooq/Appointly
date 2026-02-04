@@ -1,21 +1,20 @@
-import { Appointment , Service } from "@/db/schemas";
+import type { Appointment, Service } from "@/db/schemas";
 
-type AppointmentDashboard = Omit<Appointment, "transfer_group" | 
-"status" |
-"created_at"> & {
-	status:"PENDING" | "COMPLETED" | "CANCELLED" | "REQUESTED-RESCHEDULE"
+type AppointmentDashboard = Omit<
+  Appointment,
+  "transfer_group" | "status" | "created_at"
+> & {
+  status: "PENDING" | "COMPLETED" | "CANCELLED" | "REQUESTED-RESCHEDULE";
 };
 
+// ______ Type of all services fetched in user facing pages ...
+
 type ServiceDashboard = Service & {
-    appointments: AppointmentDashboard[];
+  appointments: AppointmentDashboard[];
 };
 
 type DashboardAPIResponse = {
-    services:ServiceDashboard[]
-}
+  services: ServiceDashboard[];
+};
 
-export type {
-    AppointmentDashboard,
-    DashboardAPIResponse,
-    ServiceDashboard,
-}
+export type { AppointmentDashboard, DashboardAPIResponse, ServiceDashboard };

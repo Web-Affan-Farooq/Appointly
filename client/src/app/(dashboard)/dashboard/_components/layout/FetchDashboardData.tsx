@@ -1,13 +1,21 @@
 "use client";
 
 import { useEffect } from "react";
-import {fetchDashboardAction} from "../../_actions/fetch-dashboard-data";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
 import { useDashboard } from "../../_hooks/use-dashboard";
+import axios from "axios";
+import { useCredentials } from "@/shared/hooks/use-creds";
 
-export const FetchDashboardData = ({ children }: { children: React.ReactNode }) => {
+export const FetchDashboardData = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const { setServices, selectService, setUser, setLoading } = useDashboard();
+
+  useCredentials();
+
   useEffect(() => {
     console.log("Running fetches ....");
     const getData = async () => {
@@ -22,12 +30,13 @@ export const FetchDashboardData = ({ children }: { children: React.ReactNode }) 
           id: session.data.user.id,
           image: session.data.user.image,
         });
-        const response = await fetchDashboardAction(
-          session.data.user.id
-        );
-        console.log(response.services);
-        setServices(response.services);
-        selectService(response.services[0]);
+        const { data } = await axios.post("/api/dashboard/data", {
+          userId: session.data.user.id,
+        });
+        const { services } = data;
+        console.log(services);
+        setServices(services);
+        selectService(services[0]);
         setLoading(false);
       }
     };
@@ -41,4 +50,4 @@ export const FetchDashboardData = ({ children }: { children: React.ReactNode }) 
   }, [selectService, setServices, setLoading, setUser]);
 
   return <>{children}</>;
-}
+};

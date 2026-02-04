@@ -1,33 +1,38 @@
 "use client";
-
-import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
+// ____ Hooks ...
 import { useEffect } from "react";
-import { getAppointments } from "../_actions/get-appointments";
-import { toast } from "sonner";
 import { useProfile } from "../_hooks/use-profile";
 
-export const FetchUserProfileData = ({ children }: { children: React.ReactNode }) => {
+// ____ Libraries...
+import { authClient } from "@/lib/auth-client";
+import { toast } from "sonner";
+import axios from "axios";
+
+export const FetchUserProfileData = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const { setAppointments } = useProfile();
-  const router = useRouter();
-  const data = authClient.useSession();
+  const { data } = authClient.useSession();
 
   useEffect(() => {
-    const getData = async () => {
-      const userData = data.data
-      if (userData) {
-        const userEmail = userData.user.email;
-        const { message, statusCode, appointments } =
-          await getAppointments(userEmail);
-        if (appointments) {
-          setAppointments(appointments);
-        } else if (statusCode === 500) {
-          toast.error(message);
+    if (data) {
+      const getData = async (email: string) => {
+        const { data, status } = await axios.post(
+          "/api/user/account/get-appointments",
+          {
+            email,
+          },
+        );
+        if (status === 500) {
+          return toast.error(data);
         }
-      }
-    };
-
-    getData();
-  }, [router,data, setAppointments]);
+        const { appointments } = data;
+        setAppointments(appointments);
+      };
+      getData(data.user.email);
+    }
+  }, [data, setAppointments]);
   return <>{children}</>;
 };

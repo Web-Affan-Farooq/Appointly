@@ -1,6 +1,6 @@
 "use client";
-import {NoServiceFallback} from "../_components/NoServiceFallback";
-import {AppSidebar} from "../_components/AppSidebar";
+import { NoServiceFallback } from "../_components/NoServiceFallback";
+import { AppSidebar } from "../_components/AppSidebar";
 // import { ChartAreaInteractive } from "@/components/pages/Dashboard/chart-area-interactive";
 // import DashboardCard from "@/components/pages/Dashboard/DashboardCard";
 // import { IconPlus } from "@tabler/icons-react";
@@ -9,7 +9,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
-import {DataTable} from "./_components/DataTable";
+import { DataTable } from "./_components/DataTable";
 import { useDashboard } from "../_hooks/use-dashboard";
 
 const SiteHeader = () => {

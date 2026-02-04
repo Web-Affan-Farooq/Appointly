@@ -8,48 +8,16 @@ import {
   Label,
   Button,
 } from "@/components/common";
-// _____ Libraries ...
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
-// _____ Types ...
-import {
-  SignupAPIRequestSchema,
-  SignupAPIResponseSchema,
-} from "./_validations/provider-signup";
-// _____ Hooks ...
-import { useForm } from "react-hook-form";
 
 // ____ Constant data ...
-import CountriesData from "@/data/countries.json";
+import CountriesData from "@shared/data/countries.json";
+import { useSignupForm } from "./use-signup-form";
 
 export function ProviderSignupForm() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors , isSubmitting },
-  } = useForm({
-    resolver: zodResolver(SignupAPIRequestSchema),
-    mode: "onChange",
-  });
-
-  const signup = async (formData: z.infer<typeof SignupAPIRequestSchema>) => {
-    try {
-      const response = await axios.post("/api/accounts/create", formData);
-      const { data }: { data: z.infer<typeof SignupAPIResponseSchema> } =
-        response;
-      window.document.location.href = data.url;
-    } catch (err) {
-      console.log(err);
-      alert("An error occured while creating account");
-    }
-  };
+  const { signupReq, register, errors, isSubmitting } = useSignupForm();
 
   return (
-    <form
-      className={"flex flex-col gap-6"}
-      onSubmit={handleSubmit(signup)}
-    >
+    <form className={"flex flex-col gap-6"} onSubmit={signupReq}>
       <div className="flex flex-col items-center gap-2 text-center">
         <h1 className="text-2xl font-bold">Create account</h1>
         <p className="text-muted-foreground text-sm text-balance">
@@ -102,8 +70,8 @@ export function ProviderSignupForm() {
             className="text-sm px-[10px] py-[5px] shadow-md shadow-gray-400"
             {...register("country")}
           >
-            {CountriesData.map((country, idx) => (
-              <option value={country.code} key={idx}>
+            {CountriesData.map((country) => (
+              <option value={country.code} key={country.code}>
                 {country.name}
               </option>
             ))}

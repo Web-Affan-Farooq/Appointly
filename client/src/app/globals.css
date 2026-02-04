@@ -136,6 +136,6 @@
     @apply bg-background text-foreground;
   }
   .background-button-hover {
-    @apply bg-gradient-to-r from-[#e189fa] via-purple-500 to-[#dbc81d]
+    @apply bg-gradient-to-r from-[#e189fa] via-purple-500 to-[#dbc81d];
   }
 }

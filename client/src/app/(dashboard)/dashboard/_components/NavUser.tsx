@@ -7,6 +7,7 @@ import {
   IconNotification,
   IconUserCircle,
 } from "@tabler/icons-react";
+import axios from "axios";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/common";
 import {
@@ -26,10 +27,10 @@ import {
 } from "@/components/ui/sidebar";
 
 // ____ Actions ...
-import { logout } from "../_actions/logout";
 import { useRouter } from "next/navigation";
 import { useDashboard } from "../_hooks/use-dashboard";
 import Image from "next/image";
+import { toast } from "sonner";
 
 export const NavUser = () => {
   const { isMobile } = useSidebar();
@@ -39,7 +40,7 @@ export const NavUser = () => {
   if (loading && !user) {
     return <p>Loading ...</p>;
   } else if (!loading && !user) {
-    return <></>;
+    return null;
   } else if (user) {
     return (
       <SidebarMenu>
@@ -125,8 +126,9 @@ export const NavUser = () => {
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuItem
-                onClick={() => {
-                  logout();
+                onClick={async () => {
+                  const { data } = await axios.get("/api/auth/logout");
+                  toast.success(data.message);
                   router.push("/");
                 }}
               >

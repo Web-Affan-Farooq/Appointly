@@ -65,9 +65,7 @@ export const DataTable = () => {
 							</button> */}
             </div>
           </div>
-        ) : (
-          <></>
-        )}
+        ) : null}
       </div>
 
       {loading ? (
@@ -79,8 +77,8 @@ export const DataTable = () => {
           {appointments.length <= 0 ? (
             <p className="text-md p-3">No appointments found ...</p>
           ) : (
-            appointments.map((appointment, idx) => (
-              <TableRow appointment={appointment} key={idx} />
+            appointments.map((appointment) => (
+              <TableRow appointment={appointment} key={appointment.token} />
             ))
           )}
         </Sheet>
