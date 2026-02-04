@@ -28,11 +28,11 @@ This ensures payments are processed reliably and providers get paid, building tr
      - On completion, trigger the transfer logic (see below).
    - **Impact**: Enables fair payouts, encourages provider participation.
 
-3. **Implement Provider Payouts (98% Transfer)**
+3. **Implement Provider Payouts (95% Transfer)**
    - **Why?** This is your core business model. Delaying payouts erodes trust – providers might abandon the platform.
    - **Implementation**:
      - In `CompleteAppointmentAction.ts`, after updating status, call a new function to transfer funds.
-     - Use Stripe Transfers API: Transfer 98% (calculate as `Math.floor(price * 0.98 * 100)` in cents) to the provider's Stripe account (from `user.stripe_account_id`).
+     - Use Stripe Transfers API: Transfer 98% (calculate as `Math.floor(price * 0.95 * 100)` in cents) to the provider's Stripe account (from `user.stripe_account_id`).
      - Handle errors (e.g., invalid account) and log transfers.
      - Add a "transferred" flag to appointments to avoid double transfers.
    - **Impact**: Ensures providers get paid promptly, reducing churn.
