@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { days } from "@/shared/constants/constants";
+import { days } from "@/shared/constants";
 
 const AddServiceAPISchema = z
   .object({

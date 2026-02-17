@@ -7,6 +7,7 @@
 
 ### Basic :
 - Create a utility that returns the user's credentials from `authClient()`.
+- Assign provider a name 
 - Update the service details page to show all the metadata about service .
 - Update the cards component in account page to show meaningful data .
 - Implement functionality to send otp for login of service provider .
@@ -35,7 +36,19 @@
 
 ### Acknowledgement feature through QR code :
 - Service providers have thier own QR code provided by platform .
-- This qr code contain the link `http://localhost:3000/mark?id=exampleid&`
+- This qr code contain the link `http://localhost:3000/mark?app_id=exampleid&service_id=exampleid&`
+- In this route , create a useEffect hook that sends a post request to `/api/acknowledge` with the following request body :
+```javascript
+{
+appointment_id:string;
+service_id:string;
+}
+```
+- On the api route  :
+   - Mark appointment as completed .
+   - Push reminder of ratings and review to account .
+   - transfer 95% funds to service provider's account .
+
 
 ### Implement a task queue :
 - Create a new table in postgres for task queue implementation with row level locking .
@@ -72,8 +85,8 @@
 
 #### Slot generation logic :
 - When a service is created, generate slots for (say) 30 days based on max_appointments_per_day and your business hours.
-- You can write a small utility that, given a start time and a service duration, loops and inserts rows for the next month.
-- You could even run a daily cron job to top up slots when a new month starts — basically always ensure 30 days ahead are ready.
+- Write a small utility that, given a start time and a service duration, loops and inserts rows for the next month.
+- Run a daily cron job to top up slots when a new month starts — basically always ensure 30 days ahead are ready.
 
 #### Updating services :
 
@@ -85,9 +98,8 @@
 
 - Keep past and booked slots untouched.
 
-- If you store slot_date, this becomes a simple date range query.
-
 shakirali@gmail.com (alpHA23@)
+
 ```bash
 docker exec -i postgres psql -U affan -d appointly < reschedule_requests.sql
 ```

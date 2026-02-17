@@ -16,8 +16,9 @@ const ServicesPage = () => {
         <section>
           <div className="min-h-screen bg-gray-50 font-sans px-4 py-16 sm:px-8 sm:py-20 md:px-12 md:py-26">
             <div className="max-w-7xl mx-auto py-8">
-              Available Services
-              <h1 className="text-4xl font-bold text-gray-900 mb-2"></h1>
+              <h1 className="text-4xl font-bold text-gray-900 mb-2">
+                Available Services
+              </h1>
               <p className="text-sm sm:text-md text-gray-600 mb-8">
                 Browse and book appointments with our top providers.
               </p>

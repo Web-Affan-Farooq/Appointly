@@ -3,7 +3,7 @@ import { eq, type InferSelectModel } from "drizzle-orm";
 import { service } from "@/db/schemas";
 import { NextResponse, type NextRequest } from "next/server";
 
-export const updateServiceAction = async (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {
   const {
     id,
     updatedFields,

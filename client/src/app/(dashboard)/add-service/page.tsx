@@ -24,7 +24,7 @@ import axios from "axios";
 import { AddServiceAPISchema } from "./_validations/add-service-api-schema";
 
 // _____ Constants ...
-import { serviceCategories } from "@/shared/constants/constants";
+import { serviceCategories } from "@/shared/constants";
 import CountriesData from "@shared/data/countries.json";
 
 export default function AddServiceForm() {

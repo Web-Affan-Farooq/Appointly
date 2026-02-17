@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
 import { useDashboard } from "../../_hooks/use-dashboard";
 import axios from "axios";
-import { useCredentials } from "@/shared/hooks/use-creds";
+// import { useCredentials } from "@/shared/hooks/use-creds";
 
 export const FetchDashboardData = ({
   children,
@@ -14,40 +14,58 @@ export const FetchDashboardData = ({
 }) => {
   const { setServices, selectService, setUser, setLoading } = useDashboard();
 
-  useCredentials();
+  // useCredentials();
 
-  useEffect(() => {
-    console.log("Running fetches ....");
-    const getData = async () => {
+  const getData = useCallback(async () => {
+    try {
       setLoading(true);
+
       const session = await authClient.getSession();
+
       if (session.error) {
         toast.error(session.error.message);
-      } else if (session.data && !session.error) {
-        setUser({
-          name: session.data.user.name,
-          email: session.data.user.email,
-          id: session.data.user.id,
-          image: session.data.user.image,
-        });
-        const { data } = await axios.post("/api/dashboard/data", {
-          userId: session.data.user.id,
-        });
-        const { services } = data;
-        console.log(services);
-        setServices(services);
-        selectService(services[0]);
-        setLoading(false);
+        return;
       }
-    };
+
+      if (!session.data) return;
+
+      const user = session.data.user;
+
+      setUser({
+        name: user.name,
+        email: user.email,
+        id: user.id,
+        image: user.image,
+      });
+
+      const response = await axios.post("/api/dashboard/data", {
+        userId: user.id,
+      });
+
+      const services = response.data?.services ?? [];
+
+      setServices(services);
+
+      if (services.length > 0) {
+        selectService(services[0]);
+      }
+    } catch (error: any) {
+      console.error("Dashboard fetch error:", error);
+      toast.error("Failed to fetch dashboard data");
+    } finally {
+      setLoading(false);
+    }
+  }, [setLoading, setUser, setServices, selectService]);
+
+  useEffect(() => {
     getData();
-    console.log("Fetch completed ....");
-    setInterval(() => {
-      console.log("Running fetches ....");
+
+    const interval = setInterval(() => {
       getData();
-      console.log("Fetch complete ....");
-    }, 180000);
-  }, [selectService, setServices, setLoading, setUser]);
+    }, 180000); // 3 minutes
+
+    return () => clearInterval(interval);
+  }, [getData]);
 
   return <>{children}</>;
 };

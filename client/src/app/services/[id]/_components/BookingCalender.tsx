@@ -1,14 +1,9 @@
 "use client";
-// _____ Hooks and Actions ....
+
 import { useEffect, useMemo, useState } from "react";
-
-// _____ Libraries ....
 import dayjs from "dayjs";
-
-// _____ Types and schemas ....
 import type { AppointmentClient, ClientService } from "@shared/types";
 
-// _____ Components ....
 import Link from "next/link";
 import { Calendar } from "@/components/ui/calendar";
 import { BookingConfirmation } from "./BookingConfirmation";
@@ -16,93 +11,72 @@ import axios from "axios";
 import { toast } from "sonner";
 import { create } from "zustand";
 
-// state for manipulating date without any lag ...
+/* Local date store (kept as in original design) */
 const useCalenderDate = create<{
   date: Date;
   setDate: (date: Date) => void;
 }>()((set) => ({
   date: dayjs().toDate(),
-  setDate: (date) => set({ date: date }),
+  setDate: (date) => set({ date }),
 }));
 
 export const BookingCalender = ({ service }: { service: ClientService }) => {
   const { date, setDate } = useCalenderDate();
 
   const [slots, setSlots] = useState<AppointmentClient[]>([]);
-
-  /* ___ Fetch slots for selection ... */
-  useEffect(() => {
-    const getSlots = async () => {
-      console.log("___Fetching slots ...");
-      const { data, status } = await axios.post("/api/services/get-slots", {
-        serviceId: service.id,
-        columns: {
-          transfer_group: false,
-          updated_at: false,
-          customer_name: false,
-          customer_email: false,
-          booked: false,
-          status: false,
-        },
-      });
-      if (status !== 200) {
-        toast.error("An error occured");
-      }
-      const { slots }: { slots: AppointmentClient[] } = data;
-      setSlots(slots);
-      console.log("___Fetched slots ...");
-    };
-    getSlots();
-  }, [service.id]);
-
-  /* ___ Stores selected slot ... */
   const [selectedSlot, setSelectedSlot] = useState<AppointmentClient | null>(
     null,
   );
+  const [loading, setLoading] = useState<boolean>(true);
 
-  /* ___ filter slots for today ... */
-  const filteredSlots = useMemo(() => {
-    const newList = slots.filter((slot) =>
-      dayjs(slot.slot_date).isSame(date, "day"),
-    );
-    setSelectedSlot(newList[0]);
-    return newList;
-  }, [date, slots]);
-
-  /* _____ For handling slot regeneration logic ... */
+  /* Fetch slots */
   useEffect(() => {
-    /* _____ Function for getting new slots and updating state ... */
-    const regenerate = async () => {
-      const { data, status } = await axios.post(
-        "/api/services/regenerate-slots",
-        {
+    const getSlots = async () => {
+      try {
+        setLoading(true);
+        const payload = {
           id: service.id,
-        },
-      );
-      if (status !== 200) {
-        toast.error("An error occured");
+          duration: service.duration,
+          working_days: service.working_days,
+          start_time: service.start_time,
+          end_time: service.end_time,
+
+          columns: {
+            transfer_group: false,
+            updated_at: false,
+            customer_name: false,
+            customer_email: false,
+            booked: false,
+            status: false,
+          },
+        };
+        console.log("Line : 52 :::: sending payload", payload);
+        const { data } = await axios.post("/api/services/get-slots", payload);
+
+        setSlots(data.slots ?? []);
+      } catch (_error) {
+        toast.error("Failed to fetch slots");
+      } finally {
+        setLoading(false);
       }
-      const { slots } = data;
-      setSlots(slots);
     };
 
-    const curr = dayjs(); // __today
-    const last = dayjs(service.last_generated); // _date when previous slots generated
-    /* ____if 
-  - no of days in the month of previous date === no of days in current month -> no of days same ... 
-  - If not , then generate slots according to number of days in previous months ...
-
-  **Note : Prevents slot generation with irregular date sequences**
-  */
-    const days =
-      curr.daysInMonth() === last.daysInMonth()
-        ? curr.daysInMonth()
-        : last.daysInMonth();
-
-    if (curr.diff(last, "days") > days) {
-      regenerate();
-    }
+    getSlots();
   }, [service]);
+
+  /* Filter slots (pure memo) */
+  const filteredSlots = useMemo(() => {
+    return slots.filter((slot) => dayjs(slot.slot_date).isSame(date, "day"));
+  }, [slots, date]);
+
+  /* Handle selection when date/slots change */
+  useEffect(() => {
+    if (filteredSlots.length > 0) {
+      setSelectedSlot(filteredSlots[0]);
+    } else {
+      setSelectedSlot(null);
+    }
+  }, [filteredSlots]);
 
   return (
     <aside className="lg:col-span-1 lg:border-l lg:pl-10 border-gray-200 mt-8 lg:mt-0 sticky top-20 self-start">
@@ -114,43 +88,52 @@ export const BookingCalender = ({ service }: { service: ClientService }) => {
         <Calendar
           mode="single"
           selected={date}
-          onSelect={setDate}
+          onSelect={(d) => d && setDate(d)}
           className="rounded-md border shadow-sm max-sm:w-full"
           captionLayout="dropdown"
           required
         />
-        <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-start items-center">
-          {filteredSlots.length === 0 ? (
-            <p>No slots available ...</p>
+
+        <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+          {loading ? (
+            <p>Loading slots...</p>
+          ) : filteredSlots.length === 0 ? (
+            <p>No slots available...</p>
           ) : (
-            filteredSlots.map((slot: AppointmentClient) => {
+            filteredSlots.map((slot) => {
               const start_time = dayjs(slot.start_time).format("HH:mm");
               const end_time = dayjs(slot.end_time).format("HH:mm");
+
               return (
-                <div
-                  role="button"
-                  onClick={() => setSelectedSlot(slot)}
+                <button
+                  type="button"
                   key={slot.id}
-                  className={`p-[10px] cursor-pointer rounded-lg flex flex-row gap-[5px] flex-nowrap justify-start items-center ${selectedSlot && slot.id === selectedSlot.id ? "border-3 border-gray-300" : ""}`}
+                  onClick={() => setSelectedSlot(slot)}
+                  className={`p-[10px] cursor-pointer rounded-lg flex gap-[5px] items-center border ${
+                    selectedSlot?.id === slot.id
+                      ? "border-2 border-gray-400"
+                      : "border-gray-200"
+                  }`}
                 >
-                  <div className="w-2 h-[40px] bg-yellow rounded-2xl"></div>
-                  <span className="font-bold"> From </span> {start_time}{" "}
-                  <span className="font-bold"> to</span>
+                  <div className="w-2 h-[40px] bg-yellow-400 rounded-2xl" />
+                  <span className="font-bold">From</span>
+                  {start_time}
+                  <span className="font-bold">to</span>
                   {end_time}
-                </div>
+                </button>
               );
             })
           )}
         </div>
 
-        {selectedSlot ? (
+        {selectedSlot && (
           <BookingConfirmation
             slot={selectedSlot}
             price={service.price}
             currency={service.currency}
             duration={service.duration}
           />
-        ) : null}
+        )}
       </div>
 
       <div className="mt-4 text-center">

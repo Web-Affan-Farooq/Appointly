@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import db from "@/db";
-import { appointment, service } from "@/db/schemas";
+import { service } from "@/db/schemas";
 import { eq } from "drizzle-orm";
 
 export const GET = async () => {
@@ -27,7 +27,6 @@ export const GET = async () => {
         last_generated: service.last_generated,
       })
       .from(service)
-      .leftJoin(appointment, eq(appointment.service_id, service.id))
       .where(eq(service.is_active, true))
       .groupBy(service.id);
     console.log("Services : ", services);

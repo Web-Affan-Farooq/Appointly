@@ -9,6 +9,5 @@ export const useCredentials = () => {
 
   const data = use(getData());
   console.log("data from useCredentials : ", data);
-
   // return data
 };

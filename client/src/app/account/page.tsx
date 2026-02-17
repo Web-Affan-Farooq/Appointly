@@ -33,14 +33,14 @@ export default function AccountPage() {
         <h1 className="font-bold text-2xl mt-10 mb-5">Account</h1>
         <div className="flex justify-start items-center gap-[30px]">
           {tabs.map((t) => (
-            <div
+            <button
+              type="button"
               key={t.value}
-              role="button"
               className={`rounded-xl cursor-pointer ${tab === t.value ? "bg-pink" : ""} px-[15px] py-[1px]`}
               onClick={() => setTab(t.value)}
             >
               {t.text}
-            </div>
+            </button>
           ))}
         </div>
         <AppointmentsList />

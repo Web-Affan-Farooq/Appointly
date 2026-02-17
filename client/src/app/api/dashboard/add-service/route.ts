@@ -28,15 +28,20 @@ export const POST = async (req: NextRequest) => {
 
     console.log("Inserted a new service  : ", newService);
     console.log("Generating slots  : ", "-------------");
-    const slots = GenerateSlots({
-      id: newService.id,
-      duration: newService.duration,
-      working_days: newService.working_days,
-      start_time: newService.start_time,
-      end_time: newService.end_time,
-    });
+    const slots: { id: string }[] = await GenerateSlots(
+      {
+        id: true,
+      },
+      {
+        id: newService.id,
+        duration: newService.duration,
+        working_days: newService.working_days,
+        start_time: newService.start_time,
+        end_time: newService.end_time,
+      },
+    );
 
-    console.log("Generated slots  : ", slots);
+    console.log(`Generated total ${slots.length} slots ...`);
 
     console.log(
       "----------------------------Operation completed successfully-----------------------------",
@@ -45,10 +50,9 @@ export const POST = async (req: NextRequest) => {
     return NextResponse.json(
       {
         message: "Added a new service",
-        service: {
-          ...newService,
-          appointments: [],
-        },
+        service: newService,
+        // must sent the empty array instead of appointments list because we are generating future slots and assigning it, not creating appointment on each request
+        appointments: [],
       },
       { status: 201 },
     );

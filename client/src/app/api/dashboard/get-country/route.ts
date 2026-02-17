@@ -9,7 +9,7 @@ import { eq } from "drizzle-orm";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
-export const getCountry = async (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {
   const userId = await req.json();
   console.log("Running getCountry() server action  ...");
   try {

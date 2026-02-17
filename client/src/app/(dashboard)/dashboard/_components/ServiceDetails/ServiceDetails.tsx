@@ -1,7 +1,34 @@
 "use client";
 
 import { useDashboard } from "../../_hooks/use-dashboard";
+import type { AppointmentDashboard } from "../../_types";
 import { EditDetails } from "./EditDetails";
+
+function isAppointmentDashboard(value: unknown): value is AppointmentDashboard {
+  if (typeof value !== "object" || value === null) return false;
+
+  const v = value as Record<string, unknown>;
+
+  return (
+    typeof v.id === "string" &&
+    "start_time" in v &&
+    "end_time" in v &&
+    "updated_at" in v &&
+    typeof v.customer_name === "string" &&
+    typeof v.customer_email === "string" &&
+    "status" in v &&
+    typeof v.token === "number" &&
+    typeof v.slot_date === "string"
+  );
+}
+
+function isAppointmentDashboardArray(
+  value: unknown,
+): value is AppointmentDashboard[] {
+  return (
+    Array.isArray(value) && value.every((item) => isAppointmentDashboard(item))
+  );
+}
 
 const Block = ({
   identifier,
@@ -32,6 +59,7 @@ const Block = ({
 
   // Handle arrays
   else if (Array.isArray(value)) {
+    // !isAppointmentDashboardArray(value)
     return (
       <div className="border border-gray-400/50 p-4 col-span-2">
         <h3 className="font-bold text-sm">{identifier}</h3>
@@ -87,7 +115,9 @@ export const ServiceDetails = () => {
 
       <div className="grid grid-cols-2">
         {Object.entries(selectedService).map(([key, value]) => {
-          return <Block identifier={key} value={value} key={key} />;
+          return isAppointmentDashboardArray(value) ? null : (
+            <Block identifier={key} value={value} key={key} />
+          );
         })}
       </div>
     </>

@@ -51,6 +51,7 @@ function BreadcrumbLink({
 
 function BreadcrumbPage({ className, ...props }: React.ComponentProps<"a">) {
   return (
+    // biome-ignore lint/a11y/useSemanticElements: Next.js Link is handled elsewhere
     <a
       data-slot="breadcrumb-page"
       role="link"

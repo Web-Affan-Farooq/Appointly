@@ -1,6 +1,7 @@
 import { Button } from "@/components/common";
 import { Calendar, Users, CheckCircle } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 export function CTA() {
   return (
@@ -40,14 +41,18 @@ export function CTA() {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <Button className="flex flex-row flex-nowrap justify-center items-center bg-yellow px-8 py-4 text-lg hover:background-button-hover transition-all duration-200 ease-in-out">
-                <Users className="h-5 w-5 mr-2" />
-                <span>Start as Client</span>
-              </Button>
-              <Button className="transition-all duration-200 ease-in-out flex flex-row flex-nowrap justify-center items-center text-white hover:bg-white hover:text-black px-8 py-4 text-lg">
-                <Calendar className="h-5 w-5 mr-2" />
-                <span>Join as Provider</span>
-              </Button>
+              <Link href={"/signup-user"}>
+                <Button className="flex flex-row flex-nowrap justify-center items-center bg-yellow px-8 py-4 text-lg hover:background-button-hover transition-all duration-200 ease-in-out">
+                  <Users className="h-5 w-5 mr-2" />
+                  <span>Start as Client</span>
+                </Button>
+              </Link>
+              <Link href={"/create-account"}>
+                <Button className="transition-all duration-200 ease-in-out flex flex-row flex-nowrap justify-center items-center text-white hover:bg-white hover:text-black px-8 py-4 text-lg">
+                  <Calendar className="h-5 w-5 mr-2" />
+                  <span>Join as Provider</span>
+                </Button>
+              </Link>
             </div>
 
             {/* Social Proof */}

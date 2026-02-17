@@ -154,9 +154,7 @@ export const DaySelect = () => {
                 <Checkbox
                   id={day}
                   checked={field.value.includes(day)}
-                  onCheckedChange={(
-                    checked: React.ChangeEvent<HTMLInputElement>,
-                  ) =>
+                  onCheckedChange={(checked) =>
                     field.onChange(
                       checked
                         ? [...field.value, day]

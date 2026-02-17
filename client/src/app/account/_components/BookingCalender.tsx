@@ -86,41 +86,6 @@ export const BookingCalender = ({
     return newList;
   }, [date, slots]);
 
-  /* _____ For handling slot regeneration logic ... */
-  useEffect(() => {
-    /* _____ Function for getting new slots and updating state ... */
-    const regenerate = async () => {
-      const { data, status } = await axios.post(
-        "/api/services/regenerate-slots",
-        {
-          id: service.id,
-        },
-      );
-      if (status !== 200) {
-        toast.error("An error occured");
-      }
-      const { slots } = data;
-      setSlots(slots);
-    };
-
-    const curr = dayjs(); // __today
-    const last = dayjs(service.last_generated); // _date when previous slots generated
-    /* ____if 
-  - no of days in the month of previous date === no of days in current month -> no of days same ... 
-  - If not , then generate slots according to number of days in previous months ...
-
-  **Note : Prevents slot generation with irregular date sequences**
-  */
-    const days =
-      curr.daysInMonth() === last.daysInMonth()
-        ? curr.daysInMonth()
-        : last.daysInMonth();
-
-    if (curr.diff(last, "days") > days) {
-      regenerate();
-    }
-  }, [service]);
-
   return (
     <aside>
       <div className="flex flex-row justify-start items-start gap-[20px] flex-nowrap max-sm:flex-col">
@@ -148,7 +113,6 @@ export const BookingCalender = ({
               return (
                 <button
                   type="button"
-                  role="button"
                   onClick={() => {
                     setSelectedSlot(slot);
                     setReq(slot.id);

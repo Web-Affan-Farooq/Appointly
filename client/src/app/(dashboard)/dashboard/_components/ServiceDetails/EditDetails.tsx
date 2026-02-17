@@ -118,6 +118,7 @@ Edit.Details = ({ initial }: { initial: string[] }) => {
         <button
           type="button"
           onClick={() =>
+            // biome-ignore   lint/complexity/noCommaOperator:must be applied
             value.trim() && (sync([...items, value]), setValue(""))
           }
           className="bg-black text-white px-4 rounded"
@@ -226,7 +227,13 @@ const SheetWrapper = () => {
       onOpenChange={(o: any) => (!o && !saved ? null : setOpen(o))}
     >
       <SheetTrigger className="absolute top-3 right-3">
-        <IconEdit size={16} onClick={() => (setOpen(true), setSaved(false))} />
+        <IconEdit
+          size={16}
+          onClick={() => {
+            setOpen(true);
+            setSaved(false);
+          }}
+        />
       </SheetTrigger>
 
       <SheetContent className="h-screen overflow-y-auto">
