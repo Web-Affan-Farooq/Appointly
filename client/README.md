@@ -6,12 +6,12 @@
 - [X] Appointment rescheduling route .
 
 ### Basic :
+- Implement functionality to send otp for login of service provider .
+- Add proper error handling to all api calls routes .
 - Create a utility that returns the user's credentials from `authClient()`.
 - Assign provider a name 
 - Update the service details page to show all the metadata about service .
 - Update the cards component in account page to show meaningful data .
-- Implement functionality to send otp for login of service provider .
-
 - on dashboards Create cards for total earnings this month , a side div for any popup
 - Number of appointments per week/month.
 - No-shows, cancellations, revenue earned. 
@@ -26,7 +26,7 @@
 ### Advanced :
 - Add proper testing for the cases .
 - Implement open telemetry for logging and span collection .
-- Create appointment booking tool for Ai agent .
+- Create appointment booking tool for AI agent .
  
 ## Optional :
 -  Create server action for verifying if user has completed onboarding or not . Create a new field in 
@@ -75,18 +75,15 @@ service_id:string;
    - **password**
 - Server recieve the valid email and password of service provider .
 - If user exists , server insert a row in `otp-session` and pass it along with email to `send_email` function .
-- `send_email` function attached the generated code to email and send it to email , a url with dynamic id (id which it takes from parameter) is returned .
-- server send this url to client to redirect user to otp form .
+- `send_email` function will :
+      * Attached the generated code to email and send it in user inbox
+      * Return a url with dynamic id (id which it takes from parameter) .
+- server send this url to `/create-account` route so that it redirect user to otp form .
 - Create a new route called `auth/[id]` where a form should be shown with otp input . user enters otp and send the code to another server action .
 - Server action takes the url id , find a row with this id in `otp-session` and match the user entered otp with actual . Also check if it's expired or not .
 - If expired , delete this entry and tell user to login again . Redirect user to `/login-provider` and send it email and password .
 - if matched send user response 200 and it will redirected to `/dashboard` page .
 - else repeat again and again until user enters correct code within 5 minutes 
-
-#### Slot generation logic :
-- When a service is created, generate slots for (say) 30 days based on max_appointments_per_day and your business hours.
-- Write a small utility that, given a start time and a service duration, loops and inserts rows for the next month.
-- Run a daily cron job to top up slots when a new month starts — basically always ensure 30 days ahead are ready.
 
 #### Updating services :
 
