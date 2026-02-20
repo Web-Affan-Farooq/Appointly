@@ -126,8 +126,9 @@ export const NavUser = () => {
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuItem
+                className="cursor-pointer"
                 onClick={async () => {
-                  const { data } = await axios.get("/api/auth/logout");
+                  const { data } = await axios.get("/api/provider/auth/logout");
                   toast.success(data.message);
                   router.push("/");
                 }}

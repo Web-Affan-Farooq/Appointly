@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 import db from "@/db";
 import { appointment } from "@/db/schemas";
 import { eq, and, gte } from "drizzle-orm";
-import type { AppointmentProfile } from "../../../../account/_types";
+import type { AppointmentProfile } from "@/app/(user)/account/_types";
 import dayjs from "dayjs";
 
 export const POST = async (req: NextRequest) => {

@@ -4,12 +4,14 @@
 - [X] Complete the fix of slot allocation .
 - [X] Create an accounts page from where the user check his booked appointment .
 - [X] Appointment rescheduling route .
+- [X] Implement functionality to send otp for login of service provider .
 
 ### Basic :
-- Implement functionality to send otp for login of service provider .
+- Render the view profile icon on header when the user is logged in .
+- All a universal debugging logger .
 - Add proper error handling to all api calls routes .
 - Create a utility that returns the user's credentials from `authClient()`.
-- Assign provider a name 
+- Assign provider a name .
 - Update the service details page to show all the metadata about service .
 - Update the cards component in account page to show meaningful data .
 - on dashboards Create cards for total earnings this month , a side div for any popup
@@ -73,14 +75,14 @@ service_id:string;
    - **expiration** expiration timestamp (5 minutes)
    - **email** email which user entered 
    - **password**
-- Server recieve the valid email and password of service provider .
+- Server recieve the valid email and password of service provider from login form .
 - If user exists , server insert a row in `otp-session` and pass it along with email to `send_email` function .
 - `send_email` function will :
       * Attached the generated code to email and send it in user inbox
       * Return a url with dynamic id (id which it takes from parameter) .
 - server send this url to `/create-account` route so that it redirect user to otp form .
-- Create a new route called `auth/[id]` where a form should be shown with otp input . user enters otp and send the code to another server action .
-- Server action takes the url id , find a row with this id in `otp-session` and match the user entered otp with actual . Also check if it's expired or not .
+- Create a new nextjs route called `auth/[id]` where a form should be shown with otp input . user enters otp and the form should send the code to another route.
+- route takes the url id , find a row with this id in `otp-session` and match the user entered otp with actual . Also check if it's expired or not .
 - If expired , delete this entry and tell user to login again . Redirect user to `/login-provider` and send it email and password .
 - if matched send user response 200 and it will redirected to `/dashboard` page .
 - else repeat again and again until user enters correct code within 5 minutes 

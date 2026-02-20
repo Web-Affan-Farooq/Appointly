@@ -1,7 +1,7 @@
-import type { AddServiceAPISchema } from "@/app/(dashboard)/add-service/_validations/add-service-api-schema";
+import type { AddServiceAPISchema } from "@/app/(provider)/(dashboard)/add-service/_validations/add-service-api-schema";
 import type { NextRequest } from "next/server";
-import { NextResponse } from "next/server";
 import db from "@/db";
+import { NextResponse } from "next/server";
 import { service } from "@/db/schemas";
 
 // _____ Libraries ...

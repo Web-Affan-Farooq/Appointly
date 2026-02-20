@@ -19,7 +19,7 @@ const signup = async (
   formData: z.infer<typeof ProviderSignupAPIRequestSchema>,
 ) => {
   try {
-    const response = await axios.post("/api/accounts/create", formData);
+    const response = await axios.post("/api/provider/auth/create", formData);
     const { data }: { data: z.infer<typeof ProviderSignupAPIResponseSchema> } =
       response;
     window.document.location.href = data.url;

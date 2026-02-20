@@ -1,4 +1,4 @@
-import type { ServiceDashboard } from "../../../(dashboard)/dashboard/_types";
+import type { ServiceDashboard } from "@/app/(provider)/(dashboard)/dashboard/_types";
 import db from "@/db";
 import { service, appointment } from "@/db/schemas";
 import { eq, and, gt } from "drizzle-orm";

@@ -29,11 +29,8 @@ export async function DELETE(req: NextRequest) {
     const deleted = await stripe.accounts.del(stripeAccountId);
     console.log("Deleted Stripe account:", deleted);
 
-    // 3️⃣ Remove user account ...
-    await db.delete(user).where(eq(user.email, email));
-
     return NextResponse.json(
-      { message: "Accounts deleted successfully", redirect: "/" },
+      { message: "Stripe disconnected successfully", redirect: "/" },
       { status: 200 },
     );
   } catch (err) {

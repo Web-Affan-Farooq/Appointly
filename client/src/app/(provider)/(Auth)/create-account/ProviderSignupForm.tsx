@@ -15,7 +15,6 @@ import { useSignupForm } from "./use-signup-form";
 
 export function ProviderSignupForm() {
   const { signupReq, register, errors, isSubmitting } = useSignupForm();
-
   return (
     <form className={"flex flex-col gap-6"} onSubmit={signupReq}>
       <div className="flex flex-col items-center gap-2 text-center">
@@ -82,15 +81,9 @@ export function ProviderSignupForm() {
         <Button
           type="submit"
           disabled={isSubmitting}
-          className={`${isSubmitting ? "bg-pink/50 cursor-not-allowed" : ""}`}
+          className={`${isSubmitting ? "bg-pink/50 cursor-not-allowed flex justify-center items-center py-[20px]" : ""}`}
         >
-          {isSubmitting ? (
-            <>
-              <span>Please wait</span> <Loader />
-            </>
-          ) : (
-            <span>Signup</span>
-          )}
+          {isSubmitting ? <Loader /> : <span>Signup</span>}
         </Button>
         <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
           <span className="bg-background text-muted-foreground relative z-10 px-2">

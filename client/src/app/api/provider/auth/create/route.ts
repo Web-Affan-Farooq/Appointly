@@ -11,7 +11,7 @@ import db from "@/db";
 import { user } from "@/db/schemas";
 import { eq } from "drizzle-orm";
 
-import { ProviderSignupAPIRequestSchema } from "@/app/(Auth-provider)/create-account/_validations";
+import { ProviderSignupAPIRequestSchema } from "@/app/(provider)/(Auth)/create-account/_validations";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
