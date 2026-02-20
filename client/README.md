@@ -5,13 +5,12 @@
 - [X] Create an accounts page from where the user check his booked appointment .
 - [X] Appointment rescheduling route .
 - [X] Implement functionality to send otp for login of service provider .
+- [X] Render the view profile icon on header when the user is logged in .
 
 ### Basic :
-- Render the view profile icon on header when the user is logged in .
 - All a universal debugging logger .
 - Add proper error handling to all api calls routes .
 - Create a utility that returns the user's credentials from `authClient()`.
-- Assign provider a name .
 - Update the service details page to show all the metadata about service .
 - Update the cards component in account page to show meaningful data .
 - on dashboards Create cards for total earnings this month , a side div for any popup
@@ -31,7 +30,7 @@
 - Create appointment booking tool for AI agent .
  
 ## Optional :
--  Create server action for verifying if user has completed onboarding or not . Create a new field in 
+-  Create a new route for verifying if user has completed onboarding or not . Create a new field in 
 `useDashboard` and update it in `FetchDashboardData` component
 
 ## Features implementation :
