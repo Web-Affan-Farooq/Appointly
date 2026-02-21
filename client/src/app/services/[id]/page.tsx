@@ -106,7 +106,7 @@ const ServiceDetailsPage = () => {
               </ul>
               <div className="mt-4 pt-4 border-t border-gray-200 flex items-center text-sm text-gray-500">
                 <IconClock className="w-4 h-4 mr-2" />
-                Estimated Apointment Duration:{" "}
+                Estimated Apointment Duration:
                 <span className="font-medium ml-1 text-gray-700">
                   {requiredService.duration} (
                   <span>

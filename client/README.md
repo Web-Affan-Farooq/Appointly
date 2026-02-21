@@ -15,9 +15,9 @@
 
 ### Basic :
 - Remove auth related extra api routes and make sure to use better auth builtin methods .
-- All a universal debugging logger .
 - Add proper error handling to all api calls routes .
 - Create a utility that returns the user's credentials from `authClient()`.
+- All a universal debugging logger .
 - Update the service details page to show all the metadata about service .
 - Update the cards component in account page to show meaningful data .
 - on dashboards Create cards for total earnings this month , a side div for any popup
@@ -27,6 +27,7 @@
 - Implement appointment cancellation . `[MENTIONED]`
 - Notification push . `[MENTIONED]`
 - Acknowledgement feature through qr code .
+- UI polish . `[MENTIONED]`
 
 ### Intermediate :
 - Improve success and failure pages .
@@ -83,6 +84,35 @@ service_id:string;
 - Then regenerate new slots for the upcoming period with the new limit.
 
 - Keep past and booked slots untouched.
+
+#### Update UI :
+the current application has just a simple UI to make sure the application functionality can be visible . Update the UI of the following pages 
+
+##### /account :
+- User can be able to check his upcoming appointment .
+- User can be able to loguot of his account .
+- User can be able to check cancelled appointments .
+- User can be able to cancel his appointment .
+- User can be able to check his pending reschedule appointments requests .
+- User can be able to can cancel its reschedule appointments request .
+
+##### /service/[id]:
+- User can see an intuitive UI showing each and every detail about the available service data fetched by the hooks .
+
+#### /dashboard :
+- Sidebar must contain a button which access the camera , then capture image of a qr code , scans it and mark the encoded appointment as `COMPLETED`  
+
+##### /dashboard/appointments :
+- Provider can be able to view appointments as table OR list .
+- Provider can be able to cancel any appointment .
+
+##### /dashboard/schedule :
+- Fix the calender view so that user can be able to view his all his schedule .
+- Calender component should be customized ,  should be according to theme , and can be very easy to understand .
+
+##### /dashboard/reschedules :
+- User can be able to view reschedule requests . 
+- User can be able to accept or reject the appointment reschedule request .
 
 shakirali@gmail.com (alpHA23@)
 
