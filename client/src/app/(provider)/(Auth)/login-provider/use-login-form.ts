@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useFormData } from "./formdata";
+import { authClient } from "@/lib/auth-client";
 
 export const useLoginForm = () => {
   // ______ Persistent formData to survive refresh on otp form  ...
@@ -45,12 +46,14 @@ export const useLoginForm = () => {
         setOtpVisible(true);
       }
       setLoading(false);
+      await authClient.getSession()
     },
   );
   const _matchedValues = useWatch({ control });
+
   useEffect(() => {
     setFormData({ ...getValues() });
-  }, [setFormData, getValues]);
+  }, [setFormData, _matchedValues]);
 
   return {
     otpVisible,

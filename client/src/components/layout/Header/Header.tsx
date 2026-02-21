@@ -28,6 +28,7 @@ type ProfileData = InferSelectModel<typeof user> & {
   image: string | null | undefined;
 };
 
+
 const Header = () => {
   const [navStatus, setNavStatus] = useState(false);
   const pathname = usePathname();
@@ -37,12 +38,12 @@ const Header = () => {
     const checkAuth = async () => {
       const { data } = await authClient.getSession();
       if (data?.user) {
-        console.log("data : ", data.user);
         setProfileData(data.user as ProfileData);
       }
     };
 
     checkAuth();
+    console.log()
   }, []);
 
   const isUser = !!profileData;
@@ -123,9 +124,8 @@ const Header = () => {
 
       {/* Mobile Navigation */}
       <div
-        className={`flex-col absolute top-0 left-0 w-full bg-black/50 backdrop-blur-300 gap-[30px] flex-nowrap flex sm:hidden justify-center items-center backdrop-blur-xs backdrop-grayscale py-[60px] transition-all duration-300 ease-in-out ${
-          navStatus ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={`flex-col absolute top-0 left-0 w-full bg-black/50 backdrop-blur-300 gap-[30px] flex-nowrap flex sm:hidden justify-center items-center backdrop-blur-xs backdrop-grayscale py-[60px] transition-all duration-300 ease-in-out ${navStatus ? "translate-x-0" : "-translate-x-full"
+          }`}
       >
         {links.map((link) => (
           <Link

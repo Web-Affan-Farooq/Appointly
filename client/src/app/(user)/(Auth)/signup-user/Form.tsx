@@ -35,7 +35,7 @@ export const SignupForm = () => {
             required
             {...register("name")}
           />
-          {errors.name && <p>{errors.name.message}</p>}
+          {errors.name && <p className="text-red-500 text-xs">{errors.name.message}</p>}
         </div>
 
         <div className="grid gap-3">
@@ -47,7 +47,7 @@ export const SignupForm = () => {
             required
             {...register("email")}
           />
-          {errors.email && <p>{errors.email.message}</p>}
+          {errors.email && <p className="text-red-500 text-xs">{errors.email.message}</p>}
         </div>
 
         <div className="grid gap-3">
@@ -61,7 +61,7 @@ export const SignupForm = () => {
             </Link>
           </div>
           <PasswordInput id="password" required {...register("password")} />
-          {errors.password && <p>{errors.password.message}</p>}
+          {errors.password && <p className="text-red-500 text-xs">{errors.password.message}</p>}
         </div>
 
         <Button
@@ -70,9 +70,7 @@ export const SignupForm = () => {
           className={`flex justify-center items-center ${isSubmitting ? "bg-pink/50 cursor-not-allowed py-[20px]" : "cursor-pointer"}`}
         >
           {isSubmitting ? (
-            <>
-              <span>Please wait</span> <Loader />
-            </>
+            <Loader />
           ) : (
             <span>Signup</span>
           )}
@@ -86,7 +84,7 @@ export const SignupForm = () => {
       </div>
       <div className="text-center text-sm">
         Already have an account?
-        <Link href="/login" className="text-pink font-bold">
+        <Link href="/login-user" className="text-pink font-bold">
           &nbsp; Login
         </Link>
       </div>

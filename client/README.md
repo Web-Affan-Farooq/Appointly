@@ -7,7 +7,14 @@
 - [X] Implement functionality to send otp for login of service provider .
 - [X] Render the view profile icon on header when the user is logged in .
 
+## Bugs :
+#### Validation failure on provider login form :
+**Defination :** Validation hasbeen failing in the provider login form , the email field is running race conditions which the password fields are permenently not showing any kind of validation . While otp form is working perfectly .
+**Clue :** Both provider and user signup form is using the same zod schema validation .
+**Possible causes :** The signup form is handling the validation and post request login in the custom hook called `use-login-form.ts`. There is possibility of data lost due to rerenders in state .
+
 ### Basic :
+- Remove auth related extra api routes and make sure to use better auth builtin methods .
 - All a universal debugging logger .
 - Add proper error handling to all api calls routes .
 - Create a utility that returns the user's credentials from `authClient()`.
@@ -16,17 +23,17 @@
 - on dashboards Create cards for total earnings this month , a side div for any popup
 - Number of appointments per week/month.
 - No-shows, cancellations, revenue earned. 
-- Create Separate login approaches for providers and user login
 - Add a refund logic for cancelled appointments [see more details in this document] (./IMPROVEMENTS.md)
 - Implement appointment cancellation . `[MENTIONED]`
 - Notification push . `[MENTIONED]`
+- Acknowledgement feature through qr code .
+
 ### Intermediate :
 - Improve success and failure pages .
 - Implement feature of state saving .
 
 ### Advanced :
 - Add proper testing for the cases .
-- Implement open telemetry for logging and span collection .
 - Create appointment booking tool for AI agent .
  
 ## Optional :
@@ -66,25 +73,6 @@ service_id:string;
 - Provider can be able to select multiple appointments and mark them `CANCELLED` .
 - Create a route which takes array of appointment ids and mark them `CANCELLED` .
 - Server then calls another function to push message on whatsapp that your appointment hasbeen cancelled . OR Push a notification . 
-
-### OTP sending :
-- Create a new table in database called `otp-session` which have only two properties .
-   - **id** for otp session recognition
-   - **otp** as generated code .
-   - **expiration** expiration timestamp (5 minutes)
-   - **email** email which user entered 
-   - **password**
-- Server recieve the valid email and password of service provider from login form .
-- If user exists , server insert a row in `otp-session` and pass it along with email to `send_email` function .
-- `send_email` function will :
-      * Attached the generated code to email and send it in user inbox
-      * Return a url with dynamic id (id which it takes from parameter) .
-- server send this url to `/create-account` route so that it redirect user to otp form .
-- Create a new nextjs route called `auth/[id]` where a form should be shown with otp input . user enters otp and the form should send the code to another route.
-- route takes the url id , find a row with this id in `otp-session` and match the user entered otp with actual . Also check if it's expired or not .
-- If expired , delete this entry and tell user to login again . Redirect user to `/login-provider` and send it email and password .
-- if matched send user response 200 and it will redirected to `/dashboard` page .
-- else repeat again and again until user enters correct code within 5 minutes 
 
 #### Updating services :
 

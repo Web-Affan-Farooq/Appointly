@@ -10,6 +10,9 @@ import { sendEmail } from "./send-email";
 
 export const auth = betterAuth({
   user: {
+    changeEmail: {
+      enabled: true,
+    },
     deleteUser: {
       enabled: true,
     },
@@ -43,7 +46,7 @@ export const auth = betterAuth({
     nextCookies(),
     emailOTP({
       expiresIn: 300, // OTP valid for 5 minutes
-      allowedAttempts: 5,
+      allowedAttempts: 3,
       disableSignUp: true, // Only allow existing users (providers)
       async sendVerificationOTP({ email, otp }) {
         // Use your custom sendEmail function

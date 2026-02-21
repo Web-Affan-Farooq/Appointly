@@ -78,7 +78,7 @@ export function LoginForm() {
       </div>
       <div className="text-center text-sm">
         Don&apos;t have an account?
-        <Link href="/create-account" className="text-pink font-bold">
+        <Link href="/signup-user" className="text-pink font-bold">
           Sign up
         </Link>
       </div>

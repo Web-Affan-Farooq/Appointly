@@ -13,6 +13,7 @@ import { toast } from "sonner";
 // _____ Validations  ...
 import { ProviderSignupAPIRequestSchema } from "./_validations";
 import type { ProviderSignupAPIResponseSchema } from "./_validations";
+import { authClient } from "@/lib/auth-client";
 
 // _____ Function for signup post request ...
 const signup = async (
@@ -26,6 +27,8 @@ const signup = async (
   } catch (err) {
     console.log(err);
     toast.error("An error occured while creating account");
+  } finally {
+    await authClient.getSession();
   }
 };
 

@@ -10,7 +10,6 @@ import { LoginFormSchema } from "@shared/validations";
 import { toast } from "sonner";
 import axios from "axios";
 import { authClient } from "@/lib/auth-client";
-
 export const useLoginForm = () => {
   const {
     register,
@@ -26,7 +25,7 @@ export const useLoginForm = () => {
   const login = handleSubmit(
     async (formData: z.infer<typeof LoginFormSchema>) => {
       const { data, status } = await axios.post(
-        "/api/accounts/login",
+        "/api/user/auth/login",
         formData,
       );
       const { message } = data;
@@ -37,6 +36,7 @@ export const useLoginForm = () => {
 
       toast.success(message);
       router.push("/account");
+      await authClient.getSession();
     },
   );
 

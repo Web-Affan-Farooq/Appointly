@@ -42,17 +42,19 @@ export const useSignupForm = () => {
     async (_formData: z.infer<typeof UserSignupFormSchema>) => {
       try {
         const { data } = await axios.post("/api/user/auth/signup", {
-          email: "kdkfjkdjfkjdfj",
+          ..._formData
         });
         const { message } = data; // name and email also returned make sure to manipulate account state ...
         toast.success(message);
         router.push("/account");
 
-        // biome-ignore lint: lint/suspicious/noExplicitAny: donot mention all the response
+        // biome-ignore lint: lint/suspicious/noExplicitAny: don't mention all the response
       } catch (err: any) {
         console.log("Signup error : ", err);
         const { message } = err.response.data;
         toast.error(message);
+      } finally {
+        await authClient.getSession();
       }
     },
   );

@@ -1,20 +1,12 @@
-import dayjs from "@/lib/dayjs";
 
-export class Logger {
-  date: string;
-  location: string;
-
-  constructor(location: string) {
-    this.date = dayjs().format("YYYY-MM-DD HH:mm:ss");
-    this.location = location;
+class Logger {
+  path: string;
+  constructor(path: string) {
+    this.path = path
   }
-  // biome-ignore   lint/suspicious/noExplicitAny:err can be of different types
-  error(details: any) {
-    const data = {
-      date: this.date,
-      location: this.location,
-      details: details,
-    };
-    console.log(JSON.stringify(data));
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  log(lineNumber: number, message: string, data: any) {
+    return console.log(`\n Line-${lineNumber} \n route:${this.path} \n message:${message} \n data: `, data, `\n`)
   }
 }
+export default Logger
