@@ -43,7 +43,6 @@ export const auth = betterAuth({
     schema: Schema,
   }),
   plugins: [
-    nextCookies(),
     emailOTP({
       expiresIn: 300, // OTP valid for 5 minutes
       allowedAttempts: 3,
@@ -60,5 +59,6 @@ export const auth = betterAuth({
         }
       },
     }),
+    nextCookies()
   ],
 });
