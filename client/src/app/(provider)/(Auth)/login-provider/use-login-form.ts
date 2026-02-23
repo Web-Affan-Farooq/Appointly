@@ -46,14 +46,14 @@ export const useLoginForm = () => {
         setOtpVisible(true);
       }
       setLoading(false);
-      await authClient.getSession()
+      await authClient.getSession();
     },
   );
   const _matchedValues = useWatch({ control });
 
   useEffect(() => {
     setFormData({ ...getValues() });
-  }, [setFormData, _matchedValues]);
+  }, [setFormData, getValues]);
 
   return {
     otpVisible,

@@ -35,7 +35,9 @@ export const SignupForm = () => {
             required
             {...register("name")}
           />
-          {errors.name && <p className="text-red-500 text-xs">{errors.name.message}</p>}
+          {errors.name && (
+            <p className="text-red-500 text-xs">{errors.name.message}</p>
+          )}
         </div>
 
         <div className="grid gap-3">
@@ -47,7 +49,9 @@ export const SignupForm = () => {
             required
             {...register("email")}
           />
-          {errors.email && <p className="text-red-500 text-xs">{errors.email.message}</p>}
+          {errors.email && (
+            <p className="text-red-500 text-xs">{errors.email.message}</p>
+          )}
         </div>
 
         <div className="grid gap-3">
@@ -61,7 +65,9 @@ export const SignupForm = () => {
             </Link>
           </div>
           <PasswordInput id="password" required {...register("password")} />
-          {errors.password && <p className="text-red-500 text-xs">{errors.password.message}</p>}
+          {errors.password && (
+            <p className="text-red-500 text-xs">{errors.password.message}</p>
+          )}
         </div>
 
         <Button
@@ -69,11 +75,7 @@ export const SignupForm = () => {
           disabled={isSubmitting}
           className={`flex justify-center items-center ${isSubmitting ? "bg-pink/50 cursor-not-allowed py-[20px]" : "cursor-pointer"}`}
         >
-          {isSubmitting ? (
-            <Loader />
-          ) : (
-            <span>Signup</span>
-          )}
+          {isSubmitting ? <Loader /> : <span>Signup</span>}
         </Button>
         <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
           <span className="bg-background text-muted-foreground relative z-10 px-2">

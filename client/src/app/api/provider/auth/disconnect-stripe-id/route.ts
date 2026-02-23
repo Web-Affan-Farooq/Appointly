@@ -1,41 +1,13 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import Stripe from "stripe";
-import db from "@/db";
-import { user } from "@/db/schemas";
-import { eq } from "drizzle-orm";
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
+import { PaymentService } from "@/shared/services";
 
 export async function DELETE(req: NextRequest) {
-  try {
-    const { email } = await req.json();
-    // 1️⃣ Get the user from DB
-    const [existingUser] = await db
-      .select()
-      .from(user)
-      .where(eq(user.email, email));
+  const { email } = await req.json();
 
-    if (!existingUser || !existingUser.stripe_account_id) {
-      return NextResponse.json(
-        { error: "No Stripe account linked" },
-        { status: 404 },
-      );
-    }
+  const payments = new PaymentService();
 
-    const stripeAccountId = existingUser.stripe_account_id;
+  const { message, status } = await payments.DisconnectStripeAccount(email);
 
-    // 2️⃣ Delete the connected Stripe account
-    const deleted = await stripe.accounts.del(stripeAccountId);
-    console.log("Deleted Stripe account:", deleted);
-
-    return NextResponse.json(
-      { message: "Stripe disconnected successfully", redirect: "/" },
-      { status: 200 },
-    );
-  } catch (err) {
-    console.error("Error deleting Stripe account:", err);
-    // ignore this error
-    return NextResponse.json({ error: "An error occured" }, { status: 500 });
-  }
+  return NextResponse.json({ message: message }, { status: status });
 }

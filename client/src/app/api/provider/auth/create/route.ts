@@ -6,26 +6,10 @@ import Stripe from "stripe";
 import type { z } from "zod";
 
 import { auth } from "@/lib/auth";
-import db from "@/db";
-
-import { user } from "@/db/schemas";
-import { eq } from "drizzle-orm";
 
 import { ProviderSignupAPIRequestSchema } from "@/app/(provider)/(Auth)/create-account/_validations";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
-
-const attachCredentials = async (email: string, account_id: string) => {
-  const [updatedAccount] = await db
-    .update(user)
-    .set({
-      role: "PROVIDER",
-      stripe_account_id: account_id,
-    })
-    .where(eq(user.email, email))
-    .returning();
-  console.log("Attached stripe account id : ", updatedAccount);
-};
 
 export async function POST(req: NextRequest) {
   try {
@@ -65,13 +49,12 @@ export async function POST(req: NextRequest) {
       body: {
         name: body.name,
         email: body.email,
+        role: "PROVIDER",
         password: body.password,
+        stripe_account_id: account.id,
       },
     });
 
-    // _____ Add  stripe account id field to that user ...
-    console.log("Calling attachStripeAccountID() ...");
-    attachCredentials(body.email, account.id);
     console.log("Process completed ....");
     return NextResponse.json({ url: accountLink.url });
   } catch (err) {

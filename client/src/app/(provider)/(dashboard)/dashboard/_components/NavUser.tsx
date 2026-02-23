@@ -1,5 +1,4 @@
 "use client";
-
 import {
   IconCreditCard,
   IconDotsVertical,
@@ -7,7 +6,6 @@ import {
   IconNotification,
   IconUserCircle,
 } from "@tabler/icons-react";
-import axios from "axios";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/common";
 import {
@@ -31,6 +29,7 @@ import { useRouter } from "next/navigation";
 import { useDashboard } from "../_hooks/use-dashboard";
 import Image from "next/image";
 import { toast } from "sonner";
+import { authClient } from "@/lib/auth-client";
 
 export const NavUser = () => {
   const { isMobile } = useSidebar();
@@ -128,8 +127,8 @@ export const NavUser = () => {
               <DropdownMenuItem
                 className="cursor-pointer"
                 onClick={async () => {
-                  const { data } = await axios.get("/api/provider/auth/logout");
-                  toast.success(data.message);
+                  const { data } = await authClient.signOut();
+                  data && toast.success("Logout successfull");
                   router.push("/");
                 }}
               >

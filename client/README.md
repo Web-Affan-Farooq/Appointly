@@ -14,8 +14,10 @@
 **Possible causes :** The signup form is handling the validation and post request login in the custom hook called `use-login-form.ts`. There is possibility of data lost due to rerenders in state .
 
 ### Basic :
+- Complete the class based payment service .
+- Test all api routes using bruno .
 - Remove auth related extra api routes and make sure to use better auth builtin methods .
-- Add proper error handling to all api calls routes .
+- Add proper error handling to all api calls routes . [Check this out](https://dev.to/riyon_sebastian/building-a-robust-frontend-error-handling-system-with-axios-and-custom-hooks-27k3)
 - Create a utility that returns the user's credentials from `authClient()`.
 - All a universal debugging logger .
 - Update the service details page to show all the metadata about service .
@@ -69,6 +71,14 @@ service_id:string;
 - When the funds are transfered to provider account . 
 - When reschedule is requested from accounts .
 - When appointment is booked .
+
+export const config = {
+  matcher: [
+    "/dashboard/:path",
+    "/account/:path",
+  ], // Specify the routes the middleware applies to
+};
+
 
 ### Appointment cancellation :
 - Provider can be able to select multiple appointments and mark them `CANCELLED` .

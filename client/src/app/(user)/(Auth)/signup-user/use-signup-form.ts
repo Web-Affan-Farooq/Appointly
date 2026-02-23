@@ -42,7 +42,7 @@ export const useSignupForm = () => {
     async (_formData: z.infer<typeof UserSignupFormSchema>) => {
       try {
         const { data } = await axios.post("/api/user/auth/signup", {
-          ..._formData
+          ..._formData,
         });
         const { message } = data; // name and email also returned make sure to manipulate account state ...
         toast.success(message);
