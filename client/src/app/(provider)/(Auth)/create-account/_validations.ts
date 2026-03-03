@@ -32,9 +32,3 @@ export const ProviderSignupAPIRequestSchema = z
     country: z.literal(countryCodes, "Invalid country code"),
   })
   .strict();
-
-export const ProviderSignupAPIResponseSchema = z
-  .object({
-    url: z.string(),
-  })
-  .strict();

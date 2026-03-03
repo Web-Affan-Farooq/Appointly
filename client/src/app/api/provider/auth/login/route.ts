@@ -17,45 +17,45 @@ export const POST = async (req: NextRequest) => {
         },
         { status: 400 },
       );
-    }
-
-    const { email, password } = validationResult.data;
-
-    console.log(`[Auth] Attempting sign-in for email: ${email}`);
-
-    // Sign in the user
-    const { user: authenticatedUser } = await auth.api.signInEmail({
-      body: { email, password },
-    });
-
-    console.log(`[Auth] User found: ${authenticatedUser.id}`);
-
-    // Send verification OTP
-    console.log(`[Auth] Sending OTP to: ${email}`);
-    const { success } = await auth.api.sendVerificationOTP({
-      body: {
-        email, // Use the actual email instead of hardcoded example
-        type: "sign-in",
-      },
-    });
-
-    if (success) {
-      console.log(`[Auth] OTP sent successfully to: ${email}`);
-
-      // Don't expose too much information in the response
-      return NextResponse.json(
-        {
-          message: "Verification code sent successfully",
-          userId: authenticatedUser.id, // Optional: return minimal user info
-        },
-        { status: 200 },
-      );
     } else {
-      console.error(`[Auth] Failed to send OTP to: ${email}`);
-      return NextResponse.json(
-        { message: "Failed to send verification code" },
-        { status: 500 },
-      );
+      const { email, password } = validationResult.data;
+
+      console.log(`[Auth] Attempting sign-in for email: ${email}`);
+
+      // Sign in the user
+      const { user: authenticatedUser } = await auth.api.signInEmail({
+        body: { email, password },
+      });
+
+      console.log(`[Auth] User found: ${authenticatedUser.id}`);
+
+      // Send verification OTP
+      console.log(`[Auth] Sending OTP to: ${email}`);
+      const { success } = await auth.api.sendVerificationOTP({
+        body: {
+          email, // Use the actual email instead of hardcoded example
+          type: "sign-in",
+        },
+      });
+
+      if (success) {
+        console.log(`[Auth] OTP sent successfully to: ${email}`);
+
+        // Don't expose too much information in the response
+        return NextResponse.json(
+          {
+            message: "Verification code sent successfully",
+            userId: authenticatedUser.id, // Optional: return minimal user info
+          },
+          { status: 200 },
+        );
+      } else {
+        console.error(`[Auth] Failed to send OTP to: ${email}`);
+        return NextResponse.json(
+          { message: "Failed to send verification code" },
+          { status: 500 },
+        );
+      }
     }
   } catch (err: any) {
     // Log the full error for debugging

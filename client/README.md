@@ -6,15 +6,20 @@
 - [X] Appointment rescheduling route .
 - [X] Implement functionality to send otp for login of service provider .
 - [X] Render the view profile icon on header when the user is logged in .
+- [X] Complete the class based payment service .
 
 ## Bugs :
+#### Invalid error message after login :
+**Details :** Login form is showing incorrect message `invalid email` even if the the provider has successfully entered the email and otp . Both email , password and otp are correct . 
+**Clue :** Error with status 400 is returned by api route  , so it maybe possible that a bug is on the server side rather than client .
+**Possible causes :** Incorrect error handling of the error on client side .
+
 #### Validation failure on provider login form :
-**Defination :** Validation hasbeen failing in the provider login form , the email field is running race conditions which the password fields are permenently not showing any kind of validation . While otp form is working perfectly .
+**Details :** Validation hasbeen failing in the provider login form , the email field is running race conditions which the password fields are permenently not showing any kind of validation . While otp form is working perfectly .
 **Clue :** Both provider and user signup form is using the same zod schema validation .
 **Possible causes :** The signup form is handling the validation and post request login in the custom hook called `use-login-form.ts`. There is possibility of data lost due to rerenders in state .
 
 ### Basic :
-- Complete the class based payment service .
 - Test all api routes using bruno .
 - Remove auth related extra api routes and make sure to use better auth builtin methods .
 - Add proper error handling to all api calls routes . [Check this out](https://dev.to/riyon_sebastian/building-a-robust-frontend-error-handling-system-with-axios-and-custom-hooks-27k3)

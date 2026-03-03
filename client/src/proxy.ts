@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { auth } from "./lib/auth";
 
 export async function proxy(request: NextRequest) {
+  console.log("[Middleware] : Running ...");
   const sessionCookie = getSessionCookie(request);
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -25,9 +26,10 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
+  console.log("[Middleware] : Completed ...");
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/dashboard/:path", "/account/:path"], // Specify the routes the middleware applies to
+  matcher: ["/dashboard/:path*", "/account/:path*"], // Specify the routes the middleware applies to
 };

@@ -111,7 +111,8 @@ export const HighlightsInput = () => {
         <div className="flex flex-wrap gap-2">
           {details.map((value: string, idx: number) => (
             <span
-              key={value.slice(0, 6)}
+              /* biome-ignore lint/suspicious/noArrayIndexKey:index is required */
+              key={idx}
               className="flex items-center gap-1 bg-pink-100 text-pink-700 text-xs px-3 py-1 rounded-full"
             >
               {value}

@@ -93,7 +93,7 @@ export function ProviderSignupForm() {
       </div>
       <div className="text-center text-sm">
         Already have an account?
-        <Link href="/login" className="text-pink font-bold">
+        <Link href="/login-provider" className="text-pink font-bold">
           &nbsp; Login
         </Link>
       </div>

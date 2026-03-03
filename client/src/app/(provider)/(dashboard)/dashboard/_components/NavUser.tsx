@@ -129,6 +129,7 @@ export const NavUser = () => {
                 onClick={async () => {
                   const { data } = await authClient.signOut();
                   data && toast.success("Logout successfull");
+                  await authClient.getSession();
                   router.push("/");
                 }}
               >
