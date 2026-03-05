@@ -77,14 +77,6 @@ service_id:string;
 - When reschedule is requested from accounts .
 - When appointment is booked .
 
-export const config = {
-  matcher: [
-    "/dashboard/:path",
-    "/account/:path",
-  ], // Specify the routes the middleware applies to
-};
-
-
 ### Appointment cancellation :
 - Provider can be able to select multiple appointments and mark them `CANCELLED` .
 - Create a route which takes array of appointment ids and mark them `CANCELLED` .
