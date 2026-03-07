@@ -12,24 +12,20 @@ import { toast } from "sonner";
 
 // _____ Validations  ...
 import { ProviderSignupAPIRequestSchema } from "./_validations";
-import type { ProviderSignupAPIResponseSchema } from "./_validations";
 import { authClient } from "@/lib/auth-client";
 
 // _____ Function for signup post request ...
 const signup = async (
   formData: z.infer<typeof ProviderSignupAPIRequestSchema>,
 ) => {
-  try {
-    const response = await axios.post("/api/provider/auth/create", formData);
-    const { data }: { data: z.infer<typeof ProviderSignupAPIResponseSchema> } =
-      response;
-    window.document.location.href = data.url;
-  } catch (err) {
-    console.log(err);
-    toast.error("An error occured while creating account");
-  } finally {
-    await authClient.getSession();
+  const { data, status } = await axios.post(
+    "/api/provider/auth/create",
+    formData,
+  );
+  if (status !== 302) {
+    toast.error(data.message);
   }
+  authClient.getSession();
 };
 
 export const useSignupForm = () => {

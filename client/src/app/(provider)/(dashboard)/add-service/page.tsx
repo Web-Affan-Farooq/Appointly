@@ -56,43 +56,51 @@ export default function AddServiceForm() {
     const getData = async () => {
       try {
         const { data, error } = await authClient.getSession();
-        if (error || !data) {
-          toast(error?.message || "User not authenticated.");
-          router.push("/login");
+
+        console.log(data);
+        console.log(error);
+        if (error) {
+          toast(error.message || "Provider not authenticated.");
+          router.push("/login-provider");
           return;
         }
+        if (data) {
+          formMethods.setValue("user_id", data.user.id);
 
-        formMethods.setValue("user_id", data.user.id);
+          const response = await axios.post(
+            "/api/dashboard/get-stripe-account",
+            {
+              accountId: data.user.id,
+            },
+          );
+          console.log(response.data);
 
-        const response = await axios.post(
-          "/api/dashboard/get-country",
-          data.user.id,
-        );
+          if (response.status === 500) {
+            toast.error(response.data.message);
+            return;
+          }
+          // _____ if user not found ...
+          else if (response.status === 404) {
+            toast.error(response.data.message);
+            router.push("/login-provider");
+          }
 
-        if (response.status === 500) {
-          toast.error(response.data.message);
-          return;
-        }
-        // _____ if user not found ...
-        else if (response.status === 404) {
-          toast.error(response.data.message);
-          router.push("/login");
-        }
+          // _____ if stripe id not exists ...
+          else if (response.status === 403) {
+            toast.error(response.data.message);
+            router.push("/dashboard");
+          }
 
-        // _____ if stripe id not exists ...
-        else if (response.status === 403) {
-          toast.error(response.data.message);
-          router.push("/dashboard");
-        }
+          const requiredCurrency = CountriesData.find(
+            (countryData) => countryData.code === response.data.country,
+          );
 
-        const requiredCurrency = CountriesData.find(
-          (countryData) => countryData.code === response.data.country,
-        );
-
-        if (requiredCurrency) {
-          formMethods.setValue("currency", requiredCurrency.currency, {
-            shouldValidate: true,
-          });
+          if (requiredCurrency) {
+            console.log(requiredCurrency);
+            formMethods.setValue("currency", requiredCurrency.currency, {
+              shouldValidate: true,
+            });
+          }
         }
       } catch (error) {
         toast.error("An unexpected error occurred.");
@@ -100,11 +108,12 @@ export default function AddServiceForm() {
       }
     };
     getData();
+    console.log(formMethods.getValues());
   }, [router, formMethods]);
 
-  useEffect(() => {
-    console.log(formMethods.formState.errors);
-  }, [formMethods.formState.errors]);
+  // useEffect(() => {
+  //   console.log(formMethods.formState.errors);
+  // }, [formMethods.formState.errors]);
 
   // _____ Function for adding service ...
   const addNewService = async (

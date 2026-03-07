@@ -1,4 +1,9 @@
-import "dotenv/config";
+import "dotenv/config"
+
+export const googleCreds = {
+  clientId: process.env.GOOGLE_CLIENT_ID as string,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET as string
+}
 
 export const databaseUrl =
   process.env.DATABASE_URL ||

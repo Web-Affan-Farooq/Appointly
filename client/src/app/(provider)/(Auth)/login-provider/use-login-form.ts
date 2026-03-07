@@ -11,6 +11,8 @@ import { useEffect, useState } from "react";
 import { useFormData } from "./formdata";
 import { authClient } from "@/lib/auth-client";
 
+type FormData = z.infer<typeof LoginFormSchema>;
+
 export const useLoginForm = () => {
   // ______ Persistent formData to survive refresh on otp form  ...
 
@@ -24,7 +26,6 @@ export const useLoginForm = () => {
   const {
     register,
     handleSubmit,
-    getValues,
     control,
     formState: { errors },
   } = useForm({
@@ -32,27 +33,26 @@ export const useLoginForm = () => {
     mode: "onChange",
   });
   // _____ Funtion for email password login ...
-  const login = handleSubmit(
-    async (formData: z.infer<typeof LoginFormSchema>) => {
-      setLoading(true);
-      const { data, status } = await axios.post(
-        "/api/provider/auth/login",
-        formData,
-      );
+  const login = handleSubmit(async (formData: FormData) => {
+    setLoading(true);
 
-      if (status !== 200) {
-        toast.error(data.message);
-      } else {
-        setOtpVisible(true);
-      }
-      setLoading(false);
-      await authClient.getSession()
-    },
-  );
+    const { data, status } = await axios.post(
+      "/api/provider/auth/login",
+      formData,
+    );
+
+    if (status !== 200) {
+      toast.error(data.message);
+    } else {
+      setOtpVisible(true);
+    }
+    setLoading(false);
+    await authClient.getSession();
+  });
   const _matchedValues = useWatch({ control });
 
   useEffect(() => {
-    setFormData({ ...getValues() });
+    setFormData(_matchedValues as FormData);
   }, [setFormData, _matchedValues]);
 
   return {

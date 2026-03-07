@@ -1,17 +1,17 @@
-import "dotenv/config";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { emailOTP } from "better-auth/plugins";
-
 import db from "@/db";
 import { nextCookies } from "better-auth/next-js";
 import * as Schema from "@/db/schemas/tables/users";
 import { sendEmail } from "./send-email";
+import { googleCreds } from "@/shared/constants";
 
 export const auth = betterAuth({
   user: {
     changeEmail: {
       enabled: true,
+      updateEmailWithoutVerification: true,
     },
     deleteUser: {
       enabled: true,
@@ -34,8 +34,8 @@ export const auth = betterAuth({
   socialProviders: {
     google: {
       prompt: "select_account",
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      clientId: googleCreds.clientId,
+      clientSecret: googleCreds.clientSecret,
     },
   },
   database: drizzleAdapter(db, {
@@ -59,6 +59,6 @@ export const auth = betterAuth({
         }
       },
     }),
-    nextCookies()
+    nextCookies(),
   ],
 });
