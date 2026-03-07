@@ -1,3 +1,4 @@
+
 ### Completed :
 - [X] Show today’s schedule in calender in dashboard.
 - [X] Complete the slot regeneration .
@@ -41,7 +42,10 @@
 - Implement feature of state saving .
 
 ### Advanced :
-- Add proper testing for the cases .
+- Add proper testing using playwright .
+- Dockerize the application properly .
+- Run the test simultaneously in docker containers locally .
+- Add a github actions CI/CD pipeline to test the code on preview then deploy to production .
 - Create appointment booking tool for AI agent .
  
 ## Optional :
