@@ -91,7 +91,8 @@
 
 .focus-pink:focus {
   border-color: var(--pink);
-  box-shadow: 0 0 0 3px rgba(202, 95, 232, 0.5); /* A softer focus ring */
+  box-shadow: 0 0 0 3px rgba(202, 95, 232, 0.5);
+  /* A softer focus ring */
 }
 
 .dark {
@@ -132,9 +133,11 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+
   .background-button-hover {
     @apply bg-gradient-to-r from-[#e189fa] via-purple-500 to-[#dbc81d];
   }

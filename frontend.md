@@ -1,32 +1,119 @@
-## Appointly :
-
-## Service provider :
-#### Associated Routes :
-
-- `/login-provider`
-- `/dashboard`
-- `/dashboard/reschedules`
-- `/dashboard/schedule`
-- `/dashboard/appointments`
-
-#### User stories :
-- Provider can be able to login through form in `/login-provider` page .
-- Provider can enter email and password which should be validated . After that and otp form will be appeared when the email and password is verified from server .
-- User can be able to enter the otp in otp input to verify its identity , if verified , redirected to `/dashboard` route other wise toast should be shown .
-- On the `/dashboard` page , user can be able to check metrics such as total earnings , total bookings .
-- A sidebar which contains options like appointments , reschedules , schedule .
-- An option related to logout is also be shown .
+Design complete frontend design system for the following platform .
 
 
-## User stories :
+## Overview | Appointly :
+**Appointly** is a appointments management platform where business owners and service providers sell thier services and expand thier reach to thier potential clients . This application allows a provider list services , while clients can book thier appointments and check out best services from platform .
 
-User can be able to login to thier account on `/login-user` page . User can either login through email password , or perform social login through login with google button . After success full login , user should be redirected to `/account` page .
-- If provider 
-- on `/account` route user can be able to check out it's booked appointments , requested reschedules and cancelled appointments and completed appointments .
-- User can be able to create a reschedule request using a button , the shadcn ui based popup will be shown with a calender along with slot timings on the selected date in calender , when date is changed in calender , the available slots will be shown in the slots list .
+## Technical Overview :
+#### Theme :
+Primary (Text/Structure): #000000 (Your Black)
 
-- User can be able to select a date in calender , and all remaining slots will be rendered . 
+Secondary (Buttons/UI): #F6A7C1 (A softer, more pastel version of your pink)
 
-- 404 not found page 
-- payment success page 
-- payment failure page
+Tertiary (Background): #FFF9E6 (A soft off-white/cream background)
+
+Accent (Calls to Action): #92e889 (Your Yellow - used sparingly)
+
+Extra Detail: #9B6B9E (A muted purple to bridge the pink and black)
+
+
+## Implementation :
+
+Design all of the following pages listed below .
+
+### Design UI of service listing page `my_domain_name/services/`:
+- The application should have a feature to filter services on the basis of location , ratings and maximum trusted (according to completed appointments) .
+- Contains a search bar for searching the service by name .
+- Also user should be able to search using category buttons (All , Salons , Clinics etc) .
+- User should be navigated to `my_domain_name/services/[service_uuid]` on clicking the service card .
+
+### Design a service details page `my_domain_name/services/[uuid]`
+
+- name: string
+- provider_name: string
+- category: string;
+- description: string;
+- price: number ;
+- currency: number ;
+- working_days : ["MONDAY" , "TUESDAY", "WEDNESDAY" , "THURSDAY" , "FRIDAY", "SATURDAY"]
+- start_time: date string
+- end_time: date string
+- duration: number
+- max_appointments_per_day: number
+- ratings: array of numbers between 1 and 5 like [5,2,4,3,1,1,5]
+- details: array of sentences ;
+- total_completed_appointments :number;
+
+Service details should also show the ratings of service .- It also show 1st 2 or 3 reviews and a clear CTA like `show more` or `See all` which takes to next page or open a modal with rendered reviews cards .
+- User should be able to select a date from calender , and when date in calender changes , list of all the available slots will be shown . slots array usually contains .
+    - slot date 
+    - start_time :date string 
+    - end_time :date string
+
+- User should be able to click on the button with text "Book My Slot" , a modal will appear showing the data of selected slot and button with text "Proceed" 
+- after that user should be redirected to stripe checkout page for checkout where it will complete the payment and redirected to `/checkout/success` .  
+
+### Design Payment pages (`/payments/success`,`/payment/failed`): 
+- Payment success page should show a image icon , with heading text and a button go to account which should redirect user to `/account` page .
+- Payment failure page .
+- Payment success page should show a image icon , with heading text and a go back button .
+
+### Design a login page `/login-user` :
+- The page must contain a svg icon to enhance user experience so that user feels the vibe rather than a data entry form .
+- The form should contain field for email and password .
+- Show error messages above the field OR below the field if a field is failed to be validated .
+- A button for login .
+- A button for login with google .
+
+### Design a signup page `/signup-user` :
+- The page must contain a svg icon to enhance user experience so that user feels the vibe rather than a data entry form .
+- The form should contain field for name , email and password .
+- Show error messages above the field OR below the field if a field is failed to be validated .
+- A button for signup .
+- A button for signup with google .
+
+### Design a signup page for service provider at (`/create-account`) :
+- The page must contain a svg icon to enhance experience so that provider feels the vibe rather than a data entry form .
+- The form should contain field for name , email, password and a select box for country .
+- Show error messages above the field OR below the field if a field is failed to be validated .
+- A button with text `Continue` . On clicking the button , provider should be redirected to the stripe's customer onboarding page .
+
+
+### Design a login page for service provider at (`/login-provider`) :
+- The page must contain a svg icon to enhance experience so that provider feels the vibe rather than a data entry form .
+- The form should contain field for email and password .
+- Show error messages above the field OR below the field if a field is failed to be validated .
+- A button for login .
+
+- On successfull login , user should also have to enter the otp code sent through the email .
+- A button with text `Verify` which should redirect user to `/dashboard` if verified and if not , show error message in toast .
+
+### User account page (/account) :
+- User can be able to check his upcoming appointment .
+- User can be able to check cancelled appointments .
+- User can be able to cancel his appointment .
+- User can be able to check his pending reschedule appointments requests .
+- User can be able to can cancel its reschedule appointments request .
+- User can be able to logout of its account through settings .
+- User can be able to change email and password through settings .
+- User can be able to delete its account through .
+
+# Constraints (MANDATORY):
+- Dont design the provider dashboard for now . Only design client side pages 
+- Always make sure that the design should be aligned with the theme of the application specified above .
+- Dont develop Landing page , and provider dashboard .
+- Dont write any kind of code . Only design the application .
+
+## Deliverables (MANDATORY) :
+- Service listing page .
+- Service details page .
+- login page for user .
+- login page for provider .
+- Signup page for user .
+- Signup page for provider .
+- account page for user .
+- payment success fallback page .
+- payment failure fallback page .
+- 404 not found page .
+- All the above pages , each consisting of three screens , mobile , desktop and tablet .
+- All the screens should be aligned with the theme and vibe . Make sure nothing is incomplete .

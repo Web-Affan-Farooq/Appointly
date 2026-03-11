@@ -72,22 +72,15 @@ Real users abandon apps with poor UX or lack of communication.
    - **Impact**: Helps providers track business, encourages growth.
 
 #### Phase 3: Security, Scalability & Polish (Lower Priority – Long-Term Viability)
-8. **Proper Stripe Account Onboarding for Providers**
-   - **Why?** Providers need verified Stripe accounts for payouts. Your current setup assumes accounts exist but doesn't create them.
-   - **Implementation**:
-     - Use Stripe Connect Express accounts.
-     - Add onboarding flow in provider signup: Redirect to Stripe onboarding, store `stripe_account_id`.
-     - Verify accounts before allowing payouts.
-   - **Impact**: Ensures compliant payouts, avoids Stripe rejections.
 
-9. **Error Handling & Logging**
+8. **Error Handling & Logging**
    - **Why?** Bugs in payment flows can lose money. Real users expect reliability.
    - **Implementation**:
      - Add try-catch in all payment actions, log errors to a service (e.g., console for now, later Sentry).
      - Implement retries for failed transfers.
    - **Impact**: Reduces support tickets, improves uptime.
 
-10. **Performance & Scalability**
+9. **Performance & Scalability**
     - **Why?** As users grow, slow queries or no caching will kill the app.
     - **Implementation**:
       - Add database indexes on frequently queried fields (e.g., service_id, user_id).

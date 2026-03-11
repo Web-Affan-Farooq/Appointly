@@ -20,7 +20,13 @@
 **Clue :** Both provider and user signup form is using the same zod schema validation .
 **Possible causes :** The signup form is handling the validation and post request login in the custom hook called `use-login-form.ts`. There is possibility of data lost due to rerenders in state .
 
+#### Header profile icon :
+**Details :** If user has logged in from both account and provider account , when logged in from provider dashboard still showing the profile icon on header . While clicking on header redirects the user to /login-user . **No better auth cookie is present after logout from dashboard in browser** 
+
 ### Basic :
+- Implement a functionality to show the service views in dashboard . Update the count in database when service details s rendered .
+
+- Design thumbnail of project from stitch with google nano banana and attach it to root readme .
 - Test all api routes using bruno .
 - Remove auth related extra api routes and make sure to use better auth builtin methods .
 - Add proper error handling to all api calls routes . [Check this out](https://dev.to/riyon_sebastian/building-a-robust-frontend-error-handling-system-with-axios-and-custom-hooks-27k3)
@@ -31,7 +37,7 @@
 - on dashboards Create cards for total earnings this month , a side div for any popup
 - Number of appointments per week/month.
 - No-shows, cancellations, revenue earned. 
-- Add a refund logic for cancelled appointments [see more details in this document] (./IMPROVEMENTS.md)
+- Add a refund logic for cancelled appointments [see more details in this document] (./IMPROVEMENTS.Preadmd)
 - Implement appointment cancellation . `[MENTIONED]`
 - Notification push . `[MENTIONED]`
 - Acknowledgement feature through qr code .
@@ -45,7 +51,7 @@
 - Add proper testing using playwright .
 - Dockerize the application properly .
 - Run the test simultaneously in docker containers locally .
-- Add a github actions CI/CD pipeline to test the code on preview then deploy to production .
+- Add a github actions CI/CD pipeline to test the code on vercel preview then deploy to production .
 - Create appointment booking tool for AI agent .
  
 ## Optional :
@@ -95,20 +101,6 @@ service_id:string;
 - Then regenerate new slots for the upcoming period with the new limit.
 
 - Keep past and booked slots untouched.
-
-#### Update UI :
-the current application has just a simple UI to make sure the application functionality can be visible . Update the UI of the following pages 
-
-##### /account :
-- User can be able to check his upcoming appointment .
-- User can be able to loguot of his account .
-- User can be able to check cancelled appointments .
-- User can be able to cancel his appointment .
-- User can be able to check his pending reschedule appointments requests .
-- User can be able to can cancel its reschedule appointments request .
-
-##### /service/[id]:
-- User can see an intuitive UI showing each and every detail about the available service data fetched by the hooks .
 
 #### /dashboard :
 - Sidebar must contain a button which access the camera , then capture image of a qr code , scans it and mark the encoded appointment as `COMPLETED`  

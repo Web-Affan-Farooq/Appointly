@@ -24,7 +24,7 @@ For starting out in the platform the provider have to complete a simple onboardi
 - Complete information of business , including tax registration documents , country and funding information (bank account number etc ...) . 
 - Name , email , phone number , cnic passport (optional).
 
-the only purpose for the account creation is for registering the provider to a source where platform easily transfer the funds . **The onboarding process is solely related to stripe bank and none of the information is collected by platform** . The provider must have to complete the onboarding as it is required for creating services and transfering funds .
+the only purpose for the account creation is for registering the provider to a source where platform easily transfer the funds . **The onboarding process is solely related to stripe bank and none of the information is collected by platform** . The provider must have to fill the stripe customer onboarding form stripe onboarding form so that platform can easily transfer funds to thier accounts .
 
 
 ## Pending Features :
