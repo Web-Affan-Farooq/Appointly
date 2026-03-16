@@ -44,7 +44,7 @@ must use `mode:"onchange"` in react-hook-form .
 #### **Use of drizzle ORM :**
 drizzle is the orm which should be used in the application 
 
-In traditional fullstack nextjs projects , the project is strutured in following ways .
+In traditional fullstack nextjs projects , the project is structured in following ways .
 
 ```markdown
 ----/src

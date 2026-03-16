@@ -1,6 +1,5 @@
 Design complete frontend design system for the following platform .
 
-
 ## Overview | Appointly :
 **Appointly** is a appointments management platform where business owners and service providers sell thier services and expand thier reach to thier potential clients . This application allows a provider list services , while clients can book thier appointments and check out best services from platform .
 
@@ -97,6 +96,22 @@ Service details should also show the ratings of service .- It also show 1st 2 or
 - User can be able to logout of its account through settings .
 - User can be able to change email and password through settings .
 - User can be able to delete its account through .
+
+### Design Provider dashboard (/dashboard):
+- On Dashboard , a side bar should be present with following options .
+1. Appointments 
+2. Reschedules 
+3. Schedule 
+4. A button with text `Create` which should redirect user to `/add-service` page .
+5. A Select box will be placed from which user can switch services , and the dashboard will only show data related to this specific service selected in that select box . On selecting a different service from it , dashboard shows the metrics and all data of the new selecetd service .
+
+- On clicking the `Appointments` option on sidebar , user should be redirected to the `/dashboard/appointments` page .
+- This appointments page show the paginated table view of the booked slots .
+- Provider can be able to select multiple slots and click on `Cancel` button will results in cancelling all the selected appointments (like gmail multiple select functionality) .
+
+- On clicking the `Reschedules` option on sidebar , user should be redirected to the `/dashboard/reschedules` page .
+- On clicking the `Schedule` option on sidebar , user should be redirected to the `/dashboard/Schedule` page .
+- On sidebar , a button with text `Mark as complete` will be placed . On clicking this button , a modal will show with a QR code which should be scanned by user 
 
 # Constraints (MANDATORY):
 - Dont design the provider dashboard for now . Only design client side pages 
