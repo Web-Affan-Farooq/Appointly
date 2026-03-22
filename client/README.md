@@ -25,7 +25,6 @@
 
 ### Basic :
 - Implement a functionality to show the service views in dashboard . Update the count in database when service details s rendered .
-
 - Design thumbnail of project from stitch with google nano banana and attach it to root readme .
 - Test all api routes using bruno .
 - Remove auth related extra api routes and make sure to use better auth builtin methods .
