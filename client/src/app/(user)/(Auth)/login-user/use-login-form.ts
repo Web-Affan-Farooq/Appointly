@@ -24,19 +24,17 @@ export const useLoginForm = () => {
 
   const login = handleSubmit(
     async (formData: z.infer<typeof LoginFormSchema>) => {
-      const { data, status } = await axios.post(
-        "/api/user/auth/login",
-        formData,
-      );
-      const { message } = data;
+      try {
+        const { data } = await axios.post("/api/user/auth/login", formData);
 
-      if (status !== 200) {
-        toast.error(message);
+        const { message } = data;
+
+        toast.success(message);
+        router.push("/account");
+        await authClient.getSession();
+      } catch (err) {
+        console.log(JSON.stringify(err));
       }
-
-      toast.success(message);
-      router.push("/account");
-      await authClient.getSession();
     },
   );
 

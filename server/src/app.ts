@@ -1,28 +1,42 @@
-import express, { Application } from 'express';
-import cors from 'cors';
-import helmet from 'helmet';
-import { errorHandler } from './middleware/error.middleware';
-import routes from './routes';
+import express, { Application } from "express"
+import { toNodeHandler } from "better-auth/node";
+import { auth } from "./auth"
 
-const app: Application = express();
+import cors from "cors"
+import helmet from "helmet"
 
-// Security middleware
-app.use(helmet());
-app.use(cors());
+import { errorHandler } from "./middlewares/error.middleware"
 
-// Body parsing
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+import { ServicesRouter } from "./routes"
 
-// Routes
-app.use('/api', routes);
 
-// Health check
-app.get('/health', (req, res) => {
-    res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
-});
+export const app: Application = express();
 
-// Error handling (must be last)
-app.use(errorHandler);
+// ______ Security middleware ...
+app.use(helmet())
+app.use(
+    cors({
+        origin: process.env.BETTER_AUTH_URL || "http://localhost:3000",
+        methods: ["GET", "POST", "PUT", "DELETE"],
+        credentials: true,
+    })
+);
 
-export default app;
+app.all("/api/auth/*splat", toNodeHandler(auth));
+
+
+// _____ Body parsing ...
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+
+
+// _____ Routes...
+app.use("/api", ServicesRouter)
+
+
+app.get("/health", (req, res) => {
+    console.log(`Incoming request from : ${req.url}`)
+    res.status(200).json({ status: "ok" })
+})
+
+app.use(errorHandler)
