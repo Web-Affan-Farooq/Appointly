@@ -11,3 +11,6 @@ export const databaseUrl =
 
 export const betterauthURL =
   process.env.NEXT_PUBLIC_BETTER_AUTH_URL || "http://localhost:4000";
+
+
+export const PORT = process.env.PORT || 4000 
