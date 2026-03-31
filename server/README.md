@@ -1,3 +1,13 @@
+---
+title: My Express API
+emoji: 🚀
+colorFrom: blue
+colorTo: purple
+sdk: docker
+app_port: 3000
+pinned: false
+---
+
 ## Appointly backend server :
 
 - [Express with typescript | Building REST APIs](https://oneuptime.com/blog/post/2026-02-03-express-typescript-rest-api/view)
