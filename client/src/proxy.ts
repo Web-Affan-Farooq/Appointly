@@ -5,22 +5,31 @@ import { auth } from "./lib/auth";
 
 // 1. MUST be a default export for the Proxy feature
 export default async function proxy(request: NextRequest) {
-  console.log("Running middleware ...")
+  console.log("Running middleware ...");
   const { pathname } = request.nextUrl;
 
   // 2. MANUAL MATCHER: Define which routes this proxy should care about
-  const protectedPaths = ["/dashboard", "/account", "/dashboard/schedule", "/dashboard/appointments", "/dashboard/add-service"];
-  const isTargetRoute = protectedPaths.some(path => pathname.startsWith(path));
+  const protectedPaths = [
+    "/dashboard",
+    "/account",
+    "/dashboard/schedule",
+    "/dashboard/appointments",
+    "/dashboard/add-service",
+  ];
+  const isTargetRoute = protectedPaths.some((path) =>
+    pathname.startsWith(path),
+  );
 
   // If it's not a route we care about, just continue
   if (!isTargetRoute) return;
 
   const sessionCookie = getSessionCookie(request);
   const session = await auth.api.getSession({
-    headers: await headers()
+    headers: await headers(),
   });
 
-  const isProvider = session && sessionCookie && session.user.role === "PROVIDER";
+  const isProvider =
+    session && sessionCookie && session.user.role === "PROVIDER";
   const isUser = session && sessionCookie && session.user.role === "USER";
 
   // Logic for Redirections
@@ -53,7 +62,6 @@ export default async function proxy(request: NextRequest) {
 //   const isProvider = session && sessionCookie && session.user.role === "PROVIDER";
 
 //   const isUser = session && sessionCookie && session.user.role === "USER";
-
 
 //   // THIS IS NOT SECURE!
 //   // This is the recommended approach to optimistically redirect users

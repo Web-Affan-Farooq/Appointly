@@ -1,17 +1,17 @@
 Design complete frontend design system for the following platform .
 
 ## Overview | Appointly :
-**Appointly** is a appointments management platform where business owners and service providers sell thier services and expand thier reach to thier potential clients . This application allows a provider list services , while clients can book thier appointments and check out best services from platform .
+**Appointly** is a appointments management platform where business owners and service providers sell their services and expand their reach to their potential clients . This application allows a provider list services , while clients can book their appointments and check out best services from platform .
 
 ## Technical Overview :
 #### Theme :
-Primary (Text/Structure): #000000 (Your Black)
+Primary (Text/Structure): #000000 (Black)
 
-Secondary (Buttons/UI): #F6A7C1 (A softer, more pastel version of your pink)
+Secondary (Buttons/UI): #F6A7C1 (A softer, more pastel version of pink)
 
 Tertiary (Background): #FFF9E6 (A soft off-white/cream background)
 
-Accent (Calls to Action): #92e889 (Your Yellow - used sparingly)
+Accent (Calls to Action): #92e889 (Yellow - used sparingly)
 
 Extra Detail: #9B6B9E (A muted purple to bridge the pink and black)
 

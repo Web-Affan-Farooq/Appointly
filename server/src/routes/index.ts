@@ -1,0 +1,1 @@
+export { default as ServicesRouter } from "./get-service.route"

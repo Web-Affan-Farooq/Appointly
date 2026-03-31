@@ -47,7 +47,9 @@ export function LoginForm() {
             </Link>
           </div>
           <PasswordInput id="password" required {...register("password")} />
-          {errors.password && <p>{errors.password.message}</p>}
+          {errors.password && (
+            <p className="text-sm text-red-500">{errors.password.message}</p>
+          )}
         </div>
         <Button
           type="submit"
