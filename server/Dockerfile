@@ -1,5 +1,5 @@
 # Stage 1: Build stage
-FROM node:20-alpine AS builder
+FROM node:24-alpine AS builder
 
 # Install pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate
@@ -20,7 +20,7 @@ COPY . .
 RUN pnpm run build
 
 # Stage 2: Production stage
-FROM node:20-alpine
+FROM node:24-alpine
 
 # Install pnpm in production stage
 RUN corepack enable && corepack prepare pnpm@latest --activate
@@ -38,7 +38,7 @@ RUN pnpm install --prod --frozen-lockfile
 COPY --from=builder /app/dist ./dist
 
 # Expose port (adjust if your app uses a different port)
-EXPOSE 4000
+EXPOSE 7860
 
 # Start the application
 CMD ["node", "dist/index.js"]
