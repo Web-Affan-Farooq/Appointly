@@ -10,4 +10,4 @@ export const databaseUrl =
   "postgresql://affan:secret@localhost:5432/appointly";
 
 export const betterauthURL =
-  process.env.NEXT_PUBLIC_BETTER_AUTH_URL || "http://localhost:3000";
+  process.env.NEXT_PUBLIC_SERVER_URL; // express js development server
